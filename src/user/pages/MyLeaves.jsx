@@ -87,7 +87,7 @@ const MyLeaves = () => {
               </div>
               <Calendar size={48} className="text-indigo-400" />
             </div>
-          </div>
+          </div> 
 
           {/* Leave History */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">

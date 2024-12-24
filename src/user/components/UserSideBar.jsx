@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { FaChevronDown, FaChevronUp, FaHome, FaUser, FaCalendarAlt, FaTicketAlt, FaMoneyCheckAlt, FaCog, FaQuestionCircle, FaDoorOpen } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaHome, FaUser, FaCalendarAlt, FaTicketAlt, FaMoneyCheckAlt, FaCog, FaQuestionCircle, FaDoorOpen, FaTasks } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/logowhite.png';
 
 const UserSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
+    const [showSettingOptions, setShowSettingOptions] = useState(false);
     const [activeItem, setActiveItem] = useState('');
 
     const handleItemClick = (item) => {
@@ -139,15 +140,48 @@ const UserSideBar = () => {
                     <span>Payroll</span>
                 </Link>
 
-                {/* Settings */}
+                {/* Task Management */}
                 <Link
-                    to="/settings"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Setting' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
-                    onClick={() => handleItemClick('Setting')}
+                    to="/task-management"
+                    className={`flex items-center p-3 rounded-md ${activeItem === 'Task Management' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    onClick={() => handleItemClick('Task Management')}
                 >
-                    <FaCog className="mr-3" />
-                    <span>Setting</span>
+                    <FaTasks className="mr-3" />
+                    <span>Task Management</span>
                 </Link>
+
+                {/* Settings */}
+                <div>
+                    <div
+                        className={`flex items-center p-3 rounded-md ${activeItem === 'Setting' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        onClick={() => {
+                            setShowSettingOptions(!showSettingOptions);
+                            handleItemClick('Setting');
+                        }}
+                    >
+                        <FaCalendarAlt className="mr-3" />
+                        <span>Setting</span>
+                        <div className="ml-auto">
+                            {showLeaveOptions ? (
+                                <FaChevronUp className={`w-5 h-5 ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                            ) : (
+                                <FaChevronDown className={`w-5 h-5 ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                            )}
+                        </div>
+                    </div>
+
+                    {showSettingOptions && (
+                        <div className="ml-8 space-y-2 transition-all duration-300 ease-in-out">
+                            <Link
+                                to="/setting/changepassword"
+                                className={`flex items-center p-2 rounded-md ${activeItem === 'Change Password' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                onClick={() => handleItemClick('Apply Leave')}
+                            >
+                                <span>Change Password</span>
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </nav>
 
             {/* Help */}
