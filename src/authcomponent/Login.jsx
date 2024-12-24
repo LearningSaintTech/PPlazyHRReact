@@ -3,10 +3,15 @@ import { Eye, EyeOff } from 'lucide-react';
 import LoginImg from '../assets/login.svg';
 import Logo from '../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
+import { login, getCurrentUser } from "../commonComponent/Api";
+import { useSelector, useDispatch } from 'react-redux';
+import { setToken, setUser } from '../commonComponent/slice/AuthSlice';
+import { ACCESS_TOKEN, USER_DATA } from '../commonComponent/Constant';
 
 const Login = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleNavigate = () => {
       navigate('/create-account'); // This will navigate to /create-events route
@@ -19,11 +24,36 @@ const Login = () => {
         rememberMe: false
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Form submitted:', formData);
+        try {
+            // Await the login function to get the resolved response
+            const response = await login(formData);
+            console.log('Form submitted:', response);
+            localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+            dispatch(setToken(response.accessToken));
+            const userData = await getCurrentUser(response.accessToken);
+            localStorage.setItem(USER_DATA, userData);
+            dispatch(setUser(userData));
+
+    
+           
+    //   if (userData.roles.some(role => role.name === 'ADMIN')) {
+    //     navigate('/home');
+    //   } else 
+    console.log("userData.roles",userData.roles)
+      if (userData.roles.some(role => role.name === 'USER')) {
+        console.log("sdfghjkj");
+        navigate('/user/home');
+      } else {
+        navigate('/login');
+      }
+        } catch (error) {
+            console.error('Login error:', error);
+            // Handle error in case of network issues or API errors
+        }
     };
+    
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
