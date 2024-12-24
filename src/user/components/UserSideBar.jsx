@@ -2,15 +2,23 @@ import React, { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaHome, FaUser, FaCalendarAlt, FaTicketAlt, FaMoneyCheckAlt, FaCog, FaQuestionCircle, FaDoorOpen } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/logowhite.png';
-
+import { useDispatch } from 'react-redux';
+import { logout } from '../../commonComponent/slice/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 const UserSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
     const [showSettingOptions, setShowSettingOptions] = useState(false);
     const [activeItem, setActiveItem] = useState('');
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleItemClick = (item) => {
         setActiveItem(item);
+    };
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
     };
 
     return (
@@ -186,7 +194,7 @@ const UserSideBar = () => {
             {/* Logout */}
             <div
                 className={`flex items-center mt-4 p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
-                onClick={() => handleItemClick('Logout')}
+                onClick={handleLogout}
             >
                 <FaDoorOpen className="mr-2" />
                 <span>Logout</span>

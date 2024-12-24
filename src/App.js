@@ -25,12 +25,11 @@ import UserTaskManagement from './user/pages/UserTaskManagement';
 
 function App() {
     return (
-        <Router>
             <Routes>
                 {/* Define the routes */}
                 <Route path="/" element={<Login />} />
                 <Route path="/create-account" element={<SignUp />} />
-                <Route path="/home" element={<UserHome />} />
+                <Route path="/user/home" element={<UserHome />} />
                 <Route path="/profile" element={<UserProfile />} />
                 <Route path="/attendance" element={<UserAttendance />} />
                 <Route path="/ticket/query" element={<TicketQuery />} /> 
@@ -52,7 +51,6 @@ function App() {
                 <Route path="/admin/management" element={<AdminManagement />} />
                 <Route path="/admin/create-event" element={<AdminCreateEvents />} />
             </Routes>
-        </Router>
     );
 }
 

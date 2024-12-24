@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import LoginImg from '../assets/login.svg';
 import Logo from '../assets/logo.svg'
+import { signup } from '../commonComponent/Api';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+    const navigate = useNavigate();
+
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
-        fullName: '',
+        name: '',
         email: '',
         password: '',
         rememberMe: false
@@ -15,6 +19,14 @@ const SignUp = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Handle signup logic here
+        signup(formData)
+        .then(response => {
+            console.log("You're successfully registered. Please verify your email!",response);
+            navigate('/', { state: { email: formData.email } }); // Redirect to OTP verification with email
+        })
+        .catch(error => {
+            console.log((error && error.message) || 'Oops! Something went wrong. Please try again!');
+        });
         console.log('Form submitted:', formData);
     };
 
@@ -74,8 +86,8 @@ const SignUp = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        id="fullName"
-                                        name="fullName"
+                                        id="name"
+                                        name="name"
                                         placeholder="Your Name"
                                         value={formData.fullName}
                                         onChange={handleInputChange}

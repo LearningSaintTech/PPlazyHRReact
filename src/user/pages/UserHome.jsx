@@ -1,5 +1,6 @@
-// App.jsx
 import React, { useState, useEffect } from "react";
+import UserSidebar from "../components/UserSideBar";
+import UserHeader from "../components/UserHeader";
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -23,10 +24,10 @@ const Dashboard = () => {
         JSON.parse(localStorage.getItem("isClockedOut")) || false
     );
     const [clockInTime, setClockInTime] = useState(() =>
-        localStorage.getItem("clockInTime") || "00:00:00"
+        localStorage.getItem("clockInTime") || "00:00:00 AM"
     );
     const [clockOutTime, setClockOutTime] = useState(() =>
-        localStorage.getItem("clockOutTime") || "00:00:00"
+        localStorage.getItem("clockOutTime") || "00:00:00 AM"
     );
     const [timer, setTimer] = useState(0);
 
@@ -49,18 +50,18 @@ const Dashboard = () => {
     }, [isClockedIn, isClockedOut]);
 
     const handleClockIn = () => {
-        const today = new Date().toISOString().split("T")[0]; // Current date (YYYY-MM-DD)
+        const today = new Date().toISOString().split("T")[0];
         const lastClockInDate = localStorage.getItem("clockInDate");
 
         if (!lastClockInDate || lastClockInDate !== today) {
             const now = new Date();
-            const startTime = Math.floor(Date.now() / 1000); // Store in seconds
+            const startTime = Math.floor(Date.now() / 1000);
             localStorage.setItem("clockInStartTime", startTime);
-            localStorage.setItem("clockInDate", today); // Save today's date
+            localStorage.setItem("clockInDate", today);
 
             setIsClockedIn(true);
             setIsClockedOut(false);
-            setClockInTime(now.toLocaleTimeString("en-US", { hour12: false }));
+            setClockInTime(now.toLocaleTimeString("en-US"));
         } else {
             alert("You have already clocked in today.");
         }
@@ -74,7 +75,7 @@ const Dashboard = () => {
             setIsClockedOut(true);
             setIsClockedIn(false);
             const now = new Date();
-            setClockOutTime(now.toLocaleTimeString("en-US", { hour12: false }));
+            setClockOutTime(now.toLocaleTimeString("en-US"));
         }
     };
 
@@ -88,99 +89,138 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4">
-            <div className="bg-white shadow rounded-lg p-6">
-                <div className="flex justify-between items-center mb-4">
-                    <h1 className="text-xl font-semibold">
-                        Welcome back, <span className="text-blue-500">Aditya</span>
-                    </h1>
-                    <p className="text-gray-500">
-                        Tue, <CustomClock />
-                    </p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    <div
-                        className={`${isClockedIn ? "bg-gray-300" : "bg-blue-500 cursor-pointer"
-                            } text-white p-4 rounded-lg shadow`}
-                        onClick={handleClockIn}
-                    >
-                        <h2 className="text-lg font-semibold">Clock In</h2>
-                        <p className="text-2xl">{clockInTime}</p>
-                    </div>
-                    <div
-                        className={`${isClockedOut || !isClockedIn
-                                ? "bg-gray-300"
-                                : "bg-green-500 cursor-pointer"
-                            } text-white p-4 rounded-lg shadow`}
-                        onClick={handleClockOut}
-                    >
-                        <h2 className="text-lg font-semibold">Clock Out</h2>
-                        <p className="text-2xl">{clockOutTime}</p>
-                    </div>
-                    <div className="bg-red-500 text-white p-4 rounded-lg shadow">
-                        <h2 className="text-lg font-semibold">Total Absent</h2>
-                        <p>1 Dec, 2024 - 31 Dec, 2024</p>
-                    </div>
-                    <div className="bg-gray-50 text-gray-800 p-4 rounded-lg shadow flex flex-col items-center">
-                        <h2 className="text-lg font-semibold">Working Hours</h2>
-                        <p className="text-3xl font-bold">{formatTime(timer)}</p>
-                    </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    <div className="bg-white shadow p-4 rounded-lg">
-                        <h2 className="text-lg font-semibold mb-2">Events</h2>
-                        <div className="space-y-2">
-                            <div className="p-2 bg-gray-100 rounded-lg shadow">Event 1</div>
-                            <div className="p-2 bg-gray-100 rounded-lg shadow">Event 2</div>
+        <div className="flex h-screen bg-white">
+            {/* Sidebar with fixed position */}
+            <div className="w-64 fixed h-full">
+                <UserSidebar />
+            </div>
+
+            {/* Main content with proper margin and padding */}
+            <div className="flex-1 pl-64">
+                <UserHeader />
+                <div className="p-6">
+                    <div className="mb-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="text-lg">
+                                Welcome back, <span className="text-blue-600">Aditya</span>
+                            </h1>
+                            <p className="text-gray-600">
+                                Tue, <CustomClock /> AM
+                            </p>
+                        </div>
+
+                        {/* Main content grid */}
+                        <div className="grid grid-cols-2 gap-6">
+                            {/* Left Column */}
+                            <div className="space-y-4">
+                                {/* Clock In/Out buttons row */}
+                                <div className="flex gap-4">
+                                    <div
+                                        className={`flex-1 ${isClockedIn ? "bg-gray-100" : "bg-blue-600"
+                                            } text-white p-4 rounded-lg cursor-pointer`}
+                                        onClick={handleClockIn}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <h2 className="text-lg font-medium">Clock In</h2>
+                                                <p>{clockInTime}</p>
+                                            </div>
+                                            <svg className="w-6 h-6 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div
+                                        className={`flex-1 ${isClockedOut || !isClockedIn ? "bg-gray-100" : "bg-green-600"
+                                            } text-white p-4 rounded-lg cursor-pointer`}
+                                        onClick={handleClockOut}
+                                    >
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <h2 className="text-lg font-medium">Clock Out</h2>
+                                                <p>{clockOutTime}</p>
+                                            </div>
+                                            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Total Absent box */}
+                                <div className="bg-red-600 text-white p-4 rounded-lg">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <h2 className="text-lg font-medium">Total Absent</h2>
+                                            <p className="text-sm">1Dec,2024 - 31Dec,2024</p>
+                                        </div>
+                                        <div className="text-4xl font-bold">06</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Column - Working Hours */}
+                            <div className="bg-gray-100 p-4 rounded-lg flex flex-col justify-center items-center h-full">
+                                <h2 className="text-gray-600 mb-2">Working Hours</h2>
+                                <p className="text-5xl font-bold">{formatTime(timer)}</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="bg-white shadow p-4 rounded-lg">
-                        <h2 className="text-lg font-semibold mb-2">Calendar</h2>
-                        <div className="overflow-hidden">
-                            <Calendar />
+
+                    {/* Events and Calendar section */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-white rounded-lg shadow p-4">
+                            <h2 className="text-lg font-medium mb-4">Events</h2>
+                            <div className="space-y-3">
+                                <div className="p-4 bg-white border rounded-lg">Event 1</div>
+                                <div className="p-4 bg-white border rounded-lg">Event 2</div>
+                            </div>
+                        </div>
+                        <div className="bg-white rounded-lg shadow p-4">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-lg font-medium">Dec 2024</h2>
+                                <div className="flex gap-2">
+                                    <button className="p-1">&lt;</button>
+                                    <button className="p-1">&gt;</button>
+                                </div>
+                            </div>
+                            <table className="w-full">
+                                <thead>
+                                    <tr>
+                                        <th className="p-2 text-sm font-medium">Mo</th>
+                                        <th className="p-2 text-sm font-medium">Tu</th>
+                                        <th className="p-2 text-sm font-medium">We</th>
+                                        <th className="p-2 text-sm font-medium">Th</th>
+                                        <th className="p-2 text-sm font-medium">Fr</th>
+                                        <th className="p-2 text-sm font-medium">Sa</th>
+                                        <th className="p-2 text-sm font-medium">Su</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {[...Array(5)].map((_, weekIndex) => (
+                                        <tr key={weekIndex}>
+                                            {[...Array(7)].map((_, dayIndex) => {
+                                                const day = weekIndex * 7 + dayIndex + 1;
+                                                const isToday = day === 19;
+                                                return (
+                                                    <td
+                                                        key={dayIndex}
+                                                        className={`p-2 text-center ${isToday ? "bg-blue-600 text-white rounded-lg" : ""
+                                                            } ${day > 31 ? "text-gray-300" : ""}`}
+                                                    >
+                                                        {day <= 31 ? day : day - 31}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    );
-};
-
-const Calendar = () => {
-    return (
-        <table className="table-auto w-full border border-gray-200 rounded-lg">
-            <thead>
-                <tr>
-                    {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((day) => (
-                        <th
-                            key={day}
-                            className="py-2 px-1 text-center bg-gray-50 border-b"
-                        >
-                            {day}
-                        </th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {[...Array(5)].map((_, rowIndex) => (
-                    <tr key={rowIndex}>
-                        {[...Array(7)].map((_, colIndex) => (
-                            <td
-                                key={colIndex}
-                                className={`py-2 px-1 text-center border ${rowIndex === 2 && colIndex === 4
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-white"
-                                    }`}
-                            >
-                                {rowIndex * 7 + colIndex + 1 <= 31
-                                    ? rowIndex * 7 + colIndex + 1
-                                    : ""}
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
     );
 };
 
