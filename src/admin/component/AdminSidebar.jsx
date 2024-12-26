@@ -6,15 +6,26 @@ import {
 } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../assets/logowhite.png';
-
+import { useDispatch } from 'react-redux';
+import { logout } from '../../commonComponent/slice/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 const AdminSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
     const [showSettingOptions, setShowSettingOptions] = useState(false);
     const location = useLocation();
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [activeItem, setActiveItem] = useState('');
+    const handleItemClick = (item) => {
+        setActiveItem(item);
+    };
     const getActiveClass = (path) => {
         return location.pathname === path ? 'bg-[#534feb] text-white' : 'hover:bg-gray-200 hover:text-gray-800 text-gray-600';
+    };
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate('/');
     };
 
     return (
@@ -22,7 +33,7 @@ const AdminSideBar = () => {
             <div className="flex items-center mb-6">
                 <img src={Logo} alt="LazyHR" className="h-[80px] w-[200px]" />
             </div>
-            
+
             <nav className="flex-1 overflow-y-auto space-y-2 scrollbar-thin">
                 <Link
                     to="/admin/home"
@@ -178,13 +189,13 @@ const AdminSideBar = () => {
                     <span>Help</span>
                 </Link>
 
-                <Link
-                    to="/logout"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/logout')}`}
+                <div
+                    className={`flex items-center mt-4 p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    onClick={handleLogout}
                 >
-                    <FaDoorOpen className="mr-3" />
+                    <FaDoorOpen className="mr-2" />
                     <span>Logout</span>
-                </Link>
+                </div>
             </div>
         </div>
     );

@@ -38,11 +38,9 @@ const Login = () => {
 
     
            
-    //   if (userData.roles.some(role => role.name === 'ADMIN')) {
-    //     navigate('/home');
-    //   } else 
-    console.log("userData.roles",userData.roles)
-      if (userData.roles.some(role => role.name === 'USER')) {
+      if (userData.roles.some(role => role.name === 'ADMIN')) {
+        navigate('/admin/home');
+      } else       if (userData.roles.some(role => role.name === 'USER')) {
         console.log("sdfghjkj");
         navigate('/user/home');
       } else {

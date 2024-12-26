@@ -9,7 +9,7 @@ export function getCurrentUser() {
     }
     console.log("inside the getCurrentUser");
     return request({
-        url: API_BASE_URL + "/user/me",
+        url: API_BASE_URL + "/api/users/user/me",
         method: 'GET'
     });
 }
