@@ -99,27 +99,23 @@ const AdminCreateEvents = () => {
                                 <Search className="absolute left-3 top-3 text-gray-400" size={20} />
                                 <input
                                     type="text"
-                                    placeholder="Search by Date, Time, Status..."
+                                    placeholder="Search by Name, ID, status..."
                                     className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <select
                                 className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                                value={dateFilter}
-                                onChange={(e) => setDateFilter(e.target.value)}
                             >
-                                <option value="">Date</option>
-                                <option value="today">Today</option>
-                                <option value="thisWeek">This Week</option>
-                                <option value="thisMonth">This Month</option>
+                                <option value="">Action</option>
+                                <option value="open">Open</option>
+                                <option value="closed">Closed</option>
+                                <option value="pending">Pending</option>
                             </select>
                             <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
                                 <Calendar size={20} className="text-gray-400" />
                                 <span>13 Jan, 2024</span>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
+                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
                                 <Download size={20} />
                                 Export CSV
                             </button>
@@ -239,11 +235,10 @@ const AdminCreateEvents = () => {
                                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                                         <button
                                             key={page}
-                                            className={`px-4 py-2 rounded ${
-                                                currentPage === page
+                                            className={`px-4 py-2 rounded ${currentPage === page
                                                     ? 'bg-blue-500 text-white'
                                                     : 'text-gray-600 hover:bg-gray-100'
-                                            }`}
+                                                }`}
                                             onClick={() => setCurrentPage(page)}
                                         >
                                             {page}

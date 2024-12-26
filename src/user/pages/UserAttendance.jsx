@@ -3,6 +3,7 @@ import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { CiSearch } from "react-icons/ci";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { Search, Calendar, Download } from "lucide-react";
 
 const UserAttendance = () => {
     const [attendanceData] = useState([
@@ -56,33 +57,31 @@ const UserAttendance = () => {
                         </p>
                     </div>
 
-                    <div className="flex gap-4 mb-6">
-                        {/* Search Box */}
-                        <div className="relative flex items-center w-2/5">
-                            <CiSearch className="absolute left-3 text-gray-500" />
+                    {/* Search Box and Filters */}
+                    <div className="flex gap-4 mb-8">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
                             <input
                                 type="text"
-                                placeholder="Search by Date, Time, Status..."
-                                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-blue-400"
+                                placeholder="Search by Name, ID, status..."
+                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                             />
                         </div>
-
-                        {/* Fixed Date Display */}
-                        <div className="w-1/5 py-2 px-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
-                            {currentDateTime.date}
-                        </div>
-
-                        {/* Filter Dropdown */}
-                        <select className="w-1/5 border border-gray-300 rounded-lg py-2 px-3 text-gray-700 focus:outline-blue-400">
-                            <option value="Date">Date</option>
-                            <option value="Check In">Check In</option>
-                            <option value="Status">Status</option>
+                        <select
+                            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">Action</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
                         </select>
-
-                        {/* Export CSV */}
-                        <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <Calendar size={20} className="text-gray-400" />
+                            <span>13 Jan, 2024</span>
+                        </div>
+                        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <Download size={20} />
                             Export CSV
-                            <IoCloudUploadOutline />
                         </button>
                     </div>
 

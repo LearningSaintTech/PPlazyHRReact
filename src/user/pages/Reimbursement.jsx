@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Upload, Search, ChevronDown } from 'lucide-react';
+import { Calendar, Upload, Search, ChevronDown, Download } from 'lucide-react';
 import UserSideBar from '../components/UserSideBar';
 import UserHeader from '../components/UserHeader';
 import { IoCloudUploadOutline } from "react-icons/io5";
@@ -82,29 +82,35 @@ const Reimbursement = () => {
                 </p>
               </div>
             </div>
-
-            {/* Search and Date Section */}
-            <div className="flex justify-between items-center mt-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search by Date, Time, Status"
-                  className="w-64 px-4 py-2 pl-10 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <Search className="absolute w-4 h-4 text-gray-400 left-3 top-3" />
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-                  <Calendar className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm text-gray-600">{currentDate}</span>
-                </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                  Export CSV
-                  <IoCloudUploadOutline />
-                </button>
-              </div>
-            </div>
           </div>
+          {/* Search and Date Section */}
+          <div className="flex gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search by Name, ID, status..."
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <select
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Action</option>
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="pending">Pending</option>
+            </select>
+            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+              <Calendar size={20} className="text-gray-400" />
+              <span>13 Jan, 2024</span>
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+              <Download size={20} />
+              Export CSV
+            </button>
+          </div>
+
 
           {/* Form Section */}
           <div className="mb-8">

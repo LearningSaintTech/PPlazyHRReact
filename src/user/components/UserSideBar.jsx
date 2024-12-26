@@ -29,7 +29,7 @@ const UserSideBar = () => {
             <nav className="flex-1 space-y-4 overflow-y-auto">
                 {/* Home */}
                 <Link
-                    to="/"
+                    to="/user/home"
                     className={`flex items-center p-3 rounded-md ${activeItem === 'Home' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Home')}
                 >

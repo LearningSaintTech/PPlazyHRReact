@@ -79,20 +79,28 @@ const TicketQuery = () => {
                     <h3 className="text-gray-600 text-lg font-bold mb-6">Manage Tickets</h3>
 
                     {/* Search and Filter */}
-                    <div className="flex gap-6 mb-8">
+                    <div className="flex gap-4 mb-8">
                         <div className="relative flex-1">
+                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
                             <input
                                 type="text"
-                                placeholder="Search by Date, Title, Status"
-                                className="w-full p-3 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                placeholder="Search by Name, ID, status..."
+                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                             />
-                            <Search className="absolute right-3 top-3 text-gray-400" size={20} />
                         </div>
-                        <input
-                            type="date"
-                            className="p-3 border rounded-lg focus:outline-none focus:border-indigo-500"
-                        />
-                        <button className="flex items-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        <select
+                            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">Action</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                        <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <Calendar size={20} className="text-gray-400" />
+                            <span>13 Jan, 2024</span>
+                        </div>
+                        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
                             <Download size={20} />
                             Export CSV
                         </button>
