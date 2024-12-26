@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Search, Calendar, Download } from "lucide-react";
 import AdminSideBar from '../component/AdminSidebar';
 import AdminHeader from '../component/AdminHeader';
 
@@ -37,27 +38,31 @@ const AdminAttendance = () => {
           </h2>
 
           {/* Search and Filters */}
-          <div className="flex justify-between items-center mb-8">
-            <input
-              type="text"
-              placeholder="Search by Name, ID, Name..."
-              className="border rounded p-3 w-1/3 focus:outline-none focus:ring focus:border-indigo-500 text-lg"
-            />
-
-            <div className="flex items-center gap-6">
-              <select
-                className="border rounded p-3 focus:outline-none focus:ring focus:border-indigo-500 text-lg"
-              >
-                <option value="">All Department</option>
-              </select>
+          <div className="flex gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
               <input
-                type="date"
-                className="border rounded p-3 focus:outline-none focus:ring focus:border-indigo-500 text-lg"
+                type="text"
+                placeholder="Search by Name, ID, status..."
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
               />
-              <button className="bg-indigo-600 text-white py-3 px-6 rounded shadow hover:bg-indigo-500 text-lg">
-                Export CSV
-              </button>
             </div>
+            <select
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Action</option>
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="pending">Pending</option>
+            </select>
+            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+              <Calendar size={20} className="text-gray-400" />
+              <span>13 Jan, 2024</span>
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+              <Download size={20} />
+              Export CSV
+            </button>
           </div>
 
           {/* Attendance Table */}

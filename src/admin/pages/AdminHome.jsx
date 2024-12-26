@@ -160,7 +160,7 @@ const AdminPage = () => {
         />
 
         <div className="p-6">
-          <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 transition-all duration-300 hover:shadow-2xl">
+          <div className="bg-white rounded-2xl p-6 mb-8 transition-all duration-300">
             <div className="flex justify-between items-center p-6 border-b border-gray-100">
               <p className="text-gray-600 font-medium">
                 Welcome back, <span className="text-indigo-600 font-semibold">Admin</span>
@@ -174,7 +174,7 @@ const AdminPage = () => {
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
-                  <Card key={index} className={`${stat.color} border-none transition-all duration-300 hover:scale-105`}>
+                  <Card key={index} className={`${stat.color} border-none transition-all duration-300 `}>
                     <CardContent className="p-6 flex items-center gap-4">
                       <div className="p-3 bg-white rounded-lg shadow-sm">
                         <Icon className="w-6 h-6" />
@@ -190,7 +190,7 @@ const AdminPage = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-8">
-              <Card className="h-[600px] shadow-lg transition-all duration-300 hover:shadow-xl">
+              <Card className="h-[600px] shadow-lg transition-all duration-300 ">
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-700">Employee Attendance Ratio</CardTitle>
                 </CardHeader>
@@ -228,7 +228,7 @@ const AdminPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="h-[600px] shadow-lg transition-all duration-300 hover:shadow-xl">
+              <Card className="h-[600px] shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-700">Employee Calendar</CardTitle>
                 </CardHeader>

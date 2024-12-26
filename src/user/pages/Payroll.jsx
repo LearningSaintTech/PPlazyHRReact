@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import { Download, X } from "lucide-react"; // For the download & close icons
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // For show/hide password icons
+import { Download, X, Search, Calendar } from "lucide-react"; 
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; 
 
 const Payroll = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +20,13 @@ const Payroll = () => {
         { id: 4, date: "10-Aug-2024", fileName: "Document.pdf" },
         { id: 5, date: "10-Sep-2024", fileName: "Document.pdf" },
         { id: 6, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 7, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 8, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 9, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 10, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 11, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 12, date: "10-Oct-2024", fileName: "Document.pdf" },
+        { id: 13, date: "10-Oct-2024", fileName: "Document.pdf" },
     ];
 
     // Opens the pop-up and sets the file to download
@@ -67,6 +74,45 @@ const Payroll = () => {
 
                 {/* Payroll Section */}
                 <section className="bg-white p-8 rounded-lg shadow relative mt-8">
+                    {/* Welcome Message */}
+                    <div className="flex justify-between items-center mb-4">
+                        <p className="text-gray-600 text-lg">
+                            Welcome back,{" "}
+                            <span className="text-blue-500 font-semibold">Aditya</span>
+                        </p>
+                        <p className="text-blue-500 font-medium">
+                        </p>
+                    </div>
+
+                    {/* Search & Filter  */}
+                    <div className="flex gap-4 mb-8">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                            <input
+                                type="text"
+                                placeholder="Search by Name, ID, status..."
+                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                            />
+                        </div>
+                        <select
+                            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                        >
+                            <option value="">Action</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                        <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <Calendar size={20} className="text-gray-400" />
+                            <span>13 Jan, 2024</span>
+                        </div>
+                        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <Download size={20} />
+                            Export CSV
+                        </button>
+                    </div>
+
+
                     <div className="overflow-x-auto">
                         <table className="w-full border-collapse">
                             <thead>

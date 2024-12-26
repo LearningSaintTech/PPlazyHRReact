@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, Download, Search } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 
@@ -59,13 +59,31 @@ const MyLeaves = () => {
           </div>
 
           {/* Date */}
-          <div className="flex justify-end mb-6">
-            <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg">
-              <Calendar size={20} className="text-gray-500" />
-              <span className="text-gray-700 font-medium">
-                {currentDateTime.date}
-              </span>
+          <div className="flex gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search by Name, ID, status..."
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              />
             </div>
+            <select
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            >
+              <option value="">Action</option>
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="pending">Pending</option>
+            </select>
+            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+              <Calendar size={20} className="text-gray-400" />
+              <span>13 Jan, 2024</span>
+            </div>
+            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+              <Download size={20} />
+              Export CSV
+            </button>
           </div>
 
           {/* Metrics Section */}
@@ -87,7 +105,7 @@ const MyLeaves = () => {
               </div>
               <Calendar size={48} className="text-indigo-400" />
             </div>
-          </div> 
+          </div>
 
           {/* Leave History */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
