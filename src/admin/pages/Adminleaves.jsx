@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { Calendar, ChevronLeft, ChevronRight, Search, Download } from "lucide-react";
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
+import { getAllLeaves } from "../../commonComponent/Api";
 
 const ApplyLeave = () => {
     const [formData, setFormData] = useState({
@@ -12,34 +13,19 @@ const ApplyLeave = () => {
         reason: ''
     });
 
-    // Added missing state variables
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
 
-    // Sample leave history data
-    const generateLeaveHistory = () => {
-        return Array.from({ length: 20 }, (_, i) => ({
-            fromDate: '13/01/2024',
-            toDate: '18/01/2024',
-            days: 5,
-            leaveType: i % 2 === 0 ? 'CL' : 'EL',
-            reason: 'This is for testing.',
-            status: i % 3 === 0 ? 'Open' : i % 3 === 1 ? 'Closed' : 'Pending'
-        }));
-    };
-
-    const [leaveHistory, setLeaveHistory] = useState(generateLeaveHistory());
+    const [leaveHistory, setLeaveHistory] = useState([]); // Initialized as empty array
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // State for current date and time
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "Sunday",
         time: "00:00:00",
         period: "AM"
     });
 
-    // Function to update current date and time
     useEffect(() => {
         const updateDateTime = () => {
             const now = new Date();
@@ -55,6 +41,25 @@ const ApplyLeave = () => {
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        // Fetch leaves when the component mounts
+       
+        
+        getAllLeaves()
+              .then(response => {
+                console.log("response",response)
+                setLeaveHistory(response); // Update state with the fetched leave history
+                console.log("leaveHistory",leaveHistory)
+
+              })
+              .catch(error => {
+                console.error("Error fetching leave history:", error);
+              });
+        
+
+              getAllLeaves();
+    }, []); // Empty dependency array to fetch data only once when component mounts
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted:', formData);
@@ -68,7 +73,6 @@ const ApplyLeave = () => {
         }));
     };
 
-    // Pagination calculations
     const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -167,82 +171,6 @@ const ApplyLeave = () => {
                             </div>
                         </div>
 
-                        {/* Apply Leave Form
-                        <div className="mt-8">
-                            <h3 className="text-lg font-bold text-gray-700 mb-6">Apply Leave</h3>
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            From Date
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="fromDate"
-                                            value={formData.fromDate}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            To Date
-                                        </label>
-                                        <input
-                                            type="date"
-                                            name="toDate"
-                                            value={formData.toDate}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Leave Type
-                                    </label>
-                                    <select
-                                        name="leaveType"
-                                        value={formData.leaveType}
-                                        onChange={handleInputChange}
-                                        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        required
-                                    >
-                                        <option value="">Select Leave Type</option>
-                                        <option value="CL">Casual Leave (CL)</option>
-                                        <option value="EL">Earned Leave (EL)</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Reason
-                                    </label>
-                                    <textarea
-                                        name="reason"
-                                        value={formData.reason}
-                                        onChange={handleInputChange}
-                                        rows={4}
-                                        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="flex justify-end">
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        Submit Application
-                                    </button>
-                                </div>
-                            </form>
-                        </div> */}
-
-                        {/* Leave History Table */}
                         <div className="mt-8">
                             <h3 className="text-lg font-bold text-gray-700 mb-6">Manage Leaves</h3>
                             <div className="overflow-x-auto">
@@ -262,12 +190,12 @@ const ApplyLeave = () => {
                                             <tr key={index} className="border-t">
                                                 <td className="px-4 py-3">{leave.fromDate}</td>
                                                 <td className="px-4 py-3">{leave.toDate}</td>
-                                                <td className="px-4 py-3">{leave.days}</td>
+                                                <td className="px-4 py-3">{leave.duration}</td>
                                                 <td className="px-4 py-3">{leave.leaveType}</td>
                                                 <td className="px-4 py-3">{leave.reason}</td>
                                                 <td className="px-4 py-3">
-                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyle(leave.status)}`}>
-                                                        {leave.status}
+                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyle(leave.acceptRejectFlag ? "open" : "closed")}`}>
+                                                        {leave.acceptRejectFlag ? 'Accepted' : 'Rejected'}
                                                     </span>
                                                 </td>
                                             </tr>
@@ -277,36 +205,20 @@ const ApplyLeave = () => {
                             </div>
 
                             {/* Pagination */}
-                            <div className="flex justify-between items-center mt-6">
+                            <div className="mt-4 flex justify-center items-center gap-4">
                                 <button
-                                    className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                     disabled={currentPage === 1}
+                                    className="px-4 py-2 bg-gray-200 rounded-lg"
                                 >
                                     <ChevronLeft size={20} />
-                                    Previous
                                 </button>
-                                <div className="flex gap-2">
-                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                        <button
-                                            key={page}
-                                            className={`px-4 py-2 rounded ${
-                                                currentPage === page
-                                                    ? 'bg-blue-500 text-white'
-                                                    : 'text-gray-600 hover:bg-gray-100'
-                                            }`}
-                                            onClick={() => setCurrentPage(page)}
-                                        >
-                                            {page}
-                                        </button>
-                                    ))}
-                                </div>
+                                <span className="text-gray-600">{currentPage} of {totalPages}</span>
                                 <button
-                                    className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                     disabled={currentPage === totalPages}
+                                    className="px-4 py-2 bg-gray-200 rounded-lg"
                                 >
-                                    Next
                                     <ChevronRight size={20} />
                                 </button>
                             </div>

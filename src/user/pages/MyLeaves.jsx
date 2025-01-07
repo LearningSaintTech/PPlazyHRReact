@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Calendar, Download, Search } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
+import { getLeaves } from "../../commonComponent/Api"; // Import your getLeaves function
 
 const MyLeaves = () => {
   const [currentDateTime, setCurrentDateTime] = useState({
@@ -9,6 +10,8 @@ const MyLeaves = () => {
     time: "",
     date: "",
   });
+  const [leaveHistory, setLeaveHistory] = useState([]); // State to store leave history
+  const userId = "2"; // Replace this with actual user ID logic
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -29,6 +32,31 @@ const MyLeaves = () => {
     const interval = setInterval(updateDateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    // Fetch leave data when the component mounts
+    getLeaves(userId)
+      .then(response => {
+        setLeaveHistory(response); // Update state with the fetched leave history
+      })
+      .catch(error => {
+        console.error("Error fetching leave history:", error);
+      });
+  }, [userId]);
+
+  // Function to calculate the number of days between two dates
+  const calculateDays = (fromDate, toDate) => {
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+    const diffTime = Math.abs(end - start);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the start day
+  };
+
+  // Function to format date into a readable format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // This will return a readable format like "1/6/2025"
+  };
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
@@ -86,27 +114,6 @@ const MyLeaves = () => {
             </button>
           </div>
 
-          {/* Metrics Section */}
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            {/* Total Casual Leaves */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm flex justify-between items-center">
-              <div>
-                <p className="text-gray-600 text-lg">Total Casual Leaves</p>
-                <h2 className="text-5xl font-bold text-black-500">150</h2>
-              </div>
-              <Calendar size={48} className="text-blue-400" />
-            </div>
-
-            {/* Total Earn Leaves */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm flex justify-between items-center">
-              <div>
-                <p className="text-gray-600 text-lg">Total Earn Leaves</p>
-                <h2 className="text-5xl font-bold text-black-500">4</h2>
-              </div>
-              <Calendar size={48} className="text-indigo-400" />
-            </div>
-          </div>
-
           {/* Leave History */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Leave History</h3>
@@ -123,7 +130,19 @@ const MyLeaves = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Populate table data here */}
+                  {/* Map over the leaveHistory state to display data */}
+                  {leaveHistory.map((leave, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="px-4 py-2">{formatDate(leave.fromDate)}</td>
+                      <td className="px-4 py-2">{formatDate(leave.toDate)}</td>
+                      <td className="px-4 py-2">{calculateDays(leave.fromDate, leave.toDate)}</td>
+                      <td className="px-4 py-2">{leave.leaveType}</td>
+                      <td className="px-4 py-2">{leave.reason}</td>
+                      <td className="px-4 py-2">
+                        {leave.acceptRejectFlag ? "Accepted" : "Pending"}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

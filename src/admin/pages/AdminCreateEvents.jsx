@@ -3,28 +3,19 @@ import { format } from "date-fns";
 import { Calendar, ChevronLeft, ChevronRight, Search, Download } from "lucide-react";
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
+import { getAllEvents, createEvent } from "../../commonComponent/Api"; // Import API functions
 
 const AdminCreateEvents = () => {
     const [formData, setFormData] = useState({
-        eventName: '',
-        description: '',
-        fromDate: '',
-        toDate: ''
+        title: '',
+        notes: '',
+        startTime: '',
+        endTime: ''
     });
 
     const [searchTerm, setSearchTerm] = useState('');
     const [dateFilter, setDateFilter] = useState('');
-
-    // Sample event history data
-    const generateEventHistory = () => {
-        return Array.from({ length: 20 }, (_, i) => ({
-            createdAt: '13/01/2024',
-            event: `Event ${i + 1}`,
-            description: 'This is a sample event description.',
-        }));
-    };
-
-    const [eventHistory, setEventHistory] = useState(generateEventHistory());
+    const [eventHistory, setEventHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
@@ -51,9 +42,52 @@ const AdminCreateEvents = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const handleSubmit = (e) => {
+    // Fetch all events when the component mounts
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const events = await getAllEvents();
+                setEventHistory(events);
+                console.log("events", eventHistory)
+            } catch (error) {
+                console.error("Error fetching events:", error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    // Handle form submission to create an event
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+
+        try {
+            // Map the form data to match the required payload format
+            const payload = {
+                title: formData.title,
+                notes: formData.notes,
+                startTime: formData.startTime,
+                endTime: formData.endTime
+            };
+
+            // Call the API to create the event
+            await createEvent(payload);
+
+            // After creating an event, refetch the events
+            const events = await getAllEvents();
+            setEventHistory(events);
+
+            // Reset the form data
+            setFormData({
+                title: '',
+                notes: '',
+                startTime: '',
+                endTime: ''
+            });
+
+        } catch (error) {
+            console.error("Error creating event:", error);
+        }
     };
 
     const handleInputChange = (e) => {
@@ -93,37 +127,8 @@ const AdminCreateEvents = () => {
                             </p>
                         </div>
 
-                        {/* Search and Filter Section */}
-                        <div className="flex gap-4 mb-8">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-                                <input
-                                    type="text"
-                                    placeholder="Search by Name, ID, status..."
-                                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                                />
-                            </div>
-                            <select
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                            >
-                                <option value="">Action</option>
-                                <option value="open">Open</option>
-                                <option value="closed">Closed</option>
-                                <option value="pending">Pending</option>
-                            </select>
-                            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-                                <Calendar size={20} className="text-gray-400" />
-                                <span>13 Jan, 2024</span>
-                            </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
-                                <Download size={20} />
-                                Export CSV
-                            </button>
-                        </div>
-
                         {/* Create Event Form */}
                         <div className="mt-8">
-                            {/* <h3 className="text-lg font-bold text-gray-700 mb-6">Create Event</h3> */}
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -131,9 +136,9 @@ const AdminCreateEvents = () => {
                                     </label>
                                     <input
                                         type="text"
-                                        name="eventName"
+                                        name="title"
                                         placeholder="Write your title here..."
-                                        value={formData.eventName}
+                                        value={formData.title}
                                         onChange={handleInputChange}
                                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
@@ -144,9 +149,9 @@ const AdminCreateEvents = () => {
                                         Description
                                     </label>
                                     <textarea
-                                        name="description"
+                                        name="notes"
                                         placeholder="Write your Reason here...."
-                                        value={formData.description}
+                                        value={formData.notes}
                                         onChange={handleInputChange}
                                         rows={4}
                                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -159,9 +164,9 @@ const AdminCreateEvents = () => {
                                             From Date/Time
                                         </label>
                                         <input
-                                            type="date"
-                                            name="fromDate"
-                                            value={formData.fromDate}
+                                            type="datetime-local"
+                                            name="startTime"
+                                            value={formData.startTime}
                                             onChange={handleInputChange}
                                             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
@@ -171,9 +176,9 @@ const AdminCreateEvents = () => {
                                             To Date/Time
                                         </label>
                                         <input
-                                            type="date"
-                                            name="toDate"
-                                            value={formData.toDate}
+                                            type="datetime-local"
+                                            name="endTime"
+                                            value={formData.endTime}
                                             onChange={handleInputChange}
                                             className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
@@ -207,9 +212,9 @@ const AdminCreateEvents = () => {
                                     <tbody>
                                         {currentItems.map((event, index) => (
                                             <tr key={index} className="border-t">
-                                                <td className="px-6 py-4">{event.createdAt}</td>
-                                                <td className="px-6 py-4">{event.event}</td>
-                                                <td className="px-6 py-4">{event.description}</td>
+                                                <td className="px-6 py-4">{event.startTime ? format(new Date(event.startTime), 'yyyy-MM-dd HH:mm:ss') : "N/A"}</td>
+                                                <td className="px-6 py-4">{event.title || "Untitled"}</td>
+                                                <td className="px-6 py-4">{event.notes || "No description available"}</td>
                                                 <td className="px-6 py-4">
                                                     <button className="text-blue-600 hover:text-blue-800">
                                                         Edit
@@ -218,6 +223,7 @@ const AdminCreateEvents = () => {
                                             </tr>
                                         ))}
                                     </tbody>
+
                                 </table>
                             </div>
 
@@ -236,8 +242,8 @@ const AdminCreateEvents = () => {
                                         <button
                                             key={page}
                                             className={`px-4 py-2 rounded ${currentPage === page
-                                                    ? 'bg-blue-500 text-white'
-                                                    : 'text-gray-600 hover:bg-gray-100'
+                                                ? 'bg-blue-500 text-white'
+                                                : 'text-gray-600 hover:bg-gray-100'
                                                 }`}
                                             onClick={() => setCurrentPage(page)}
                                         >

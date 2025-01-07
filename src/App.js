@@ -22,6 +22,7 @@ import Adminleaves from "../src/admin/pages/Adminleaves"
 import Login from './authcomponent/Login';
 import SignUp from './authcomponent/SignUp';
 import UserTaskManagement from './user/pages/UserTaskManagement';
+import SignupForm from './authcomponent/SignupForm';
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                 {/* Define the routes */}
                 <Route path="/" element={<Login />} />
                 <Route path="/create-account" element={<SignUp />} />
+                <Route path="/SignupForm" element={<SignupForm/>}/>
                 <Route path="/user/home" element={<UserHome />} />
                 <Route path="/profile" element={<UserProfile />} />
                 <Route path="/attendance" element={<UserAttendance />} />

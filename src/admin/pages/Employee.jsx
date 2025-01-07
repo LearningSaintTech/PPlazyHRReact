@@ -4,40 +4,10 @@ import AdminSidebar from '../component/AdminSidebar';
 import { FaArrowRight } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Search, Calendar, Download } from "lucide-react";
+import { getAllEmployee, updateEmployee } from "../../commonComponent/Api";
 
 // Employee data (unchanged)
-const employeeData = [
-  { id: 'PP_01', department: 'Information Technology', name: 'Aditya Kumar', designation: 'Frontend Developer', phone: '+91 1234567891' },
-  { id: 'PP_02', department: 'Human Resources', name: 'Priya Sharma', designation: 'HR Manager', phone: '+91 9876543210' },
-  { id: 'PP_03', department: 'Information Technology', name: 'Aditya Kumar', designation: 'Frontend Developer', phone: '+91 1234567891' },
-  { id: 'PP_04', department: 'Finance', name: 'Ravi Mehta', designation: 'Accountant', phone: '+91 1122334455' },
-  { id: 'PP_05', department: 'Marketing', name: 'Sneha Gupta', designation: 'Marketing Manager', phone: '+91 6677889900' },
-  { id: 'PP_06', department: 'Information Technology', name: 'Anil Singh', designation: 'Backend Developer', phone: '+91 2233445566' },
-  { id: 'PP_07', department: 'Sales', name: 'Rohit Verma', designation: 'Sales Executive', phone: '+91 4455667788' },
-  { id: 'PP_08', department: 'Information Technology', name: 'Kriti Sharma', designation: 'UI/UX Designer', phone: '+91 9988776655' },
-  { id: 'PP_09', department: 'Human Resources', name: 'Ananya Joshi', designation: 'HR Executive', phone: '+91 5566778899' },
-  { id: 'PP_10', department: 'Finance', name: 'Sunil Yadav', designation: 'Accountant', phone: '+91 1122334455' },
-  { id: 'PP_11', department: 'Marketing', name: 'Niharika Patel', designation: 'SEO Specialist', phone: '+91 6677889900' },
-  { id: 'PP_12', department: 'Information Technology', name: 'Rajesh Kumar', designation: 'Full Stack Developer', phone: '+91 1234567891' },
-  { id: 'PP_13', department: 'Sales', name: 'Sandeep Singh', designation: 'Sales Manager', phone: '+91 2233445566' },
-  { id: 'PP_14', department: 'Finance', name: 'Amit Agarwal', designation: 'Finance Analyst', phone: '+91 3344556677' },
-  { id: 'PP_15', department: 'Human Resources', name: 'Sonia Dubey', designation: 'Recruitment Specialist', phone: '+91 9988776655' },
-  { id: 'PP_16', department: 'Marketing', name: 'Meera Soni', designation: 'Content Writer', phone: '+91 2233445566' },
-  { id: 'PP_17', department: 'Sales', name: 'Vikas Chauhan', designation: 'Sales Coordinator', phone: '+91 4455667788' },
-  { id: 'PP_18', department: 'Information Technology', name: 'Neha Patel', designation: 'DevOps Engineer', phone: '+91 9988776655' },
-  { id: 'PP_19', department: 'Human Resources', name: 'Ashish Rawat', designation: 'HR Manager', phone: '+91 6677889900' },
-  { id: 'PP_20', department: 'Finance', name: 'Pooja Nair', designation: 'Financial Controller', phone: '+91 1122334455' },
-  { id: 'PP_21', department: 'Sales', name: 'Kavita Reddy', designation: 'Sales Executive', phone: '+91 2233445566' },
-  { id: 'PP_22', department: 'Marketing', name: 'Kiran Verma', designation: 'Social Media Manager', phone: '+91 9988776655' },
-  { id: 'PP_23', department: 'Information Technology', name: 'Shyam Reddy', designation: 'System Administrator', phone: '+91 4455667788' },
-  { id: 'PP_24', department: 'Human Resources', name: 'Pallavi Sharma', designation: 'Employee Relations', phone: '+91 2233445566' },
-  { id: 'PP_25', department: 'Finance', name: 'Vivek Choudhary', designation: 'Tax Consultant', phone: '+91 1122334455' },
-  { id: 'PP_26', department: 'Sales', name: 'Renu Mehra', designation: 'Sales Head', phone: '+91 5566778899' },
-  { id: 'PP_27', department: 'Information Technology', name: 'Sandeep Kumar', designation: 'Cloud Engineer', phone: '+91 2233445566' },
-  { id: 'PP_28', department: 'Marketing', name: 'Vinay Gupta', designation: 'Digital Marketing Manager', phone: '+91 4455667788' },
-  { id: 'PP_29', department: 'Sales', name: 'Tanuja Bhardwaj', designation: 'Sales Lead', phone: '+91 5566778899' },
-  { id: 'PP_30', department: 'Human Resources', name: 'Aarti Patil', designation: 'Training & Development', phone: '+91 6677889900' },
-];
+
 
 const AdminEmployeeDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,6 +15,20 @@ const AdminEmployeeDashboard = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [currentTime, setCurrentTime] = useState('');
+  const [employeeData, setEmployeeData] = useState([]); // State for employee data
+
+  useEffect(() => {
+    const fetchEmployeeData = async () => {
+      try {
+        const data = await getAllEmployee(); // Fetch employee data
+        setEmployeeData(data); // Set the fetched data into state
+        console.log("employee", data)
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    };
+    fetchEmployeeData();
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -72,10 +56,11 @@ const AdminEmployeeDashboard = () => {
   });
 
   const openPopup = (employee) => {
-    setSelectedEmployee(employee);
+    setSelectedEmployee({ ...employee });  // Make a copy to avoid direct mutation
     setShowPopup(true);
   };
 
+  // Close employee details popup
   const closePopup = () => {
     setShowPopup(false);
     setSelectedEmployee(null);
@@ -86,6 +71,29 @@ const AdminEmployeeDashboard = () => {
     month: 'short',
     year: 'numeric',
   });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedEmployee((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    console.log('Updated Employee Data:', selectedEmployee);
+    updateEmployee(selectedEmployee.employeeId, selectedEmployee)
+      .then(response => {
+        console.log("Employee updated successfully:", response);
+      })
+      .catch(error => {
+        console.error("Failed to update employee:", error);
+      });
+  };
+
+
+
+
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -150,11 +158,11 @@ const AdminEmployeeDashboard = () => {
               <tbody>
                 {filteredEmployees.map((employee) => (
                   <tr key={employee.id} className="border-b hover:bg-gray-50">
-                    <td className="px-6 py-4">{employee.id}</td>
+                    <td className="px-6 py-4">{employee.employeeId}</td>
                     <td className="px-6 py-4">{employee.department}</td>
-                    <td className="px-6 py-4">{employee.name}</td>
+                    <td className="px-6 py-4">{employee.firstName}</td>
                     <td className="px-6 py-4">{employee.designation}</td>
-                    <td className="px-6 py-4">{employee.phone}</td>
+                    <td className="px-6 py-4">{employee.phno}</td>
                     <td className="px-6 py-4">
                       <button
                         className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
@@ -168,32 +176,296 @@ const AdminEmployeeDashboard = () => {
               </tbody>
             </table>
           </div>
-
-          {/* Popup */}
           {showPopup && selectedEmployee && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-8 rounded-lg max-w-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-indigo-500 mb-4 text-center">
+              <div className="bg-white p-8 rounded-lg max-w-6xl shadow-lg w-[90%] overflow-y-auto h-[90%]">
+                <h2 className="text-2xl font-bold text-indigo-500 mb-6 text-center">
                   Employee Details
                 </h2>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-3 gap-6 text-sm">
+                  {/* Personal Information */}
                   <div>
-                    <strong>Emp. ID:</strong> {selectedEmployee.id}
+                    <label className="font-bold">Emp. ID:</label>
+                    <input
+                      type="text"
+                      value={selectedEmployee.employeeId || "N/A"}
+                      className="border w-full px-2 py-1 rounded"
+                      disabled
+                    />
                   </div>
                   <div>
-                    <strong>Department:</strong> {selectedEmployee.department}
+                    <label className="font-bold">First Name:</label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={selectedEmployee.firstName}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
                   </div>
                   <div>
-                    <strong>Name:</strong> {selectedEmployee.name}
+                    <label className="font-bold">Surname:</label>
+                    <input
+                      type="text"
+                      name="surname"
+                      value={selectedEmployee.surname}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
                   </div>
                   <div>
-                    <strong>Designation:</strong> {selectedEmployee.designation}
+                    <label className="font-bold">Email:</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={selectedEmployee.email}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
                   </div>
                   <div>
-                    <strong>Phone:</strong> {selectedEmployee.phone}
+                    <label className="font-bold">Phone:</label>
+                    <input
+                      type="text"
+                      name="phno"
+                      value={selectedEmployee.phno}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">DOB:</label>
+                    <input
+                      type="date"
+                      name="dob"
+                      value={selectedEmployee.dob}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Gender:</label>
+                    <input
+                      type="text"
+                      name="gender"
+                      value={selectedEmployee.gender}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Address:</label>
+                    <input
+                      type="text"
+                      name="address"
+                      value={selectedEmployee.address}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">City:</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={selectedEmployee.city}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">State:</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={selectedEmployee.state}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Pin Code:</label>
+                    <input
+                      type="text"
+                      name="pinCode"
+                      value={selectedEmployee.pinCode}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Blood Group:</label>
+                    <input
+                      type="text"
+                      name="bloodGroup"
+                      value={selectedEmployee.bloodGroup}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Employment Information */}
+                  <div>
+                    <label className="font-bold">Date of Joining:</label>
+                    <input
+                      type="date"
+                      name="dateOfJoining"
+                      value={selectedEmployee.dateOfJoining || ""}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Department:</label>
+                    <input
+                      type="text"
+                      name="department"
+                      value={selectedEmployee.department || " "}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Designation:</label>
+                    <input
+                      type="text"
+                      name="designation"
+                      value={selectedEmployee.designation || ""}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Shift:</label>
+                    <input
+                      type="text"
+                      name="shift"
+                      value={selectedEmployee.shift || ""}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Financial Details */}
+                  <div>
+                    <label className="font-bold">Salary:</label>
+                    <input
+                      type="number"
+                      name="salary"
+                      value={selectedEmployee.salary}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">CL Balance:</label>
+                    <input
+                      type="number"
+                      name="clBalance"
+                      value={selectedEmployee.clBalance}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">EL Balance:</label>
+                    <input
+                      type="number"
+                      name="elBalance"
+                      value={selectedEmployee.elBalance}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Bank Name:</label>
+                    <input
+                      type="text"
+                      name="bankName"
+                      value={selectedEmployee.bankName}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Bank Branch:</label>
+                    <input
+                      type="text"
+                      name="bankBranch"
+                      value={selectedEmployee.bankBranch}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Account Holder:</label>
+                    <input
+                      type="text"
+                      name="accountHolder"
+                      value={selectedEmployee.accountHolder}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Account Number:</label>
+                    <input
+                      type="text"
+                      name="accountNumber"
+                      value={selectedEmployee.accountNumber}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">IFSC Code:</label>
+                    <input
+                      type="text"
+                      name="ifscCode"
+                      value={selectedEmployee.ifscCode}
+                      className="border w-full px-2 py-1 rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {/* Document Links */}
+                  <div className="col-span-3">
+                    <label className="font-bold">Aadhar Card Photo:</label>
+                    <a
+                      href={selectedEmployee.aadharCardPhoto}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-500 underline ml-2"
+                    >
+                      View Photo
+                    </a>
+                  </div>
+                  <div className="col-span-3">
+                    <label className="font-bold">PAN Card Photo:</label>
+                    <a
+                      href={selectedEmployee.pancardPhoto}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-500 underline ml-2"
+                    >
+                      View Photo
+                    </a>
+                  </div>
+                  <div className="col-span-3">
+                    <label className="font-bold">Passbook Photo:</label>
+                    <a
+                      href={selectedEmployee.passbookPhoto}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-500 underline ml-2"
+                    >
+                      View Photo
+                    </a>
                   </div>
                 </div>
-                <div className="flex justify-end mt-6">
+
+                {/* Buttons */}
+                <div className="flex justify-end mt-8 gap-4">
                   <button
                     className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
                     onClick={closePopup}
@@ -201,9 +473,24 @@ const AdminEmployeeDashboard = () => {
                     Close
                   </button>
                 </div>
+
+                <div className="flex justify-end mt-8 gap-4">
+                  <button
+                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    onClick={handleSave}
+                  >
+                    Save Changes
+                  </button>
+                </div>
               </div>
             </div>
           )}
+
+
+
+
+
+
         </div>
       </div>
     </div>

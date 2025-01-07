@@ -1,51 +1,74 @@
 import React, { useState, useEffect } from "react";
+import { createTicket } from "../../commonComponent/Api"; // Import createTicket function
 import { Search, Calendar, Download } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
+import { getTickets } from "../../commonComponent/Api"; // import the getTickets API call
 
 const TicketQuery = () => {
-    const [tickets, setTickets] = useState([
-        { date: "13/01", title: "Testing", description: "I am testing.", status: "Open" },
-        { date: "13/01", title: "Testing", description: "I am testing.", status: "Close" },
-        { date: "13/01", title: "Testing", description: "I am testing.", status: "Pending" },
-    ]);
-
-    // State for current date and time
+    const [tickets, setTickets] = useState([]);
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "",
         time: "",
         date: "",
     });
+    const [ticketTitle, setTicketTitle] = useState("");
+    const [ticketDescription, setTicketDescription] = useState("");
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Open':
+                return 'bg-blue-100 text-blue-500'; // Blue for open tickets
+            case 'In Progress':
+                return 'bg-yellow-100 text-yellow-500'; // Yellow for in-progress tickets
+            case 'Closed':
+                return 'bg-green-100 text-green-500'; // Green for closed tickets
+            default:
+                return 'bg-gray-100 text-gray-500'; // Gray for unknown status
+        }
+    };
 
-    // Function to update current date and time
     useEffect(() => {
         const updateDateTime = () => {
             const now = new Date();
-            const options = { weekday: "long" }; // Get full day name
+            const options = { weekday: "long" };
             const day = now.toLocaleDateString(undefined, options);
             const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
-            const date = now.toLocaleDateString(); // Format: DD/MM/YYYY
+            const date = now.toLocaleDateString();
             setCurrentDateTime({ day, time, date });
         };
 
-        // Update every second
         updateDateTime();
         const interval = setInterval(updateDateTime, 1000);
-
         return () => clearInterval(interval);
     }, []);
 
-    const getStatusColor = (status) => {
-        switch (status.toLowerCase()) {
-            case "open":
-                return "bg-green-100 text-green-800";
-            case "close":
-                return "bg-red-100 text-red-800";
-            case "pending":
-                return "bg-yellow-100 text-yellow-800";
-            default:
-                return "bg-gray-100 text-gray-800";
-        }
+    useEffect(() => {
+        const userId = 1; // Assuming the user ID is 1, replace with actual user ID
+        getTickets(userId).then((data) => setTickets(data)).catch((error) => console.error("Error fetching tickets:", error));
+    }, []);
+    const userId = 1; // Assuming the user ID is 1, replace with actual user ID
+
+    const handleCreateTicket = () => {
+        const newTicket = {
+            title: ticketTitle,
+            description: ticketDescription,
+            userId: userId
+
+        };
+
+        // Call the createTicket API
+        createTicket(newTicket)
+            .then((response) => {
+                // On success, you can update the tickets list or show a success message
+                console.log("Ticket created successfully:", response);
+                setTickets((prevTickets) => [...prevTickets, response]);
+                setTicketTitle(""); // Reset ticket title input
+                setTicketDescription(""); // Reset ticket description input
+                console.log("newData",tickets)
+            })
+            .catch((error) => {
+                console.error("Error creating ticket:", error);
+            });
     };
 
     return (
@@ -65,8 +88,6 @@ const TicketQuery = () => {
 
                 {/* Ticket Management Section */}
                 <section className="bg-white p-8 rounded-lg shadow relative mt-8">
-
-                    {/* Welcome Message and Current Day-Time */}
                     <div className="flex justify-between items-center mb-4">
                         <p className="text-gray-600 text-lg">
                             Welcome back, <span className="text-blue-500 font-semibold">Aditya</span>
@@ -78,34 +99,6 @@ const TicketQuery = () => {
 
                     <h3 className="text-gray-600 text-lg font-bold mb-6">Manage Tickets</h3>
 
-                    {/* Search and Filter */}
-                    <div className="flex gap-4 mb-8">
-                        <div className="relative flex-1">
-                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-                            <input
-                                type="text"
-                                placeholder="Search by Name, ID, status..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <select
-                            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
-                        >
-                            <option value="">Action</option>
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
-                            <option value="pending">Pending</option>
-                        </select>
-                        <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-                            <Calendar size={20} className="text-gray-400" />
-                            <span>13 Jan, 2024</span>
-                        </div>
-                        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
-                            <Download size={20} />
-                            Export CSV
-                        </button>
-                    </div>
-
                     {/* Create Ticket */}
                     <div className="mb-8">
                         <h4 className="text-gray-700 font-bold mb-4">Create New Ticket</h4>
@@ -113,13 +106,17 @@ const TicketQuery = () => {
                             type="text"
                             placeholder="Write your title here..."
                             className="w-full p-3 border rounded-lg mb-4 focus:outline-none focus:border-indigo-500"
+                            value={ticketTitle}
+                            onChange={(e) => setTicketTitle(e.target.value)}
                         />
                         <textarea
                             placeholder="Write your description here..."
                             className="w-full p-3 border rounded-lg h-24 resize-none focus:outline-none focus:border-indigo-500"
+                            value={ticketDescription}
+                            onChange={(e) => setTicketDescription(e.target.value)}
                         />
                         <div className="flex justify-end mt-4">
-                            <button className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                            <button className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600" onClick={handleCreateTicket}>
                                 Create Ticket
                             </button>
                         </div>
@@ -141,23 +138,20 @@ const TicketQuery = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {tickets.map((ticket, index) => (
-                                        <tr key={index} className="border-t hover:bg-gray-50">
-                                            <td className="px-4 py-3">{ticket.date}</td>
+                                    {tickets.map((ticket) => (
+                                        <tr key={ticket.id} className="border-t hover:bg-gray-50">
+                                            <td className="px-4 py-3">{new Date(ticket.createdAt).toLocaleDateString()}</td>
                                             <td className="px-4 py-3">{ticket.title}</td>
                                             <td className="px-4 py-3">{ticket.description}</td>
                                             <td className="px-4 py-3">
-                                                <span
-                                                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
-                                                        ticket.status
-                                                    )}`}
-                                                >
+                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
                                                     {ticket.status}
                                                 </span>
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

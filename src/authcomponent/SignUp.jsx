@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import LoginImg from '../assets/login.svg';
-import Logo from '../assets/logo.svg'
-import { signup } from '../commonComponent/Api';
+import Logo from '../assets/logo.svg';
+import { signup, getCurrentUser } from "../commonComponent/Api";
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setToken, setUser } from '../commonComponent/slice/AuthSlice';
+import { ACCESS_TOKEN, USER_DATA } from '../commonComponent/Constant';
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
@@ -16,17 +20,27 @@ const SignUp = () => {
         rememberMe: false
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Handle signup logic here
-        signup(formData)
-        .then(response => {
-            console.log("You're successfully registered. Please verify your email!",response);
-            navigate('/', { state: { email: formData.email } }); // Redirect to OTP verification with email
-        })
-        .catch(error => {
+        try {
+            const response = await signup(formData);
+            console.log("You're successfully registered. Please verify your email!", response);
+
+            // Set token in localStorage and Redux store
+            localStorage.setItem(ACCESS_TOKEN,response.data.accessToken);
+            dispatch(setToken(response.data.accessToken));
+
+            // Fetch current user data
+            const userData = await getCurrentUser(response.data.accessToken);
+            localStorage.setItem(USER_DATA, JSON.stringify(userData));
+            dispatch(setUser(userData));
+
+            // Redirect to OTP verification
+            navigate('/SignupForm');
+        } catch (error) {
             console.log((error && error.message) || 'Oops! Something went wrong. Please try again!');
-        });
+        }
         console.log('Form submitted:', formData);
     };
 
@@ -81,7 +95,7 @@ const SignUp = () => {
                             <div className="space-y-6">
                                 {/* Full Name Input */}
                                 <div>
-                                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                                         Full Name
                                     </label>
                                     <input
@@ -89,7 +103,7 @@ const SignUp = () => {
                                         id="name"
                                         name="name"
                                         placeholder="Your Name"
-                                        value={formData.fullName}
+                                        value={formData.name} // Fixed binding here
                                         onChange={handleInputChange}
                                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                         required

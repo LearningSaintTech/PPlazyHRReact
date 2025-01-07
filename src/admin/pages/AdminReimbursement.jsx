@@ -3,27 +3,10 @@ import { Search, Calendar, Download, ChevronLeft, ChevronRight } from "lucide-re
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
 import { format } from 'date-fns';
+import { getReimbursements } from "../../commonComponent/Api";  // Import the API function
 
 const AdminReimbursement = () => {
-    // Generate more sample data
-    const generateTickets = () => {
-        const categories = ["Electronics", "Travel", "Office Supplies", "Meals", "Transportation"];
-        const employees = ["Aditya", "John", "Sarah", "Michael", "Emma", "David"];
-        const titles = ["Testing", "Development", "Research", "Maintenance", "Support"];
-
-        return Array.from({ length: 50 }, (_, i) => ({
-            id: i + 1,
-            created: "9Oct24",
-            name: employees[Math.floor(Math.random() * employees.length)],
-            title: titles[Math.floor(Math.random() * titles.length)],
-            category: categories[Math.floor(Math.random() * categories.length)],
-            description: "Description here",
-            image: "Open",
-            status: Math.random() > 0.7 ? "Pending" : Math.random() > 0.5 ? "Closed" : "Open"
-        }));
-    };
-
-    const [tickets, setTickets] = useState(generateTickets());
+    const [reimbursements, setReimbursements] = useState([]); // Store reimbursements data
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
@@ -36,8 +19,46 @@ const AdminReimbursement = () => {
         period: "AM"
     });
 
-    // Function to update current date and time
+    // State for modal and image preview
+    const [modalOpen, setModalOpen] = useState(false);
+    const [imagePreview, setImagePreview] = useState(null);
+
+    const handleImageClick = (fileUrl) => {
+        if (!fileUrl) {
+          console.error('No valid image URL found');
+          return;
+        }
+
+        // Prepend 'data:image/jpeg;base64,' if not already present in the base64 string
+        const base64Image = `data:image/jpeg;base64,${fileUrl}`;
+
+        // Set the image preview to the base64 string
+        setImagePreview(base64Image);
+
+        // Open the modal to display the image
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setImagePreview(null);
+    };
+
+    // Fetch reimbursement data when component mounts
     useEffect(() => {
+        const fetchReimbursements = async () => {
+            try {
+                const response = await getReimbursements(); // Call the API
+                console.log("response", response);
+                setReimbursements(response); // Assuming API returns data in 'data' field
+            } catch (error) {
+                console.error("Error fetching reimbursements:", error);
+            }
+        };
+
+        fetchReimbursements();
+
+        // Update date and time every second
         const updateDateTime = () => {
             const now = new Date();
             const time = format(now, 'HH:mm:ss');
@@ -66,7 +87,7 @@ const AdminReimbursement = () => {
     };
 
     // Filter and search functionality
-    const filteredTickets = tickets.filter(ticket => {
+    const filteredTickets = reimbursements.filter(ticket => {
         const matchesSearch = searchTerm === "" ||
             Object.values(ticket).some(value =>
                 value.toString().toLowerCase().includes(searchTerm.toLowerCase())
@@ -163,29 +184,31 @@ const AdminReimbursement = () => {
                                 <thead>
                                     <tr className="bg-gray-50">
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Created</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Name</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Title</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Category</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Description</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Image</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Status</th>
+                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Image</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentItems.map((ticket, index) => (
                                         <tr key={index} className="border-t hover:bg-gray-50">
-                                            <td className="px-4 py-3">{ticket.created}</td>
-                                            <td className="px-4 py-3">{ticket.name}</td>
-                                            <td className="px-4 py-3">{ticket.title}</td>
+                                            <td className="px-4 py-3">{ticket.createdAt}</td>
                                             <td className="px-4 py-3">{ticket.category}</td>
                                             <td className="px-4 py-3">{ticket.description}</td>
-                                            <td className="px-4 py-3">
-                                                <a href="#" className="text-blue-500">View</a>
-                                            </td>
                                             <td className="px-4 py-3">
                                                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
                                                     {ticket.status}
                                                 </span>
+                                            </td>
+
+                                            <td>
+                                                <button
+                                                    className="text-indigo-600 hover:text-indigo-700"
+                                                    onClick={() => handleImageClick(ticket.image)} // Assuming 'fileUrl' is the field containing the image URL
+                                                >
+                                                    View
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -229,6 +252,25 @@ const AdminReimbursement = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Image Modal */}
+            {modalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-4 rounded-lg relative">
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-2 right-2 text-xl text-gray-600"
+                        >
+                            &times;
+                        </button>
+                        <img
+                            src={imagePreview}  // Use base64 encoded image
+                            alt="Preview"
+                            className="max-w-full max-h-[80vh] object-contain"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

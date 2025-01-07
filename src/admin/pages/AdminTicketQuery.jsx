@@ -3,30 +3,17 @@ import { Search, Calendar, Download, ChevronLeft, ChevronRight } from "lucide-re
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
 import { format } from 'date-fns';
+import { getAllTicket } from '../../commonComponent/Api';  // Ensure this is the correct path to your API file
 
 const AdminTicketQuery = () => {
-    // Generate more sample data
-    const generateTickets = () => {
-        const statuses = ["Open", "Close", "Pending"];
-        const employees = ["Aditya", "John", "Sarah", "Michael", "Emma", "David"];
-        const titles = ["Bug Report", "Feature Request", "Technical Issue", "Account Problem", "Payment Issue", "General Query"];
-
-        return Array.from({ length: 50 }, (_, i) => ({
-            id: `TK${String(i + 1).padStart(3, '0')}`,
-            date: format(new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)), 'dd/MM'),
-            title: titles[Math.floor(Math.random() * titles.length)],
-            employee: employees[Math.floor(Math.random() * employees.length)],
-            description: `This is a ${titles[Math.floor(Math.random() * titles.length)].toLowerCase()} that needs attention.`,
-            status: statuses[Math.floor(Math.random() * statuses.length)],
-            createdAt: format(new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)), 'dd MMM yy, hh:mm:ss a'),
-        }));
-    };
-
-    const [tickets, setTickets] = useState(generateTickets());
+    // State variables
+    const [tickets, setTickets] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
+    const [loading, setLoading] = useState(true);  // Loading state for the API call
+    const [error, setError] = useState("");  // Error state for API failure
 
     // State for current date and time
     const [currentDateTime, setCurrentDateTime] = useState({
@@ -51,6 +38,44 @@ const AdminTicketQuery = () => {
 
         return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        const fetchTickets = async () => {
+            setLoading(true);
+            // try {
+            //     const response = await getAllTicket();
+            //     console.log("response", response); // Log the full response here
+                
+            //     if (response && response.data) {
+            //         setTickets(response.data); // Update state
+            //         console.log("Tickets to be set:", response.data); // Log the data to be set
+            //     } else {
+            //         setError("No tickets found in the response");
+            //     }
+            // } catch (error) {
+            //     setError("Failed to load tickets");
+            //     console.error(error);
+            // } finally {
+            //     setLoading(false);
+            // }
+            getAllTicket().then((data) => {
+                setTickets(data); // Set tickets with the data from the API
+                console.log("Tickets have been set:", data); // Optionally log the data
+            })
+            .catch((error) => {
+                setError("Failed to load tickets"); // Handle error
+                console.error("Error fetching tickets:", error); // Log the error
+            })
+            .finally(() => {
+                setLoading(false); // Ensure loading is set to false
+            });
+        };
+    
+        fetchTickets();
+    }, []);
+    
+   
+    
 
     const getStatusColor = (status) => {
         switch (status.toLowerCase()) {
@@ -81,6 +106,14 @@ const AdminTicketQuery = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredTickets.slice(indexOfFirstItem, indexOfLastItem);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
 
     return (
         <div className="flex bg-gray-100 min-h-screen">
@@ -119,6 +152,7 @@ const AdminTicketQuery = () => {
                             <select
                                 className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                                 value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
                             >
                                 <option value="">Action</option>
                                 <option value="open">Open</option>
@@ -162,9 +196,9 @@ const AdminTicketQuery = () => {
                                 <thead>
                                     <tr className="bg-gray-50">
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Ticket ID</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Date</th>
+                                        {/* <th className="px-4 py-3 text-left text-gray-600 font-medium">Date</th> */}
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Title</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Employee</th>
+                                        {/* <th className="px-4 py-3 text-left text-gray-600 font-medium">Employee</th> */}
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Description</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Created At</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Status</th>
@@ -175,9 +209,9 @@ const AdminTicketQuery = () => {
                                     {currentItems.map((ticket, index) => (
                                         <tr key={index} className="border-t hover:bg-gray-50">
                                             <td className="px-4 py-3">{ticket.id}</td>
-                                            <td className="px-4 py-3">{ticket.date}</td>
+                                            {/* <td className="px-4 py-3">{ticket.date}</td> */}
                                             <td className="px-4 py-3">{ticket.title}</td>
-                                            <td className="px-4 py-3">{ticket.employee}</td>
+                                            {/* <td className="px-4 py-3">{ticket.employee}</td> */}
                                             <td className="px-4 py-3">{ticket.description}</td>
                                             <td className="px-4 py-3">{ticket.createdAt}</td>
                                             <td className="px-4 py-3">

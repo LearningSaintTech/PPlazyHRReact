@@ -2,12 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Calendar } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
+import { applyLeaveAPI } from '../../commonComponent/Api'; // Import the API function for applying leave
 
 const Dashboard = () => {
   const [currentDateTime, setCurrentDateTime] = useState({
     day: "",
     time: "",
     date: "",
+  });
+
+  const [leaveDetails, setLeaveDetails] = useState({
+    fromDate: "",
+    toDate: "",
+    reason: "",
+    leaveType: "Casual Leave",
   });
 
   // Update current date and time every second
@@ -31,6 +39,29 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Handle form input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLeaveDetails({ ...leaveDetails, [name]: value });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    applyLeaveAPI(leaveDetails) // Call the API to apply leave
+      .then((response) => {
+        if (typeof response === 'string') {
+          alert(response); // If the response is a success message string
+        } else {
+          alert('Leave applied successfully!'); // If response is JSON, show a generic success message
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        alert('There was an error applying for leave!');
+      });
+  };
+  
   return (
     <div className="flex bg-gray-100 min-h-screen">
       {/* Sidebar */}
@@ -69,82 +100,82 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Metrics Section */}
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            {/* Total Casual Leaves */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm flex justify-between items-center">
-              <div>
-                <p className="text-gray-600 text-lg">Total Casual Leaves</p>
-                <h2 className="text-5xl font-bold text-black-500">150</h2>
-              </div>
-              <Calendar size={48} className="text-blue-400" />
-            </div>
-
-            {/* Total Earn Leaves */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm flex justify-between items-center">
-              <div>
-                <p className="text-gray-600 text-lg">Total Earn Leaves</p>
-                <h2 className="text-5xl font-bold text-black-500">4</h2>
-              </div>
-              <Calendar size={48} className="text-indigo-400" />
-            </div>
-          </div>
-
           {/* Leave Form */}
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Apply Leave</h3>
-            <div className="grid grid-cols-2 gap-6 mb-4">
-              <div>
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-6 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
+                    From Date
+                  </label>
+                  <input
+                    type="date"
+                    name="fromDate"
+                    value={leaveDetails.fromDate}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-600 mb-2">
+                    To Date
+                  </label>
+                  <input
+                    type="date"
+                    name="toDate"
+                    value={leaveDetails.toDate}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+              <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-600 mb-2">
-                  From Date
+                  Leave Reason
                 </label>
-                <input
-                  type="date"
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                <textarea
+                  name="reason"
+                  value={leaveDetails.reason}
+                  onChange={handleChange}
+                  placeholder="Write your reason here..."
+                  className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  rows={3}
                 />
               </div>
-              <div>
+              <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-600 mb-2">
-                  To Date
+                  Leave Type
                 </label>
-                <input
-                  type="date"
+                <select
+                  name="leaveType"
+                  value={leaveDetails.leaveType}
+                  onChange={handleChange}
                   className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+                >
+                  <option>Casual Leave</option>
+                  <option>Earn Leave</option>
+                </select>
               </div>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
-                Leave Reason
-              </label>
-              <textarea
-                placeholder="Write your reason here..."
-                className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                rows={3}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
-                Leave Type
-              </label>
-              <select className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option>Casual Leave</option>
-                <option>Earn Leave</option>
-              </select>
-            </div>
-            <div className="flex gap-4">
-              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Apply Leave
-              </button>
-              <button className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
-                Cancel
-              </button>
-            </div>
+              <div className="flex gap-4">
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Apply Leave
+                </button>
+                <button
+                  type="button"
+                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </section>
       </div>
     </div>
-
   );
 };
 

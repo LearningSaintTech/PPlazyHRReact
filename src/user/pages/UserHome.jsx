@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
+import {clockInAPI} from "../../commonComponent/Api"
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -49,19 +50,32 @@ const UserHome = () => {
         }
     }, [isClockedIn, isClockedOut]);
 
-    const handleClockIn = () => {
+    const handleClockIn = async (userId) => {
         const today = new Date().toISOString().split("T")[0];
         const lastClockInDate = localStorage.getItem("clockInDate");
-
+    
         if (!lastClockInDate || lastClockInDate !== today) {
-            const now = new Date();
-            const startTime = Math.floor(Date.now() / 1000);
-            localStorage.setItem("clockInStartTime", startTime);
-            localStorage.setItem("clockInDate", today);
-
-            setIsClockedIn(true);
-            setIsClockedOut(false);
-            setClockInTime(now.toLocaleTimeString("en-US"));
+            try {
+                const now = new Date();
+                const startTime = Math.floor(Date.now() / 1000);
+    
+                // Call the clockInAPI
+                const response = await clockInAPI(userId);
+    
+                // If the API call is successful, update local storage and state
+                localStorage.setItem("clockInStartTime", startTime);
+                localStorage.setItem("clockInDate", today);
+    
+                setIsClockedIn(true);
+                setIsClockedOut(false);
+                setClockInTime(now.toLocaleTimeString("en-US"));
+    
+                alert("Clocked in successfully!");
+                console.log("Clock-In API Response:", response);
+            } catch (error) {
+                console.error("Error during clock-in:", error);
+                alert(`Clock-in failed: ${error.message}`);
+            }
         } else {
             alert("You have already clocked in today.");
         }
@@ -78,7 +92,7 @@ const UserHome = () => {
             setClockOutTime(now.toLocaleTimeString("en-US"));
         }
     };
-
+// localStorage.clear();
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
