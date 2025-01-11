@@ -3,7 +3,7 @@ import AdminHeader from '../component/AdminHeader';
 import AdminSidebar from '../component/AdminSidebar';
 import { FaArrowRight } from "react-icons/fa6";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { Search, Calendar, Download } from "lucide-react";
+import { Search, Calendar, Download, X } from "lucide-react";
 import { getAllEmployee, updateEmployee } from "../../commonComponent/Api";
 
 // Employee data (unchanged)
@@ -40,9 +40,9 @@ const AdminEmployeeDashboard = () => {
     ]);
 
     const csvContent = [
-      header.join(','), 
-      ...rows.map(row => row.join(',')), 
-    ].join('\n'); 
+      header.join(','),
+      ...rows.map(row => row.join(',')),
+    ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
 
@@ -73,26 +73,21 @@ const AdminEmployeeDashboard = () => {
   const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 
   const filteredEmployees = employeeData.filter((emp) => {
-    console.log("Checking employee:", emp);
-
-    // Ensure employeeId is a string before calling .includes()
+    // Ensure `searchTerm` and `employeeId` are strings before using `includes()`
     const matchesSearch =
       searchTerm === '' ||
       emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.employeeId.toString().includes(searchTerm.toLowerCase()) || // Convert employeeId to string
+      emp.employeeId.toString().toLowerCase().includes(searchTerm.toLowerCase()) || // Ensure employeeId is string
       emp.designation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.department.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesDepartment = selectedDepartment === 'All Department' || emp.department.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
-    console.log("emp.department.toLowerCase()", emp.department.toLowerCase())
-    console.log("selectedDepartment.toLowerCase()", selectedDepartment.toLowerCase())
-    console.log("matchesDepartment", matchesDepartment)
-
-
-
+    const matchesDepartment =
+      selectedDepartment === 'All Department' ||
+      emp.department.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
 
     return matchesSearch && matchesDepartment;
   });
+
 
 
   const openPopup = (employee) => {
@@ -131,6 +126,15 @@ const AdminEmployeeDashboard = () => {
     setShowPopup(false);
 
   };
+
+  // Add new function for field grouping
+  const renderFormGroup = (label, name, value, type = "text", disabled = false) => (
+    <div className="mb-4">
+      <label className="block text-sm font-semibold text-gray-700 mb-1">{label}:</label>
+      <input type={type} name={name} value={value || ""} onChange={handleChange} disabled={disabled}
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 ease-in-out disabled:bg-gray-100" />
+    </div>
+  );
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -225,319 +229,125 @@ const AdminEmployeeDashboard = () => {
             </table>
           </div>
           {showPopup && selectedEmployee && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-[36.458vw] rounded-[0.417vw] max-w-[60vw] shadow-lg w-[90%] overflow-y-auto h-[90%]">
-                <h2 className="text-[1.25vw] font-bold text-indigo-500 mb-[1.25vw] text-center">
-                  Employee Details
-                </h2>
-                <div className="grid grid-cols-3 [1.25vw] text-[0.729vw]">
-                  {/* Personal Information */}
-                  <div>
-                    <label className="font-bold">ID:</label>
-                    <input
-                      type="text"
-                      value={selectedEmployee.employeeId || "N/A"}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      disabled
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Emp. ID:</label>
-                    <input
-                      type="text"
-                      name="empId"
-                      value={selectedEmployee.empId}
-                      onChange={handleChange}
-
-                      className="border w-full px-2 py-1 rounded"
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">First Name:</label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={selectedEmployee.firstName}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Surname:</label>
-                    <input
-                      type="text"
-                      name="surname"
-                      value={selectedEmployee.surname}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Email:</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={selectedEmployee.email}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Phone:</label>
-                    <input
-                      type="text"
-                      name="phno"
-                      value={selectedEmployee.phno}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">DOB:</label>
-                    <input
-                      type="date"
-                      name="dob"
-                      value={selectedEmployee.dob}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Gender:</label>
-                    <input
-                      type="text"
-                      name="gender"
-                      value={selectedEmployee.gender}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Address:</label>
-                    <input
-                      type="text"
-                      name="address"
-                      value={selectedEmployee.address}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">City:</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={selectedEmployee.city}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">State:</label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={selectedEmployee.state}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Pin Code:</label>
-                    <input
-                      type="text"
-                      name="pinCode"
-                      value={selectedEmployee.pinCode}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Blood Group:</label>
-                    <input
-                      type="text"
-                      name="bloodGroup"
-                      value={selectedEmployee.bloodGroup}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  {/* Employment Information */}
-                  <div>
-                    <label className="font-bold">Date of Joining:</label>
-                    <input
-                      type="date"
-                      name="dateOfJoining"
-                      value={selectedEmployee.dateOfJoining || ""}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Department:</label>
-                    <input
-                      type="text"
-                      name="department"
-                      value={selectedEmployee.department || " "}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Designation:</label>
-                    <input
-                      type="text"
-                      name="designation"
-                      value={selectedEmployee.designation || ""}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Shift:</label>
-                    <input
-                      type="text"
-                      name="shift"
-                      value={selectedEmployee.shift || ""}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  {/* Financial Details */}
-                  <div>
-                    <label className="font-bold">Salary:</label>
-                    <input
-                      type="number"
-                      name="salary"
-                      value={selectedEmployee.salary}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">CL Balance:</label>
-                    <input
-                      type="number"
-                      name="clBalance"
-                      value={selectedEmployee.clBalance}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">EL Balance:</label>
-                    <input
-                      type="number"
-                      name="elBalance"
-                      value={selectedEmployee.elBalance}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Bank Name:</label>
-                    <input
-                      type="text"
-                      name="bankName"
-                      value={selectedEmployee.bankName}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Bank Branch:</label>
-                    <input
-                      type="text"
-                      name="bankBranch"
-                      value={selectedEmployee.bankBranch}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Account Holder:</label>
-                    <input
-                      type="text"
-                      name="accountHolder"
-                      value={selectedEmployee.accountHolder}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">Account Number:</label>
-                    <input
-                      type="text"
-                      name="accountNumber"
-                      value={selectedEmployee.accountNumber}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-bold">IFSC Code:</label>
-                    <input
-                      type="text"
-                      name="ifscCode"
-                      value={selectedEmployee.ifscCode}
-                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
-                      onChange={handleChange}
-                    />
-                  </div>
-
-                  {/* Document Links */}
-                  <div className="col-span-3">
-                    <label className="font-bold">Aadhar Card Photo:</label>
-                    <a
-                      href={selectedEmployee.aadharCardPhoto}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-[0.417vw]"
-                    >
-                      View Photo
-                    </a>
-                  </div>
-                  <div className="col-span-3">
-                    <label className="font-bold">PAN Card Photo:</label>
-                    <a
-                      href={selectedEmployee.pancardPhoto}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-[0.417vw]"
-                    >
-                      View Photo
-                    </a>
-                  </div>
-                  <div className="col-span-3">
-                    <label className="font-bold">Passbook Photo:</label>
-                    <a
-                      href={selectedEmployee.passbookPhoto}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-[0.417vw]"
-                    >
-                      View Photo
-                    </a>
-                  </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex justify-end mt-[1.667vw] gap-[0.833vw]">
-                  <button
-                    className="bg-gray-400 text-white px-[0.833vw] py-[0.417vw] rounded hover:bg-gray-500"
-                    onClick={closePopup}
-                  >
-                    Close
+            <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 px-4">
+              <div className="bg-white rounded-lg shadow-xl w-[80%] max-h-[90vh] overflow-hidden relative">
+                {/* Header */}
+                <div className="bg-indigo-500 px-6 py-4 flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-white">Employee Details</h2>
+                  <button onClick={closePopup}
+                    className="text-white hover:bg-indigo-600 p-2 rounded-full transition-colors">
+                    <X size={20} />
                   </button>
                 </div>
 
-                <div className="flex justify-end mt-[1.667vw] gap-[0.833vw]">
-                  <button
-                    className="bg-green-500 text-white px-[0.833vw] py-[0.417vw] rounded hover:bg-green-600"
-                    onClick={handleSave}
-                  >
+                {/* Content */}
+                <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                  {/* Grid Layout */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Personal Information Section */}
+                    <div className="col-span-full">
+                      <h3 className="text-lg font-semibold text-indigo-600 mb-4 pb-2 border-b">
+                        Personal Information
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {renderFormGroup("Employee ID", "employeeId", selectedEmployee.employeeId, "text", true)}
+                        {renderFormGroup("First Name", "firstName", selectedEmployee.firstName)}
+                        {renderFormGroup("Surname", "surname", selectedEmployee.surname)}
+                        {renderFormGroup("Email", "email", selectedEmployee.email, "email")}
+                        {renderFormGroup("Phone", "phno", selectedEmployee.phno)}
+                        {renderFormGroup("Date of Birth", "dob", selectedEmployee.dob, "date")}
+                        {renderFormGroup("Gender", "gender", selectedEmployee.gender)}
+                      </div>
+                    </div>
+
+                    {/* Address Section */}
+                    <div className="col-span-full">
+                      <h3 className="text-lg font-semibold text-indigo-600 mb-4 pb-2 border-b">
+                        Address Details
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {renderFormGroup("Address", "address", selectedEmployee.address)}
+                        {renderFormGroup("City", "city", selectedEmployee.city)}
+                        {renderFormGroup("State", "state", selectedEmployee.state)}
+                        {renderFormGroup("Pin Code", "pinCode", selectedEmployee.pinCode)}
+                      </div>
+                    </div>
+
+                    {/* Employment Details */}
+                    <div className="col-span-full">
+                      <h3 className="text-lg font-semibold text-indigo-600 mb-4 pb-2 border-b">
+                        Employment Details
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {renderFormGroup("Date of Joining", "dateOfJoining", selectedEmployee.dateOfJoining,
+                          "date")}
+                        {renderFormGroup("Department", "department", selectedEmployee.department)}
+                        {renderFormGroup("Designation", "designation", selectedEmployee.designation)}
+                        {renderFormGroup("Shift", "shift", selectedEmployee.shift)}
+                        {renderFormGroup("Blood Group", "bloodGroup", selectedEmployee.bloodGroup)}
+                      </div>
+                    </div>
+
+                    {/* Financial Details */}
+                    <div className="col-span-full">
+                      <h3 className="text-lg font-semibold text-indigo-600 mb-4 pb-2 border-b">
+                        Financial Details
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {renderFormGroup("Salary", "salary", selectedEmployee.salary, "number")}
+                        {renderFormGroup("CL Balance", "clBalance", selectedEmployee.clBalance, "number")}
+                        {renderFormGroup("EL Balance", "elBalance", selectedEmployee.elBalance, "number")}
+                        {renderFormGroup("Bank Name", "bankName", selectedEmployee.bankName)}
+                        {renderFormGroup("Bank Branch", "bankBranch", selectedEmployee.bankBranch)}
+                        {renderFormGroup("Account Holder", "accountHolder", selectedEmployee.accountHolder)}
+                        {renderFormGroup("Account Number", "accountNumber", selectedEmployee.accountNumber)}
+                        {renderFormGroup("IFSC Code", "ifscCode", selectedEmployee.ifscCode)}
+                      </div>
+                    </div>
+
+                    {/* Documents Section */}
+                    <div className="col-span-full">
+                      <h3 className="text-lg font-semibold text-indigo-600 mb-4 pb-2 border-b">
+                        Documents
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="p-4 bg-gray-50 rounded-lg">
+                          <h4 className="font-semibold mb-2">Aadhar Card</h4>
+                          <a href={selectedEmployee.aadharCardPhoto} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                            <Download size={16} className="mr-2" />
+                            View Document
+                          </a>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-lg">
+                          <h4 className="font-semibold mb-2">PAN Card</h4>
+                          <a href={selectedEmployee.pancardPhoto} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                            <Download size={16} className="mr-2" />
+                            View Document
+                          </a>
+                        </div>
+                        <div className="p-4 bg-gray-50 rounded-lg">
+                          <h4 className="font-semibold mb-2">Passbook</h4>
+                          <a href={selectedEmployee.passbookPhoto} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors">
+                            <Download size={16} className="mr-2" />
+                            View Document
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="border-t bg-gray-50 px-6 py-4 flex justify-end gap-4">
+                  <button onClick={closePopup}
+                    className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                    Cancel
+                  </button>
+                  <button onClick={handleSave}
+                    className="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors">
                     Save Changes
                   </button>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Calendar, Download } from "lucide-react";
+import { Search, Calendar, Download, Info } from "lucide-react";
 import AdminSideBar from '../component/AdminSidebar';
 import AdminHeader from '../component/AdminHeader';
 import { getAllAttendance } from '../../commonComponent/Api'; // Adjust the import path as needed
@@ -176,6 +176,7 @@ const AdminAttendance = () => {
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Working Time</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Status</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Location</th>
                 </tr>
               </thead>
               <tbody>
@@ -189,12 +190,32 @@ const AdminAttendance = () => {
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockInDate)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>
-                      <td className={`p-4 border-b text-lg text-gray-700 rounded-md`}>
-                        <span className={`${data.status.toUpperCase() === 'A' ? 'bg-red-200 text-red-700 p-2 rounded-md' :
-                          data.status.toUpperCase() === 'H' ? 'bg-yellow-200 text-yellow-700 p-2 rounded-md' :
-                            data.status.toUpperCase() === 'P' ? 'bg-green-200 text-green-700 p-2 rounded-md' :
-                              'bg-gray-200 text-gray-700 p-2 rounded-md' 
-                        }`}>{formatStatus(data.status)}</span>
+                      <td className="p-2 border-b rounded">
+                        <div
+                          className={`h-8 px-3 py-1 inline-flex items-center justify-start gap-2.5 rounded-lg border
+      ${data.status.toUpperCase() === 'A'
+                              ? 'bg-red-50 border-red-600 text-red-600'
+                              : data.status.toUpperCase() === 'H'
+                                ? 'bg-yellow-50 border-yellow-600 text-yellow-600'
+                                : data.status.toUpperCase() === 'P'
+                                  ? 'bg-green-50 border-green-600 text-green-600'
+                                  : 'bg-gray-50 border-gray-600 text-gray-600'
+                            }`}
+                        >
+                          <div className="text-lg font-light font-sans leading-normal">
+                            {formatStatus(data.status)}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">
+                        <div className="relative group">
+                          <Info size={20} className="text-gray-500 cursor-pointer" />
+                          <div
+                            className="absolute hidden group-hover:block  left-8 bg-white border p-2 rounded shadow-lg text-sm w-max">
+                            <p><strong>Clock In:</strong> {data.clockInAddress || 'N/A'}</p>
+                            <p><strong>Clock Out:</strong> {data.clockOutAddress || 'N/A'}</p>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   ))
