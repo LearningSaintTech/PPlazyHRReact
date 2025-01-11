@@ -32,7 +32,7 @@ const TaskPerformance = ({ onClose }) => {
 
     useEffect(() => {
         // Fetch Line Chart Data
-        fetch("http://192.168.0.132:8082/user/tasks/completionData/all")
+        fetch("http://192.168.0.129:8082/user/tasks/completionData/all")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch line chart data");
@@ -114,7 +114,7 @@ const TaskPerformance = ({ onClose }) => {
             });
 
         // Fetch Pie Chart Data
-        fetch("http://192.168.0.132:8082/user/tasks/statusCounts")
+        fetch("http://192.168.0.129:8082/user/tasks/statusCounts")
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch pie chart data");
