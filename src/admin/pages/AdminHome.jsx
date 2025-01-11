@@ -5,6 +5,7 @@ import { PieChart, Pie, Cell, Legend, Sector } from "recharts";
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
 import { Card, CardHeader, CardTitle, CardContent } from '../component/ui/Card';
+import { getTotalEmployee, getTotalAbsentEmployee } from "../../commonComponent/Api"; // Adjust path as needed
 
 const AdminPage = () => {
   const [currentDateTime, setCurrentDateTime] = useState({
@@ -16,7 +17,11 @@ const AdminPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [totalEmployees, setTotalEmployees] = useState(0);
+  const [absentEmployees, setAbsentEmployees] = useState(0);
+  const [onLeave, setOnLeave] = useState(0);
+  const [presentEmployees, setPresentEmployees] = useState(0);
+  const [loading, setLoading] = useState(true);
   // Add available years for selection (you can modify the range as needed)
   const years = Array.from({ length: 21 }, (_, i) => new Date().getFullYear() - 10 + i);
 
@@ -34,40 +39,73 @@ const AdminPage = () => {
 
     return () => clearInterval(interval);
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true); 
 
+        const totalRes = await getTotalEmployee();
+        const absentRes = await getTotalAbsentEmployee();
+
+        const total = totalRes;
+        const absent = absentRes;
+
+        setTotalEmployees(total);
+        setAbsentEmployees(absent);
+        
+        if(total==absent)
+        {
+          setPresentEmployees(0); 
+
+        }
+        else
+        setPresentEmployees(total - absent - onLeave); 
+
+        setOnLeave(absent);
+
+      } catch (error) {
+        console.error("Error fetching employee data:", error);
+      } finally {
+        setLoading(false);  
+      }
+    };
+
+    fetchData();
+  }, [onLeave]);
   const stats = [
     {
       title: "Total Employees",
-      value: "150",
+      value: totalEmployees,
       icon: Users,
-      color: "bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600"
+      color: "bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600",
     },
     {
       title: "Employees Present",
-      value: "80",
+      value: presentEmployees,
       icon: UserCheck,
-      color: "bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600"
+      color: "bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600",
     },
     {
       title: "Employees Absent",
-      value: "30",
+      value: absentEmployees,
       icon: UserX,
-      color: "bg-gradient-to-br from-red-50 to-red-100 text-red-600"
+      color: "bg-gradient-to-br from-red-50 to-red-100 text-red-600",
     },
     {
       title: "On Leave",
-      value: "40",
+      value: onLeave,
       icon: User,
-      color: "bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600"
+      color: "bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600",
     },
   ];
 
   const chartData = [
-    { name: "Total Employees", value: 150, color: "#818cf8" },
-    { name: "Employees Present", value: 80, color: "#34d399" },
-    { name: "Employees Absent", value: 30, color: "#f87171" },
-    { name: "On Leave", value: 40, color: "#fbbf24" },
+    { name: "Total Employees", value: totalEmployees, color: "#818cf8" },
+    { name: "Employees Present", value: presentEmployees, color: "#34d399" },
+    { name: "Employees Absent", value: absentEmployees, color: "#f87171" },
+    { name: "On Leave", value: onLeave, color: "#fbbf24" },
   ];
+
 
   const renderActiveShape = (props) => {
     const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, value } = props;

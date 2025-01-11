@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Search, Calendar, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
-import { format } from 'date-fns';
-import { getAllTicket } from '../../commonComponent/Api';  // Ensure this is the correct path to your API file
+import { format } from "date-fns";
+import { getAllTicket, updateTicketStatus } from "../../commonComponent/Api";
 
 const AdminTicketQuery = () => {
     // State variables
@@ -12,9 +12,9 @@ const AdminTicketQuery = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
-    const [loading, setLoading] = useState(true);  // Loading state for the API call
-    const [error, setError] = useState("");  // Error state for API failure
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [selectedDate, setSelectedDate] = useState('');
     // State for current date and time
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "",
@@ -28,7 +28,7 @@ const AdminTicketQuery = () => {
             const now = new Date();
             const options = { weekday: "long" };
             const day = now.toLocaleDateString(undefined, options);
-            const time = format(now, 'hh:mm:ss a');
+            const time = format(now, "hh:mm:ss a");
             const date = now.toLocaleDateString();
             setCurrentDateTime({ day, time, date });
         };
@@ -38,45 +38,72 @@ const AdminTicketQuery = () => {
 
         return () => clearInterval(interval);
     }, []);
+    const exportToCSV = () => {
+        // Create CSV header
+        const headers = ["Ticket ID", "Title", "Description", "Created At", "Status"];
+        
+        // Convert ticket data to CSV rows based on filtered tickets
+        const rows = filteredTickets.map((ticket) => [
+            ticket.id,
+            ticket.title,
+            ticket.description,
+            formatDate(ticket.createdAt),
+            ticket.status,
+        ]);
+    
+        // Combine headers and rows into a single string
+        const csvContent = [
+            headers.join(","),
+            ...rows.map(row => row.join(",")),
+        ].join("\n");
+    
+        // Create a Blob and trigger a download
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "tickets.csv"; // Set the file name
+        link.click();
+    };
+    
+    
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // This will return date in YYYY-MM-DD format
+    };
 
+    const formatTime = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true, // Use false for 24-hour format
+        }).format(date);
+    };
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
+    // Fetch tickets from API
     useEffect(() => {
         const fetchTickets = async () => {
             setLoading(true);
-            // try {
-            //     const response = await getAllTicket();
-            //     console.log("response", response); // Log the full response here
-                
-            //     if (response && response.data) {
-            //         setTickets(response.data); // Update state
-            //         console.log("Tickets to be set:", response.data); // Log the data to be set
-            //     } else {
-            //         setError("No tickets found in the response");
-            //     }
-            // } catch (error) {
-            //     setError("Failed to load tickets");
-            //     console.error(error);
-            // } finally {
-            //     setLoading(false);
-            // }
-            getAllTicket().then((data) => {
-                setTickets(data); // Set tickets with the data from the API
-                console.log("Tickets have been set:", data); // Optionally log the data
-            })
-            .catch((error) => {
-                setError("Failed to load tickets"); // Handle error
-                console.error("Error fetching tickets:", error); // Log the error
-            })
-            .finally(() => {
-                setLoading(false); // Ensure loading is set to false
-            });
+            try {
+                const data = await getAllTicket();
+                console.log("data", data)
+                setTickets(data);
+            } catch (error) {
+                setError("Failed to load tickets");
+                console.error("Error fetching tickets:", error);
+            } finally {
+                setLoading(false);
+            }
         };
-    
+
         fetchTickets();
     }, []);
-    
-   
-    
 
+    // Get status color
     const getStatusColor = (status) => {
         switch (status.toLowerCase()) {
             case "open":
@@ -90,16 +117,25 @@ const AdminTicketQuery = () => {
         }
     };
 
-    // Filter and search functionality
-    const filteredTickets = tickets.filter(ticket => {
-        const matchesSearch = searchTerm === "" ||
-            Object.values(ticket).some(value =>
+    // Filter tickets based on search term and status filter
+    // Filter tickets based on search term and status filter
+    const filteredTickets = tickets.filter((ticket) => {
+        const dateMatch = selectedDate ? formatDate(ticket.createdAt) === selectedDate : true;
+
+
+
+        const matchesSearch =
+            searchTerm === "" ||
+            Object.values(ticket).some((value) =>
                 value.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
-        const matchesStatus = statusFilter === "" ||
+        const matchesStatus =
+            statusFilter === "" ||
             ticket.status.toLowerCase() === statusFilter.toLowerCase();
-        return matchesSearch && matchesStatus;
+
+        return matchesSearch && matchesStatus && dateMatch;
     });
+
 
     // Pagination calculations
     const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
@@ -161,12 +197,21 @@ const AdminTicketQuery = () => {
                             </select>
                             <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
                                 <Calendar size={20} className="text-gray-400" />
-                                <span>13 Jan, 2024</span>
+                                <input
+                                    type="date"
+                                    className="w-full border px-4 py-2 rounded-lg"
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                />
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <button
+                                className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50"
+                                onClick={exportToCSV}
+                            >
                                 <Download size={20} />
                                 Export CSV
                             </button>
+
                         </div>
 
                         <div className="flex justify-between items-center mb-6">
@@ -196,9 +241,7 @@ const AdminTicketQuery = () => {
                                 <thead>
                                     <tr className="bg-gray-50">
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Ticket ID</th>
-                                        {/* <th className="px-4 py-3 text-left text-gray-600 font-medium">Date</th> */}
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Title</th>
-                                        {/* <th className="px-4 py-3 text-left text-gray-600 font-medium">Employee</th> */}
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Description</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Created At</th>
                                         <th className="px-4 py-3 text-left text-gray-600 font-medium">Status</th>
@@ -209,11 +252,9 @@ const AdminTicketQuery = () => {
                                     {currentItems.map((ticket, index) => (
                                         <tr key={index} className="border-t hover:bg-gray-50">
                                             <td className="px-4 py-3">{ticket.id}</td>
-                                            {/* <td className="px-4 py-3">{ticket.date}</td> */}
                                             <td className="px-4 py-3">{ticket.title}</td>
-                                            {/* <td className="px-4 py-3">{ticket.employee}</td> */}
                                             <td className="px-4 py-3">{ticket.description}</td>
-                                            <td className="px-4 py-3">{ticket.createdAt}</td>
+                                            <td className="px-4 py-3">{formatDate(ticket.createdAt)}</td>
                                             <td className="px-4 py-3">
                                                 <span
                                                     className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
@@ -226,13 +267,29 @@ const AdminTicketQuery = () => {
                                             <td className="px-4 py-3">
                                                 <select
                                                     className="bg-gray-100 border-gray-300 rounded-md px-2 py-1"
-                                                    defaultValue={ticket.status}
+                                                    value={ticket.status} // Use current status value
+                                                    onChange={async (e) => {
+                                                        const newStatus = e.target.value;
+                                                        // Call the updateTicketStatus function when status is changed
+                                                        try {
+                                                            await updateTicketStatus(ticket.id, newStatus);
+                                                            // Optionally update the status locally after the API call
+                                                            setTickets(prevTickets =>
+                                                                prevTickets.map(t =>
+                                                                    t.id === ticket.id ? { ...t, status: newStatus } : t
+                                                                )
+                                                            );
+                                                        } catch (error) {
+                                                            console.error("Error updating ticket status:", error);
+                                                        }
+                                                    }}
                                                 >
                                                     <option value="Open">Open</option>
                                                     <option value="Close">Close</option>
                                                     <option value="Pending">Pending</option>
                                                 </select>
                                             </td>
+
                                         </tr>
                                     ))}
                                 </tbody>
@@ -243,19 +300,19 @@ const AdminTicketQuery = () => {
                         <div className="flex justify-between items-center mt-6">
                             <button
                                 className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                                 disabled={currentPage === 1}
                             >
                                 <ChevronLeft size={20} />
                                 Previous
                             </button>
                             <div className="flex gap-2">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                                     <button
                                         key={page}
                                         className={`px-4 py-2 rounded ${currentPage === page
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-600 hover:bg-gray-100'
+                                            ? "bg-blue-500 text-white"
+                                            : "text-gray-600 hover:bg-gray-100"
                                             }`}
                                         onClick={() => setCurrentPage(page)}
                                     >
@@ -265,7 +322,7 @@ const AdminTicketQuery = () => {
                             </div>
                             <button
                                 className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
                             >
                                 Next

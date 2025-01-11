@@ -29,6 +29,34 @@ const AdminEmployeeDashboard = () => {
     };
     fetchEmployeeData();
   }, []);
+  const exportToCSV = () => {
+    const header = ['Emp. ID', 'Department', 'Employee Name', 'Designation', 'Phone No.'];
+    const rows = employeeData.map((employee) => [
+      employee.employeeId,
+      employee.department,
+      employee.firstName,
+      employee.designation,
+      employee.phno,
+    ]);
+
+    const csvContent = [
+      header.join(','), 
+      ...rows.map(row => row.join(',')), 
+    ].join('\n'); 
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'employee_data.csv');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -45,22 +73,33 @@ const AdminEmployeeDashboard = () => {
   const handleDepartmentChange = (e) => setSelectedDepartment(e.target.value);
 
   const filteredEmployees = employeeData.filter((emp) => {
+    console.log("Checking employee:", emp);
+
+    // Ensure employeeId is a string before calling .includes()
     const matchesSearch =
       searchTerm === '' ||
-      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp.employeeId.toString().includes(searchTerm.toLowerCase()) || // Convert employeeId to string
       emp.designation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.department.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDepartment = selectedDepartment === 'All Department' || emp.department === selectedDepartment;
+
+    const matchesDepartment = selectedDepartment === 'All Department' || emp.department.trim().toLowerCase() === selectedDepartment.trim().toLowerCase();
+    console.log("emp.department.toLowerCase()", emp.department.toLowerCase())
+    console.log("selectedDepartment.toLowerCase()", selectedDepartment.toLowerCase())
+    console.log("matchesDepartment", matchesDepartment)
+
+
+
+
     return matchesSearch && matchesDepartment;
   });
 
+
   const openPopup = (employee) => {
-    setSelectedEmployee({ ...employee });  // Make a copy to avoid direct mutation
+    setSelectedEmployee({ ...employee });
     setShowPopup(true);
   };
 
-  // Close employee details popup
   const closePopup = () => {
     setShowPopup(false);
     setSelectedEmployee(null);
@@ -89,6 +128,8 @@ const AdminEmployeeDashboard = () => {
       .catch(error => {
         console.error("Failed to update employee:", error);
       });
+    setShowPopup(false);
+
   };
 
 
@@ -122,24 +163,35 @@ const AdminEmployeeDashboard = () => {
                 type="text"
                 placeholder="Search by Name, ID, status..."
                 className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                onChange={handleSearchChange}
+                value={searchTerm}
+
               />
             </div>
             <select
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              className="border border-gray-300 rounded-lg p-3 w-60 focus:outline-indigo-500 shadow-sm"
             >
-              <option value="">Action</option>
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
-              <option value="pending">Pending</option>
+              <option>All Department</option>
+              <option>Information Technology</option>
+              <option>Human Resources</option>
+              <option>Sales</option>
+              <option>Finance</option>
+              <option>Marketing</option>
             </select>
             <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
               <Calendar size={20} className="text-gray-400" />
-              <span>13 Jan, 2024</span>
+              <span>{todayDate}</span>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
-              <Download size={20} />
+            <button
+              className="flex items-center gap-2 bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 shadow-sm"
+              onClick={exportToCSV} // Call exportToCSV function
+            >
+              <IoCloudUploadOutline />
               Export CSV
             </button>
+
           </div>
 
           {/* Table */}
@@ -158,7 +210,7 @@ const AdminEmployeeDashboard = () => {
               <tbody>
                 {filteredEmployees.map((employee) => (
                   <tr key={employee.id} className="border-b hover:bg-gray-50">
-                    <td className="px-6 py-4">{employee.employeeId}</td>
+                    <td className="px-6 py-4">{employee.empId}</td>
                     <td className="px-6 py-4">{employee.department}</td>
                     <td className="px-6 py-4">{employee.firstName}</td>
                     <td className="px-6 py-4">{employee.designation}</td>
@@ -185,12 +237,23 @@ const AdminEmployeeDashboard = () => {
                 <div className="grid grid-cols-3 gap-6 text-sm">
                   {/* Personal Information */}
                   <div>
-                    <label className="font-bold">Emp. ID:</label>
+                    <label className="font-bold">ID:</label>
                     <input
                       type="text"
                       value={selectedEmployee.employeeId || "N/A"}
                       className="border w-full px-2 py-1 rounded"
                       disabled
+                    />
+                  </div>
+                  <div>
+                    <label className="font-bold">Emp. ID:</label>
+                    <input
+                      type="text"
+                      name="empId"
+                      value={selectedEmployee.empId}
+                      onChange={handleChange}
+
+                      className="border w-full px-2 py-1 rounded"
                     />
                   </div>
                   <div>

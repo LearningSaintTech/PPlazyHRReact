@@ -319,54 +319,33 @@ export const applyLeaveAPI = (leaveDetails) => {
 }
 
 export const clockInAPI = async (userId) => {
-    const token = localStorage.getItem(ACCESS_TOKEN);
-
-    if (!token) {
-        throw new Error('Authorization token is missing.');
-    }
-
-    const headers = new Headers();
-    headers.append('Authorization', `Bearer ${token}`);
-    headers.append('Content-Type', 'application/json');
-
     try {
-        const response = await fetch(`http://localhost:8080/api/clockings/clock-in/${userId}`, {
+        const response = await request({
+            url: `http://localhost:8080/api/clockings/clock-in/${userId}`,
             method: 'POST',
-            headers: headers,
         });
-
-        if (!response.ok) {
-            // Try to parse error message from the response
-            const error = await response.json().catch(() => null);
-            throw new Error(error?.message || `Failed to clock in. Status: ${response.status}`);
-        }
-
-        return await response.json();
+        return response;
     } catch (error) {
         console.error('Clock-In API Error:', error);
-        throw error;
+        throw new Error(error?.message || 'Failed to clock in.');
     }
 };
 
 
-export const clockOutAPI = async () => {
-    const headers = new Headers();
-    headers.append('Authorization', `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`);
-
+export const clockOutAPI = async (clockingId) => {
     try {
-        const response = await fetch('http://localhost:8080/api/clockout', {
+        const response = await request({
+            url: `http://localhost:8080/api/clockings/clock-out/${clockingId}`,
             method: 'POST',
-            headers: headers,
         });
-
-        if (!response.ok) {
-            throw new Error('Failed to clock out');
-        }
-        return await response.json();
+        return response;
     } catch (error) {
-        throw error;
+        console.error('Clock-Out API Error:', error);
+        throw new Error(error?.message || 'Failed to clock out.');
     }
 };
+
+
 
 
 
@@ -417,3 +396,87 @@ export function getEventById(id) {
         method: 'GET',
     });
 }
+
+export function getAttendanceById(id) {
+    return request({
+        url: `${API_BASE_URL}/api/clockings/${id}`,
+        method: 'GET',
+    });
+}
+
+export function getAllAttendance() {
+    return request({
+        url: `${API_BASE_URL}/api/clockings/all`,
+        method: 'GET',
+    });
+}
+
+export function getAllPayroll() {
+    return request({
+        url: `${API_BASE_URL}/api/payroll`,
+        method: 'GET',
+    });
+}
+
+export function updatePayroll(id, payrollData) {
+    return request({
+        url: `${API_BASE_URL}/api/payroll/${id}`,  // The ID of the payroll to be updated
+        method: 'PUT',
+        body:JSON.stringify(payrollData) ,  // Data to be sent in the body of the request
+    });
+}
+
+export async function getTotalEmployee() {
+    return request({
+        url: `${API_BASE_URL}/employee/totalEmployees`,
+        method: 'GET',
+    });
+}
+export async function getTotalAbsentEmployee() {
+    return request({
+        url: `${API_BASE_URL}/employee/absentEmployees`,
+        method: 'GET',
+    });
+}
+
+
+
+export async function updateClockingStatus(id, status) {
+    const url = new URL(`${API_BASE_URL}/updateStatus/${id}`);
+    url.searchParams.append('status', status);
+
+    const options = {
+        url: url.toString(),
+        method: 'PUT',
+    };
+
+    try {
+        const response = await request(options);
+        return response;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+
+export const updateTicketStatus = async (ticketId, status) => {
+    console.log("ticketId ", ticketId);
+    console.log("status ", status);
+
+    try {
+        const response = await request({
+            url: `${API_BASE_URL}/api/tickets/update-status?ticketId=${ticketId}&status=${status}`, // Send as query parameters
+            method: 'POST', 
+        });
+
+        // Handle the success response
+        console.log("Ticket status updated successfully:", response);
+        return response; 
+    } catch (error) {
+        // Handle error response
+        console.error("Error updating ticket status:", error);
+        throw error; 
+    }
+};
+
+
+

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import {clockInAPI} from "../../commonComponent/Api"
+import {clockInAPI,clockOutAPI} from "../../commonComponent/Api"
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -30,6 +30,7 @@ const UserHome = () => {
     const [clockOutTime, setClockOutTime] = useState(() =>
         localStorage.getItem("clockOutTime") || "00:00:00 AM"
     );
+    
     const [timer, setTimer] = useState(0);
 
     useEffect(() => {
@@ -50,7 +51,11 @@ const UserHome = () => {
         }
     }, [isClockedIn, isClockedOut]);
 
-    const handleClockIn = async (userId) => {
+    const handleClockIn = async () => {
+        const userData = localStorage.getItem('userData');  // Retrieve the userData string from localStorage
+        const parsedUserData = JSON.parse(userData);  // Parse the string into an object
+         console.log("parsedUserData",parsedUserData.id)
+         const userId=parsedUserData.id;
         const today = new Date().toISOString().split("T")[0];
         const lastClockInDate = localStorage.getItem("clockInDate");
     
@@ -72,6 +77,7 @@ const UserHome = () => {
     
                 alert("Clocked in successfully!");
                 console.log("Clock-In API Response:", response);
+                localStorage.setItem("clockingId", response.id);
             } catch (error) {
                 console.error("Error during clock-in:", error);
                 alert(`Clock-in failed: ${error.message}`);
@@ -81,17 +87,35 @@ const UserHome = () => {
         }
     };
 
-    const handleClockOut = () => {
+    const handleClockOut = async () => {
         const confirmLogout = window.confirm(
             "You'll be logged out for the whole day. Do you want to proceed?"
         );
+    
         if (confirmLogout && isClockedIn && !isClockedOut) {
-            setIsClockedOut(true);
-            setIsClockedIn(false);
-            const now = new Date();
-            setClockOutTime(now.toLocaleTimeString("en-US"));
+            try {
+                
+                console.log("ClockOut Data in localStorage:", JSON.stringify(localStorage));
+                console.log("qqqqqqqqqqqqqqqqq",localStorage.getItem("clockingId"))
+                const clockingId =localStorage.getItem("clockingId");
+                const response = await clockOutAPI(clockingId);
+                console.log('Clock-Out Response:', response);
+    
+                // Update state on successful clock-out
+                setIsClockedOut(true);
+                setIsClockedIn(false);
+    
+                const now = new Date();
+                setClockOutTime(now.toLocaleTimeString("en-US"));
+    
+                alert('Clocked out successfully!');
+            } catch (error) {
+                console.error('Error during clock-out:', error);
+                alert('Failed to clock out. Please try again.');
+            }
         }
     };
+    
 // localStorage.clear();
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);

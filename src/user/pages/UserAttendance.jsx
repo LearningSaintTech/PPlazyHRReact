@@ -4,17 +4,10 @@ import UserHeader from "../components/UserHeader";
 import { CiSearch } from "react-icons/ci";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { Search, Calendar, Download } from "lucide-react";
+import { getAttendanceById } from "../../commonComponent/Api"; // Assuming the API call is in the api.js file
 
 const UserAttendance = () => {
-    const [attendanceData] = useState([
-        { date: "13/01", checkIn: "09:00 AM", checkOut: "05:00 PM", status: "Present", late: "0h" },
-        { date: "13/01", checkIn: "-", checkOut: "-", status: "Absent", late: "0h" },
-        { date: "13/01", checkIn: "10:15 AM", checkOut: "05:00 PM", status: "Late", late: "0h" },
-        { date: "13/01", checkIn: "09:00 AM", checkOut: "06:00 PM", status: "Present", late: "1h" },
-        { date: "13/01", checkIn: "09:00 AM", checkOut: "05:00 PM", status: "Present", late: "0h" },
-        { date: "13/01", checkIn: "09:00 AM", checkOut: "07:00 PM", status: "Present", late: "2h" },
-    ]);
-
+    const [attendanceData, setAttendanceData] = useState([]);
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "",
         time: "",
@@ -22,6 +15,22 @@ const UserAttendance = () => {
     });
 
     useEffect(() => {
+        // Fetch attendance data from the API
+        const fetchAttendanceData = async () => {
+            try {
+                const userInfo = localStorage.getItem("USER_DATA");
+                const parsedUserInfo = JSON.parse(userInfo);
+                console.log("userInfo.id", userInfo)
+                const response = await getAttendanceById(parsedUserInfo.id); // Replace with actual user ID
+                console.log("response", response)
+                setAttendanceData(response); // Assuming API returns data in response.data
+            } catch (error) {
+                console.error("Error fetching attendance data:", error);
+            }
+        };
+
+        fetchAttendanceData();
+
         const updateDateTime = () => {
             const now = new Date();
             const options = { weekday: "long" };
@@ -34,7 +43,7 @@ const UserAttendance = () => {
         updateDateTime();
         const interval = setInterval(updateDateTime, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, []); // Empty dependency array ensures the effect runs only once when the component mounts
 
     return (
         <div className="flex bg-gray-100 min-h-screen">
@@ -98,27 +107,47 @@ const UserAttendance = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {attendanceData.map((item, index) => (
-                                    <tr key={index} className="border-t hover:bg-gray-50 transition">
-                                        <td className="p-3 border-r">{item.date}</td>
-                                        <td className="p-3 border-r">{item.checkIn}</td>
-                                        <td className="p-3 border-r">{item.checkOut}</td>
-                                        <td className="p-3 border-r">
-                                            <span
-                                                className={`inline-block px-2 py-1 rounded text-sm font-medium ${item.status === "Present"
-                                                    ? "bg-green-100 text-green-600"
-                                                    : item.status === "Absent"
-                                                        ? "bg-red-100 text-red-600"
-                                                        : "bg-yellow-100 text-yellow-600"
-                                                    }`}
-                                            >
-                                                {item.status}
-                                            </span>
-                                        </td>
-                                        <td className="p-3">{item.late}</td>
-                                    </tr>
-                                ))}
+                                {attendanceData.map((item, index) => {
+                                    // Convert and format dates
+                                    const formattedDate = new Date(item.date).toLocaleDateString(undefined, {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    });
+                                    const formattedClockIn = new Date(item.clockInDate).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: true,
+                                    });
+                                    const formattedClockOut = new Date(item.clockOutDate).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: true,
+                                    });
+
+                                    return (
+                                        <tr key={index} className="border-t hover:bg-gray-50 transition">
+                                            <td className="p-3 border-r">{formattedDate}</td>
+                                            <td className="p-3 border-r">{formattedClockIn}</td>
+                                            <td className="p-3 border-r">{formattedClockOut}</td>
+                                            <td className="p-3 border-r">
+                                                <span
+                                                    className={`inline-block px-2 py-1 rounded text-sm font-medium ${item.status === "Present"
+                                                            ? "bg-green-100 text-green-600"
+                                                            : item.status === "Absent"
+                                                                ? "bg-red-100 text-red-600"
+                                                                : "bg-yellow-100 text-yellow-600"
+                                                        }`}
+                                                >
+                                                    {item.status}
+                                                </span>
+                                            </td>
+                                            <td className="p-3">{item.late || "N/A"}</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
+
                         </table>
                     </div>
                 </div>

@@ -23,6 +23,7 @@ import Login from './authcomponent/Login';
 import SignUp from './authcomponent/SignUp';
 import UserTaskManagement from './user/pages/UserTaskManagement';
 import SignupForm from './authcomponent/SignupForm';
+import AdminPayroll from './admin/pages/AdminPayroll';
 
 function App() {
     return (
@@ -52,6 +53,8 @@ function App() {
                 <Route path="/admin/leaves/apply" element={<Adminleaves />} />
                 <Route path="/admin/management" element={<AdminManagement />} />
                 <Route path="/admin/create-event" element={<AdminCreateEvents />} />
+                <Route path="/admin/payroll" element={<AdminPayroll />} />
+
             </Routes>
     );
 }
