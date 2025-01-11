@@ -116,14 +116,14 @@ const UserHome = () => {
                         <UserHeader />
                     </div>
                 </div>
-                <div className="p-8">  {/* Increased padding from p-6 to p-8 */}
+                <div className="p-8 bg-white">  {/* Increased padding from p-6 to p-8 */}
                     <div className="mb-6">
                         <div className="flex justify-between items-center mb-6">
                             <h1 className="text-lg">
                                 Welcome back, <span className="text-blue-600">Aditya</span>
                             </h1>
                             <p className="text-gray-600">
-                                Tue, <CustomClock /> AM
+                            <span className="text-blue-600"> Tue, </span> <CustomClock /> <span className="text-blue-600">AM</span>
                             </p>
                         </div>
 

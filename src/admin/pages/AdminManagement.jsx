@@ -104,7 +104,7 @@ const AdminManagement = () => {
     return (
         <div className="flex bg-gray-50 min-h-screen">
             <AdminSideBar />
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
                 <AdminHeader
                     title="Admin Dashboard"
                     avatarSrc="/api/placeholder/35/35"
@@ -112,10 +112,10 @@ const AdminManagement = () => {
                     showChevron={true}
                 />
 
-                <div className="p-6">
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <div className="flex justify-between items-center mb-8">
-                            <p className="text-gray-600 text-lg">
+                <div className="p-[1.25vw]">
+                    <div className="bg-white rounded-[0.417vw] shadow-sm p-[1.25vw]">
+                        <div className="flex justify-between items-center mb-[1.667vw]">
+                            <p className="text-gray-600 text-[0.938vw]">
                                 Welcome back, <span className="text-blue-600">Admin</span>
                             </p>
                             <p className="text-gray-600">
@@ -123,19 +123,19 @@ const AdminManagement = () => {
                             </p>
                         </div>
 
-                        <div className="flex gap-4 mb-8">
+                        <div className="flex gap-[0.833vw] mb-[1.667vw]">
                             <div className="relative flex-1">
-                                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                                <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                                 <input
                                     type="text"
                                     placeholder="Search by Date, Time, Status..."
-                                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                    className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <select
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={departmentFilter}
                                 onChange={(e) => setDepartmentFilter(e.target.value)}
                             >
@@ -144,20 +144,20 @@ const AdminManagement = () => {
                                 <option value="backend">Backend</option>
                                 <option value="design">Design</option>
                             </select>
-                            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                                 <Calendar size={20} className="text-gray-400" />
                                 <span>13 Jan, 2024</span>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                                 <Download size={20} />
                                 Export CSV
                             </button>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-6 mb-12">
-                            <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-blue-50 rounded-lg">
+                        <div className="grid grid-cols-3 gap-[1.25vw] mb-[2.5vw]">
+                            <div className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-100 shadow-sm">
+                                <div className="flex items-center gap-[0.833vw]">
+                                    <div className="p-3 bg-blue-50 rounded-[0.417vw]">
                                         <Users className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
@@ -166,27 +166,27 @@ const AdminManagement = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-green-50 rounded-lg">
+                            <div className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-100 shadow-sm">
+                                <div className="flex items-center gap-[0.833vw]">
+                                    <div className="p-[0.625vw] bg-green-50 rounded-[0.417vw]">
                                         <Users className="w-6 h-6 text-green-600" />
                                     </div>
                                     <div>
                                         <p className="text-gray-500">Activated</p>
-                                        <p className="text-3xl font-bold text-gray-900">
+                                        <p className="text-[1.563vw] font-bold text-gray-900">
                                             {users.filter(user => user.status === 'active').length}
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-yellow-50 rounded-lg">
+                            <div className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-100 shadow-sm">
+                                <div className="flex items-center gap-[0.833vw]">
+                                    <div className="p-[0.625vw] bg-yellow-50 rounded-[0.417vw]">
                                         <Shield className="w-6 h-6 text-yellow-600" />
                                     </div>
                                     <div>
                                         <p className="text-gray-500">Admin</p>
-                                        <p className="text-3xl font-bold text-gray-900">
+                                        <p className="text-[1.563vw] font-bold text-gray-900">
                                             {users.filter(user => user.roles.some(role => role.name.toLowerCase() === 'admin')).length}
                                         </p>
                                     </div>
@@ -194,21 +194,21 @@ const AdminManagement = () => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-6">
+                        <div className="grid grid-cols-3 gap-[1.25vw]">
                             {users.map((user, index) => (
-                                <div key={index} className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                                <div key={index} className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-200 shadow-sm">
                                     <div className="flex flex-col items-center text-center">
                                         <img
                                             src={user.image}
                                             alt={user.name}
-                                            className="w-20 h-20 rounded-full mb-4"
+                                            className="w-20 h-20 rounded-full mb-[0.833vw]"
                                         />
                                         <h3 className="font-medium text-gray-900">{user.name}</h3>
-                                        <p className="text-sm text-gray-500 mb-4">{user.roles[0]?.name}</p>
+                                        <p className="text-[0.729vw] text-gray-500 mb-[0.833vw]">{user.roles[0]?.name}</p>
 
-                                        <div className="flex flex-col gap-2 w-full">
+                                        <div className="flex flex-col gap-[0.417vw] w-full">
                                             <select
-                                                className={`w-full px-4 py-2 rounded-lg border ${getUserTypeStyle(user.roles[0]?.name)}`}
+                                                className={`w-full px-[0.833vw] py-[0.417vw] rounded-[0.417vw] border ${getUserTypeStyle(user.roles[0]?.name)}`}
                                                 value={user.roles[0]?.name}
                                                 onChange={(e) => handleRoleAndStatusChange(user.id, e.target.value, user.status)}
                                             >
@@ -218,7 +218,7 @@ const AdminManagement = () => {
                                             </select>
 
                                             <select
-                                                className={`w-full px-4 py-2 rounded-lg border ${getStatusStyle(user.status)}`}
+                                                className={`w-full px-[0.833vw] py-[0.417vw] rounded-[0.417vw] border ${getStatusStyle(user.status)}`}
                                                 value={user.status}
                                                 onChange={(e) => handleRoleAndStatusChange(user.id, user.roles[0]?.name, e.target.value)}
                                             >

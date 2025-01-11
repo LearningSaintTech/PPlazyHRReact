@@ -13,17 +13,19 @@ const TicketQuery = () => {
         date: "",
     });
     const [ticketTitle, setTicketTitle] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
     const [ticketDescription, setTicketDescription] = useState("");
-    const getStatusColor = (status) => {
+    const getStatusStyles = (status) => {
         switch (status) {
             case 'Open':
-                return 'bg-blue-100 text-blue-500'; // Blue for open tickets
-            case 'In Progress':
-                return 'bg-yellow-100 text-yellow-500'; // Yellow for in-progress tickets
-            case 'Closed':
-                return 'bg-green-100 text-green-500'; // Green for closed tickets
+                return 'bg-[#e6f5ee] border-[#069855] text-[#069855]';
+            case 'Close':
+                return 'bg-[#f5e6e6] border-[#d62525] text-[#d62525]';
+            case 'Pending':
+                return 'bg-[#f5efe6] border-[#ffae00] text-[#ffae00]';
             default:
-                return 'bg-gray-100 text-gray-500'; // Gray for unknown status
+                return '';
         }
     };
 
@@ -41,6 +43,17 @@ const TicketQuery = () => {
         const interval = setInterval(updateDateTime, 1000);
         return () => clearInterval(interval);
     }, []);
+
+    // Filter and search functionality
+    const filteredTickets = tickets.filter(ticket => {
+        const matchesSearch = searchTerm === "" ||
+            Object.values(ticket).some(value =>
+                value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        const matchesStatus = statusFilter === "" ||
+            ticket.status.toLowerCase() === statusFilter.toLowerCase();
+        return matchesSearch && matchesStatus;
+    });
 
     useEffect(() => {
         const userId = 1; // Assuming the user ID is 1, replace with actual user ID
@@ -64,7 +77,7 @@ const TicketQuery = () => {
                 setTickets((prevTickets) => [...prevTickets, response]);
                 setTicketTitle(""); // Reset ticket title input
                 setTicketDescription(""); // Reset ticket description input
-                console.log("newData",tickets)
+                console.log("newData", tickets)
             })
             .catch((error) => {
                 console.error("Error creating ticket:", error);
@@ -77,7 +90,7 @@ const TicketQuery = () => {
             <UserSideBar />
 
             {/* Main Content */}
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 p-[1.667vw] pl-[17.583vw]">
                 {/* Header */}
                 <UserHeader
                     title="User Dashboard"
@@ -87,9 +100,9 @@ const TicketQuery = () => {
                 />
 
                 {/* Ticket Management Section */}
-                <section className="bg-white p-8 rounded-lg shadow relative mt-8">
-                    <div className="flex justify-between items-center mb-4">
-                        <p className="text-gray-600 text-lg">
+                <section className="bg-white p-[1.667vw] rounded-[0.417vw] shadow relative mt-[1.667vw]">
+                    <div className="flex justify-between items-center mb-[0.833vw]">
+                        <p className="text-gray-600 text-[0.938vw]">
                             Welcome back, <span className="text-blue-500 font-semibold">Aditya</span>
                         </p>
                         <p className="text-blue-500 font-medium">
@@ -97,62 +110,109 @@ const TicketQuery = () => {
                         </p>
                     </div>
 
-                    <h3 className="text-gray-600 text-lg font-bold mb-6">Manage Tickets</h3>
-
-                    {/* Create Ticket */}
-                    <div className="mb-8">
-                        <h4 className="text-gray-700 font-bold mb-4">Create New Ticket</h4>
-                        <input
-                            type="text"
-                            placeholder="Write your title here..."
-                            className="w-full p-3 border rounded-lg mb-4 focus:outline-none focus:border-indigo-500"
-                            value={ticketTitle}
-                            onChange={(e) => setTicketTitle(e.target.value)}
-                        />
-                        <textarea
-                            placeholder="Write your description here..."
-                            className="w-full p-3 border rounded-lg h-24 resize-none focus:outline-none focus:border-indigo-500"
-                            value={ticketDescription}
-                            onChange={(e) => setTicketDescription(e.target.value)}
-                        />
-                        <div className="flex justify-end mt-4">
-                            <button className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600" onClick={handleCreateTicket}>
-                                Create Ticket
-                            </button>
+                    {/* Search and Filter Row */}
+                    <div className="flex gap-[0.833vw] mb-[1.667vw]">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
+                            <input
+                                type="text"
+                                placeholder="Search by Name, ID, status..."
+                                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
+                        <select
+                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                            <option value="">Action</option>
+                            <option value="open">Open</option>
+                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                        <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
+                            <Calendar size={20} className="text-gray-400" />
+                            <span>13 Jan, 2024</span>
+                        </div>
+                        <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
+                            <Download size={20} />
+                            Export CSV
+                        </button>
                     </div>
 
-                    <hr className="mb-8" />
+                    {/* Form Section */}
+                    <form className="pb-[2.5vw] border-b border-black/10 flex justify-between items-end">
+                        <div className="w-[38.333vw] space-y-6">
+                            <div className="space-y-6">
+                                <label className="text-[#5c606a] text-[1.25vw] font-medium block">Title</label>
+                                <input
+                                    type="text"
+                                    placeholder="Write your title here...."
+                                    className="w-full px-[1.25vw] py-[0.833vw] rounded-[0.625vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border border-black/20 text-[0.833vw] font-light placeholder:text-black/40"
+                                    value={ticketTitle}
+                                    onChange={(e) => setTicketTitle(e.target.value)}
+                                />
+                            </div>
 
-                    {/* Tickets Table */}
-                    <div>
-                        <h4 className="text-gray-700 font-bold mb-4">Recent Tickets</h4>
-                        <div className="overflow-x-auto">
-                            <table className="w-full border-collapse">
-                                <thead>
-                                    <tr className="bg-gray-50">
-                                        <th className="px-4 py-2 text-left text-gray-600 font-medium">Date</th>
-                                        <th className="px-4 py-2 text-left text-gray-600 font-medium">Title</th>
-                                        <th className="px-4 py-2 text-left text-gray-600 font-medium">Description</th>
-                                        <th className="px-4 py-2 text-left text-gray-600 font-medium">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {tickets.map((ticket) => (
-                                        <tr key={ticket.id} className="border-t hover:bg-gray-50">
-                                            <td className="px-4 py-3">{new Date(ticket.createdAt).toLocaleDateString()}</td>
-                                            <td className="px-4 py-3">{ticket.title}</td>
-                                            <td className="px-4 py-3">{ticket.description}</td>
-                                            <td className="px-4 py-3">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
-                                                    {ticket.status}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
+                            <div className="space-y-6">
+                                <label className="text-[#5c606a] text-[1.25vw] font-medium block">Description</label>
+                                <textarea
+                                    placeholder="Write your description here...."
+                                    className="w-full px-[1.25vw] pt-[0.833vw] pb-[2.5vw] rounded-[0.625vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border border-black/20 text-[0.833vw] font-light placeholder:text-black/40 resize-none"
+                                    value={ticketDescription}
+                                    onChange={(e) => setTicketDescription(e.target.value)}
+                                />
+                            </div>
+                        </div>
 
-                            </table>
+                        <button
+                            type="submit"
+                            className="w-[11.406vw] px-[1.667vw] py-[0.938vw] bg-[#534feb] rounded-[0.417vw] text-white text-[1.25vw] font-medium"
+                            onClick={handleCreateTicket}
+                        >
+                            Create Ticket
+                        </button>
+                    </form>
+
+                    <hr className="mb-[1.667vw]" />
+
+                    {/* Tickets Table Section */}
+                    <div className="mt-[3.333vw]">
+                        <div className="p-[0.521vw] text-[#5c606a] text-[1.25vw] font-medium mb-[0.938vw]">
+                            Last Created
+                        </div>
+
+                        <div className="space-y-3">
+                            {/* Table Headers */}
+                            <div className="flex gap-[0.417vw]">
+                                {['Date', 'Title', 'Description', 'Status'].map((header) => (
+                                    <div key={header} className="w-[18.75vw] px-[1.25vw] py-[1.146vw] bg-neutral-100 rounded-[0.417vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-[#5c606a] text-[1.25vw] font-medium">
+                                        {header}
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Table Rows */}
+                            {tickets.map((ticket) => (
+                                <div key={ticket.id} className="flex justify-between border-b border-black/20">
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                        {new Date(ticket.createdAt).toLocaleDateString()}
+                                    </div>
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                        {ticket.title}
+                                    </div>
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                        {ticket.description}
+                                    </div>
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[0.781vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2">
+                                        <div className={`w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border flex items-center ${getStatusStyles(ticket.status)}`}>
+                                            <span className="text-[1.25vw] font-light">{ticket.status}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>

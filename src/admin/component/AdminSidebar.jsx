@@ -29,64 +29,64 @@ const AdminSideBar = () => {
     };
 
     return (
-        <div className="fixed left-0 top-0 bg-white h-screen w-[290px] px-6 py-8 flex flex-col shadow-lg overflow-hidden">
-            <div className="flex items-center mb-6">
-                <img src={Logo} alt="LazyHR" className="h-[80px] w-[200px]" />
+        <div className="fixed left-0 top-0 bg-white h-screen w-[16vw] px-[1.25vw] py-[1.667vw] flex flex-col shadow-lg overflow-hidden">
+            <div className="flex items-center mb-[1.25vw]">
+                <img src={Logo} alt="LazyHR" className="h-[4.167vw] w-[10.417vw]" />
             </div>
 
             <nav className="flex-1 overflow-y-auto space-y-2 scrollbar-thin">
                 <Link
                     to="/admin/home"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/home')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/home')}`}
                 >
-                    <FaHome className="mr-3" />
-                    <span>Home</span>
+                    <FaHome className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Home</span>
                 </Link>
 
                 <Link
                     to="/admin/employees"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/employees')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/employees')}`}
                 >
-                    <FaUsers className="mr-3" />
-                    <span>Employees</span>
+                    <FaUsers className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Employees</span>
                 </Link>
 
                 <Link
                     to="/admin/attendance"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/attendance')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/attendance')}`}
                 >
-                    <FaCalendarAlt className="mr-3" />
-                    <span>Attendance</span>
+                    <FaCalendarAlt className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Attendance</span>
                 </Link>
 
                 <div>
                     <button
-                        className={`w-full flex items-center p-3 rounded-md ${getActiveClass('/admin/tickets')}`}
+                        className={`w-full flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/tickets')}`}
                         onClick={() => setShowTicketOptions(!showTicketOptions)}
                     >
-                        <FaTicketAlt className="mr-3" />
-                        <span>Tickets</span>
+                        <FaTicketAlt className="mr-[0.625vw]" />
+                        <span className="text-[1.042vw]">Tickets</span>
                         <div className="ml-auto">
                             {showTicketOptions ? (
-                                <FaChevronUp className="w-5 h-5" />
+                                <FaChevronUp className="w-[1.042vw] h-[1.042vw]" />
                             ) : (
-                                <FaChevronDown className="w-5 h-5" />
+                                <FaChevronDown className="w-[1.042vw] h-[1.042vw]" />
                             )}
                         </div>
                     </button>
                     {showTicketOptions && (
-                        <div className="ml-8 space-y-2">
+                        <div className="ml-[1.667vw] space-y-2">
                             <Link
                                 to="/admin/tickets/query"
-                                className={`flex items-center p-2 rounded-md ${getActiveClass('/admin/tickets/query')}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/tickets/query')}`}
                             >
-                                <span>Query</span>
+                                <span className="text-[1.042vw]">Query</span>
                             </Link>
                             <Link
                                 to="/admin/tickets/reimbursement"
-                                className={`flex items-center p-2 rounded-md ${getActiveClass('/admin/tickets/reimbursement')}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/tickets/reimbursement')}`}
                             >
-                                <span>Reimbursement</span>
+                                <span className="text-[1.042vw]">Reimbursement</span>
                             </Link>
                         </div>
                     )}
@@ -94,56 +94,56 @@ const AdminSideBar = () => {
 
                 <Link
                     to="/admin/task-management"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/task-management')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/task-management')}`}
                 >
-                    <FaTasks className="mr-3" />
-                    <span>Task Management</span>
+                    <FaTasks className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Task Management</span>
                 </Link>
 
                 <Link
                     to="/admin/payroll"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/payroll')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/payroll')}`}
                 >
-                    <FaMoneyCheckAlt className="mr-3" />
-                    <span>Payroll</span>
+                    <FaMoneyCheckAlt className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Payroll</span>
                 </Link>
 
                 <Link
                     to="/admin/management"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/management')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/management')}`}
                 >
-                    <FaClipboardList className="mr-3" />
-                    <span>Management</span>
+                    <FaClipboardList className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Management</span>
                 </Link>
 
                 <div>
                     <button
-                        className={`w-full flex items-center p-3 rounded-md ${getActiveClass('/admin/leaves')}`}
+                        className={`w-full flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves')}`}
                         onClick={() => setShowLeaveOptions(!showLeaveOptions)}
                     >
-                        <FaCalendarAlt className="mr-3" />
-                        <span>Leaves</span>
+                        <FaCalendarAlt className="mr-[0.625vw]" />
+                        <span className="text-[1.042vw]">Leaves</span>
                         <div className="ml-auto">
                             {showLeaveOptions ? (
-                                <FaChevronUp className="w-5 h-5" />
+                                <FaChevronUp className="w-[1.042vw] h-[1.042vw]" />
                             ) : (
-                                <FaChevronDown className="w-5 h-5" />
+                                <FaChevronDown className="w-[1.042vw] h-[1.042vw]" />
                             )}
                         </div>
                     </button>
                     {showLeaveOptions && (
-                        <div className="ml-8 space-y-2">
+                        <div className="ml-[1.667vw] space-y-2">
                             <Link
                                 to="/admin/leaves/apply"
-                                className={`flex items-center p-2 rounded-md ${getActiveClass('/admin/leaves/apply')}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/apply')}`}
                             >
-                                <span>Apply Leave</span>
+                                <span className="text-[1.042vw]">Apply Leave</span>
                             </Link>
                             <Link
                                 to="/admin/leaves/my-leaves"
-                                className={`flex items-center p-2 rounded-md ${getActiveClass('/admin/leaves/my-leaves')}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/my-leaves')}`}
                             >
-                                <span>My Leaves</span>
+                                <span className="text-[1.042vw]">My Leaves</span>
                             </Link>
                         </div>
                     )}
@@ -151,29 +151,29 @@ const AdminSideBar = () => {
 
                 <Link
                     to="/admin/create-event"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/create-event')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/create-event')}`}
                 >
-                    <FaCalendarPlus className="mr-3" />
-                    <span>Create Event</span>
+                    <FaCalendarPlus className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Create Event</span>
                 </Link>
 
                 <div>
                     <button
-                        className={`w-full flex items-center p-3 rounded-md ${getActiveClass('/admin/settings')}`}
+                        className={`w-full flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/settings')}`}
                         onClick={() => setShowSettingOptions(!showSettingOptions)}
                     >
-                        <FaCog className="mr-3" />
-                        <span>Settings</span>
+                        <FaCog className="mr-[0.625vw]" />
+                        <span className="text-[1.042vw]">Settings</span>
                         <div className="ml-auto">
                             {showSettingOptions ? (
-                                <FaChevronUp className="w-5 h-5" />
+                                <FaChevronUp className="w-[1.042vw] h-[1.042vw]" />
                             ) : (
-                                <FaChevronDown className="w-5 h-5" />
+                                <FaChevronDown className="w-[1.042vw] h-[1.042vw]" />
                             )}
                         </div>
                     </button>
                     {showSettingOptions && (
-                        <div className="ml-8 space-y-2">
+                        <div className="ml-[1.667vw] space-y-2">
                             {/* Add your settings options here */}
                         </div>
                     )}
@@ -183,18 +183,18 @@ const AdminSideBar = () => {
             <div className="mt-auto space-y-2">
                 <Link
                     to="/admin/help"
-                    className={`flex items-center p-3 rounded-md ${getActiveClass('/admin/help')}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/help')}`}
                 >
-                    <FaQuestionCircle className="mr-3" />
-                    <span>Help</span>
+                    <FaQuestionCircle className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Help</span>
                 </Link>
 
                 <div
-                    className={`flex items-center mt-4 p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center mt-[0.833vw] p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={handleLogout}
                 >
-                    <FaDoorOpen className="mr-2" />
-                    <span>Logout</span>
+                    <FaDoorOpen className="mr-[0.417vw]" />
+                    <span className="text-[1.042vw]">Logout</span>
                 </div>
             </div>
         </div>

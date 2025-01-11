@@ -28,7 +28,7 @@ const SignUp = () => {
             console.log("You're successfully registered. Please verify your email!", response);
 
             // Set token in localStorage and Redux store
-            localStorage.setItem(ACCESS_TOKEN,response.data.accessToken);
+            localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
             dispatch(setToken(response.data.accessToken));
 
             // Fetch current user data
@@ -52,36 +52,35 @@ const SignUp = () => {
         }));
     };
 
+    const handleNavigate = () => {
+        navigate('/');
+    };
+
     return (
-        <div className="min-h-screen bg-indigo-50 flex flex-col">
+        <div className="min-h-screen bg-indigo-50 flex flex-row">
             {/* Header */}
-            <header className="p-6">
-                <div className="flex items-center w-[164px] h-[76px] ml-[68px] mt-[35px]">
+            <header className="p-[1.25vw]">
+                <div className="flex items-center w-[7.729vw] h-[4.958vw] ml-[3.542vw] mt-[1.823vw]">
                     <img
                         src={Logo}
                         alt="LazyHR Logo"
-                        className=""
                     />
+                </div>
+                <div className="w-[52.083vw] h-[36.094vw] mt-10 ml-[7.135vw] items-center">
+                    <img
+                        src={LoginImg}
+                        alt="HR Management Illustration"
+                    />
+                    <p className="mt-[1.25vw] text-center text-gray-700 text-lg">
+                        Simplify your HR hustle, One click at a time!
+                    </p>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 lg:px-8">
-                {/* Left Side - Illustration */}
-                <div className="w-[1056px] h-[693px] flex flex-col items-center">
-                    <img
-                        src={LoginImg}
-                        alt="HR Management Illustration"
-                        className=""
-                    />
-                    <p className="mt-6 text-center text-gray-700 text-lg">
-                        Simplify your HR hustle, One click at a time!
-                    </p>
-                </div>
-
-                {/* Right Side - Signup Form */}
-                <div className="w-[560px] h-[1024px]">
-                    <div className="bg-white rounded-lg shadow-lg px-[60px] py-[60px]">
+            <main className="flex-1 flex flex-row items-center justify-center px-[1vw]">
+                <div className="w-full max-w-md py-6">
+                    <div className="bg-white rounded-2xl shadow-lg px-[3vw] py-[5.6vw]">
                         <div className="text-center mb-8">
                             <h2 className="text-3xl font-semibold text-gray-800">
                                 Create your Account
@@ -92,7 +91,7 @@ const SignUp = () => {
                         </div>
 
                         <form onSubmit={handleSubmit}>
-                            <div className="space-y-6">
+                            <div className="space-y-6 py-[5.167vw]">
                                 {/* Full Name Input */}
                                 <div>
                                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -179,16 +178,15 @@ const SignUp = () => {
                                 >
                                     Create Account
                                 </button>
-
-                                {/* Login Link */}
-                                <div className="text-center mt-4">
-                                    <span className="text-gray-600">Already Have An Account? </span>
-                                    <a href="#" className="text-indigo-600 hover:text-indigo-500">
-                                        Login Here
-                                    </a>
-                                </div>
                             </div>
                         </form>
+                        {/* Login Link */}
+                        <div className="text-center mt-4">
+                            <span className="text-gray-600">Already Have An Account? </span>
+                            <button onClick={handleNavigate} className="text-indigo-600 hover:text-indigo-500">
+                                Login Here
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>

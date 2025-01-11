@@ -24,9 +24,9 @@ const UserSideBar = () => {
     return (
         <div className="bg-white h-screen w-[290px] px-6 py-8 flex flex-col shadow-lg fixed left-0 top-0 bottom-0">
             <div className="flex items-center mb-2">
-                <img src={Logo} alt="LazyHR" className="h-[80px] w-[200px] mr-2" />
+                <img src={Logo} alt="LazyHR" className="h-[5.208vw] w-[10.5vw] mr-2" />
             </div>
-            <nav className="flex-1 space-y-4 overflow-y-auto">
+            <nav className="flex-1 space-y-0 overflow-y-auto">
                 {/* Home */}
                 <Link
                     to="/user/home"
@@ -193,21 +193,23 @@ const UserSideBar = () => {
             </nav>
 
             {/* Help */}
-            <div
-                className={`flex items-center p-3 rounded-md ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
-                onClick={() => handleItemClick('Help')}
-            >
-                <FaQuestionCircle className="mr-2" />
-                <span>Help</span>
-            </div>
+            <div className='space-y-0'>
+                <div
+                    className={`flex items-center p-3 rounded-md ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    onClick={() => handleItemClick('Help')}
+                >
+                    <FaQuestionCircle className="mr-2" />
+                    <span>Help</span>
+                </div>
 
-            {/* Logout */}
-            <div
-                className={`flex items-center mt-4 p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
-                onClick={handleLogout}
-            >
-                <FaDoorOpen className="mr-2" />
-                <span>Logout</span>
+                {/* Logout */}
+                <div
+                    className={`flex items-center p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    onClick={handleLogout}
+                >
+                    <FaDoorOpen className="mr-2" />
+                    <span>Logout</span>
+                </div>
             </div>
         </div>
     );

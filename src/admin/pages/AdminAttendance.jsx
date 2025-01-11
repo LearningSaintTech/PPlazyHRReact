@@ -27,39 +27,39 @@ const AdminAttendance = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-[15%] p-8 bg-gray-100 overflow-auto">
+      <div className="flex-1 ml-[15%] p-[1.667vw] bg-gray-100 overflow-auto">
         {/* Header */}
         <AdminHeader />
 
         {/* Content Area */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
-          <h2 className="text-3xl font-semibold mb-6">
+        <div className="bg-white p-[1.25vw] rounded-[0.417vw] shadow-lg mt-[1.25vw]">
+          <h2 className="text-[1.563vw] font-semibold mb-[1.25vw]">
             Welcome back, <span className="text-indigo-600">Admin</span>
           </h2>
 
           {/* Search and Filters */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Search by Name, ID, status..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
               />
             </div>
             <select
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
             >
               <option value="">Action</option>
               <option value="open">Open</option>
               <option value="closed">Closed</option>
               <option value="pending">Pending</option>
             </select>
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
               <Calendar size={20} className="text-gray-400" />
               <span>13 Jan, 2024</span>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
               <Download size={20} />
               Export CSV
             </button>
@@ -70,23 +70,23 @@ const AdminAttendance = () => {
             <table className="table-auto w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Serial</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Date</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">User ID</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Employee</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Clock In</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Clock Out</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Serial</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Date</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">User ID</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Employee</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock In</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
                 </tr>
               </thead>
               <tbody>
                 {attendanceData.map((data, index) => (
                   <tr key={data.id} className="hover:bg-gray-50">
-                    <td className="p-4 border-b text-lg text-gray-700">{index + 1}</td>
-                    <td className="p-4 border-b text-lg text-gray-700">{data.date}</td>
-                    <td className="p-4 border-b text-lg text-gray-700">{data.userId}</td>
-                    <td className="p-4 border-b text-lg text-gray-700">{data.employee}</td>
-                    <td className="p-4 border-b text-lg text-gray-700">{data.clockIn}</td>
-                    <td className="p-4 border-b text-lg text-gray-700">{data.clockOut}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{index + 1}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.date}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.userId}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employee}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.clockIn}</td>
+                    <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.clockOut}</td>
                   </tr>
                 ))}
               </tbody>
