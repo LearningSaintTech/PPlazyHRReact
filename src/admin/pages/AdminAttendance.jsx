@@ -112,24 +112,24 @@ const AdminAttendance = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-[15%] p-8 bg-gray-100 overflow-auto">
+      <div className="flex-1 ml-[15%] p-[1.667vw] bg-gray-100 overflow-auto">
         {/* Header */}
         <AdminHeader />
 
         {/* Content Area */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mt-6">
-          <h2 className="text-3xl font-semibold mb-6">
+        <div className="bg-white p-[1.25vw] rounded-[0.417vw] shadow-lg mt-[1.25vw]">
+          <h2 className="text-[1.563vw] font-semibold mb-[1.25vw]">
             Welcome back, <span className="text-indigo-600">Admin</span>
           </h2>
 
           {/* Search and Filters */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Search by Name, ID, status..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
@@ -144,7 +144,7 @@ const AdminAttendance = () => {
               />
             </div>
             <select
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
               value={selectedStatus}
               onChange={handleStatusChange}
             >
@@ -153,7 +153,11 @@ const AdminAttendance = () => {
               <option value="absent">Absent</option>
               <option value="half-day">Half-Day</option>
             </select>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50" onClick={exportToCSV}>
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
+              <Calendar size={20} className="text-gray-400" />
+              <span>13 Jan, 2024</span>
+            </div>
+            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50" onClick={exportToCSV}>
               <Download size={20} />
               Export CSV
             </button>
@@ -164,27 +168,27 @@ const AdminAttendance = () => {
             <table className="table-auto w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Serial</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Date</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">User ID</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Employee</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Clock In</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Clock Out</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Working Time</th>
-                  <th className="p-4 border-b font-medium text-lg text-gray-600">Status</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Serial</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Date</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">User ID</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Employee</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock In</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Working Time</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredAttendanceData.length > 0 ? (
                   filteredAttendanceData.map((data, index) => (
                     <tr key={data.id} className="hover:bg-gray-50">
-                      <td className="p-4 border-b text-lg text-gray-700">{index + 1}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{formatDate(data.date)}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{data.id}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{data.employeeDetail.empId}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{formatTime(data.clockInDate)}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{formatTime(data.clockOutDate)}</td>
-                      <td className="p-4 border-b text-lg text-gray-700">{data.workingTime}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{index + 1}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatDate(data.date)}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.id}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.empId}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockInDate)}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>
                       <td className={`p-4 border-b text-lg text-gray-700 rounded-md`}>
                         <span className={`${data.status.toUpperCase() === 'A' ? 'bg-red-200 text-red-700 p-2 rounded-md' :
                           data.status.toUpperCase() === 'H' ? 'bg-yellow-200 text-yellow-700 p-2 rounded-md' :

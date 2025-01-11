@@ -7,20 +7,20 @@ const UserProfile = () => {
     const [activeTab, setActiveTab] = useState("personal");
     const [formData, setFormData] = useState({
         // Personal Details
-        firstName: "Aditya",
-        surname: "Raj",
+        firstName: "",
+        surname: "",
         pincode: "",
-        city: "Noida",
-        state: "Uttar Pradesh",
-        email: "someone@gmail.com",
+        city: "",
+        state: "",
+        email: "",
         phone: "",
         dob: "",
-        gender: "Male",
-        bloodGroup: "O+",
+        gender: "",
+        bloodGroup: "",
         address: "",
         // Employment Details
-        employeeProfile: "xyz",
-        salary: "xyz",
+        employeeProfile: "",
+        salary: "",
         employmentType: "",
         workLocation: "",
         department: "",
@@ -29,13 +29,13 @@ const UserProfile = () => {
         allowances: "",
         manager: "",
         // Bank Details
-        bankName: "123445",
+        bankName: "",
         bankBranch: "",
         accountHolder: "",
         passBook: "",
-        accountNumber: "xyz",
-        customerID: "xyz",
-        ifscCode: "xyz",
+        accountNumber: "",
+        customerID: "",
+        ifscCode: "",
         aadharCard: "",
         panCard: "",
         bankPhone: "" // Added new field for bank phone number
@@ -92,15 +92,6 @@ const UserProfile = () => {
                 />
 
                 <div className="mt-6 bg-white rounded-lg p-6">
-                    <div className="flex justify-between items-center mb-4">
-                        <p className="text-gray-600 text-lg">
-                            Welcome back,{" "}
-                            <span className="text-indigo-600 font-semibold">Aditya</span>
-                        </p>
-                        <p className="text-indigo-600 font-medium">
-                            {currentDateTime.day}, {currentDateTime.time}
-                        </p>
-                    </div>
 
                     <h2 className="text-2xl font-semibold text-gray-800 mb-8">
                         My Profile
@@ -130,10 +121,10 @@ const UserProfile = () => {
                     </div>
 
                     <div className="flex">
-                        <div className="flex flex-col space-y-2 w-56 pr-8 border-r border-gray-200">
+                        <div className="flex flex-col space-y-2 w-[11.667vw] pr-8 border-r border-gray-200">
                             <button
                                 onClick={() => setActiveTab("personal")}
-                                className={`w-full py-3 px-6 text-left rounded-lg transition-colors ${activeTab === "personal"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "personal"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -142,7 +133,7 @@ const UserProfile = () => {
                             </button>
                             <button
                                 onClick={() => setActiveTab("employment")}
-                                className={`w-full py-3 px-6 text-left rounded-lg transition-colors ${activeTab === "employment"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "employment"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -151,7 +142,7 @@ const UserProfile = () => {
                             </button>
                             <button
                                 onClick={() => setActiveTab("bank")}
-                                className={`w-full py-3 px-6 text-left rounded-lg transition-colors ${activeTab === "bank"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "bank"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -162,469 +153,423 @@ const UserProfile = () => {
 
                         <div className="flex-1 pl-8">
                             {activeTab === "personal" && (
-                                <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                    <div className="grid grid-cols-2 gap-4 col-span-2">
+                                <div className="grid grid-cols-2 space-x-4" >
+                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                        <div className="grid grid-cols-2 gap-4 col-span-2">
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    First Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="firstName"
+                                                    value={formData.firstName}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Surname
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="surname"
+                                                    value={formData.surname}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+                                        </div>
+
                                         <div>
                                             <label className="block text-sm text-gray-500 mb-1">
-                                                First Name
+                                                Date of Birth
                                             </label>
                                             <input
-                                                type="text"
-                                                id="firstName"
-                                                value={formData.firstName}
+                                                type="date"
+                                                id="dob"
+                                                value={formData.dob}
                                                 onChange={handleInputChange}
                                                 className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
+
                                         <div>
                                             <label className="block text-sm text-gray-500 mb-1">
-                                                Surname
+                                                Gender
+                                            </label>
+                                            <select
+                                                id="gender"
+                                                value={formData.gender}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            >
+                                                <option value="Select Any" className="text-gray-600">Select Any</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Blood Group
                                             </label>
                                             <input
                                                 type="text"
-                                                id="surname"
-                                                value={formData.surname}
+                                                id="bloodGroup"
+                                                value={formData.bloodGroup}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Email
+                                            </label>
+                                            <input
+                                                type="email"
+                                                id="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+                                        <div className="col-span-2">
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Address
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="address"
+                                                value={formData.address}
                                                 onChange={handleInputChange}
                                                 className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Date of Birth
-                                        </label>
-                                        <input
-                                            type="date"
-                                            id="dob"
-                                            value={formData.dob}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Gender
-                                        </label>
-                                        <select
-                                            id="gender"
-                                            value={formData.gender}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        >
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Blood Group
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="bloodGroup"
-                                            value={formData.bloodGroup}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Email
-                                        </label>
-                                        <input
-                                            type="email"
-                                            id="email"
-                                            value={formData.email}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Phone Number
-                                        </label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="text"
-                                                value="+91"
-                                                disabled
-                                                className="w-16 p-2.5 border border-gray-200 rounded-lg bg-gray-50"
-                                            />
-                                            <input
-                                                type="tel"
-                                                id="phone"
-                                                value={formData.phone}
-                                                onChange={handleInputChange}
-                                                placeholder="Mobile Number"
-                                                className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                            />
+                                    <div className="space-y-6">
+                                        <div className="col-span-2">
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Phone Number
+                                            </label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    value="+91"
+                                                    disabled
+                                                    className="w-16 p-2.5 border border-gray-200 rounded-lg bg-gray-50"
+                                                />
+                                                <input
+                                                    type="tel"
+                                                    id="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Mobile Number"
+                                                    className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            City
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="city"
-                                            value={formData.city}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
+                                        <div className="grid grid-cols-3 space-x-1">
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    City
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="city"
+                                                    value={formData.city}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Pin Code
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="pincode"
-                                            value={formData.pincode}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Pin Code
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="pincode"
+                                                    value={formData.pincode}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            State
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="state"
-                                            value={formData.state}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    State
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="state"
+                                                    value={formData.state}
+                                                    onChange={handleInputChange}
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
 
-                                    <div className="col-span-2">
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Address
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="address"
-                                            value={formData.address}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
+                                        </div>
                                     </div>
                                 </div>
                             )}
 
                             {activeTab === "employment" && (
-                                <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Employee Profile
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="employeeProfile"
-                                            value={formData.employeeProfile}
-                                            onChange={handleInputChange}
-                                            placeholder="xyz"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Salary
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="salary"
-                                            value={formData.salary}
-                                            onChange={handleInputChange}
-                                            placeholder="xyz"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Employment Type
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="employmentType"
-                                            value={formData.employmentType}
-                                            onChange={handleInputChange}
-                                            placeholder="Write here"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Work Location
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="workLocation"
-                                            value={formData.workLocation}
-                                            onChange={handleInputChange}
-                                            placeholder="Write here"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Department
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="department"
-                                            value={formData.department}
-                                            onChange={handleInputChange}
-                                            placeholder="Write here"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Shift Timing
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="shiftTiming"
-                                            value={formData.shiftTiming}
-                                            onChange={handleInputChange}
-                                            placeholder="00:00:00"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Date of joining
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="dateOfJoining"
-                                            value={formData.dateOfJoining}
-                                            onChange={handleInputChange}
-                                            placeholder="dd/mm/yyyy"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Allowances
-                                        </label>
-                                        <div className="flex gap-2">
+                                <div className="grid grid-cols-2 space-x-4">
+                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Employee Profile
+                                            </label>
                                             <input
                                                 type="text"
-                                                id="allowances"
-                                                value={formData.allowances}
+                                                id="employeeProfile"
+                                                value={formData.employeeProfile}
+                                                onChange={handleInputChange}
+                                                placeholder="Write Here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Salary
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="salary"
+                                                value={formData.salary}
+                                                onChange={handleInputChange}
+                                                placeholder="Write Here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div className="col-span-2">
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Department
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="department"
+                                                value={formData.department}
                                                 onChange={handleInputChange}
                                                 placeholder="Write here"
-                                                className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
                                             />
-                                            <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
-                                                +
-                                            </button>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Allowances
+                                            </label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    id="allowances"
+                                                    value={formData.allowances}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Write here"
+                                                    className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                                <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
+                                                    +
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Manager
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="manager"
-                                            value={formData.manager}
-                                            onChange={handleInputChange}
-                                            placeholder="Write here"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-2 space-x-2">
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Employment Type
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="employmentType"
+                                                    value={formData.employmentType}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Write here"
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Work Location
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="workLocation"
+                                                    value={formData.workLocation}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Write here"
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 space-x-2">
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Shift Timing
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="shiftTiming"
+                                                    value={formData.shiftTiming}
+                                                    onChange={handleInputChange}
+                                                    placeholder="00:00:00"
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-sm text-gray-500 mb-1">
+                                                    Date of joining
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="dateOfJoining"
+                                                    value={formData.dateOfJoining}
+                                                    onChange={handleInputChange}
+                                                    placeholder="dd/mm/yyyy"
+                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Manager
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="manager"
+                                                value={formData.manager}
+                                                onChange={handleInputChange}
+                                                placeholder="Write here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
                                     </div>
                                 </div>
                             )}
 
                             {activeTab === "bank" && (
-                                <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Bank Name
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="bankName"
-                                            value={formData.bankName}
-                                            onChange={handleInputChange}
-                                            placeholder="123445"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Bank Branch
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="bankBranch"
-                                            value={formData.bankBranch}
-                                            onChange={handleInputChange}
-                                            placeholder="10/mm/yyyy"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Account Holder
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="accountHolder"
-                                            value={formData.accountHolder}
-                                            onChange={handleInputChange}
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Phone Number
-                                        </label>
-                                        <div className="flex gap-2">
+                                <div className="grid grid-cols-2 space-x-4">
+                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Bank Name
+                                            </label>
                                             <input
                                                 type="text"
-                                                value="+91"
-                                                disabled
-                                                className="w-16 p-2.5 border border-gray-200 rounded-lg bg-gray-50"
-                                            />
-                                            <input
-                                                type="tel"
-                                                id="bankPhone"
-                                                value={formData.bankPhone}
+                                                id="bankName"
+                                                value={formData.bankName}
                                                 onChange={handleInputChange}
-                                                placeholder="Contact Number"
-                                                className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                placeholder="123445"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Pass Book
-                                        </label>
-                                        <input
-                                            type="file"
-                                            id="passBook"
-                                            onChange={handleFileChange}
-                                            className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Account Number
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="accountNumber"
-                                            value={formData.accountNumber}
-                                            onChange={handleInputChange}
-                                            placeholder="xyz"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Customer ID
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="customerID"
-                                            value={formData.customerID}
-                                            onChange={handleInputChange}
-                                            placeholder="xyz"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            IFSC Code
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="ifscCode"
-                                            value={formData.ifscCode}
-                                            onChange={handleInputChange}
-                                            placeholder="xyz"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            City
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="city"
-                                            value={formData.city}
-                                            onChange={handleInputChange}
-                                            placeholder="Noida"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            Pin Code
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="pincode"
-                                            value={formData.pincode}
-                                            onChange={handleInputChange}
-                                            placeholder="XXXXXX"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm text-gray-500 mb-1">
-                                            State
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="state"
-                                            value={formData.state}
-                                            onChange={handleInputChange}
-                                            placeholder="Uttar Pradesh"
-                                            className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2 grid grid-cols-2 gap-x-16">
                                         <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Bank Branch
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="bankBranch"
+                                                value={formData.bankBranch}
+                                                onChange={handleInputChange}
+                                                placeholder="10/mm/yyyy"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div className="col-span-2">
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Account Number
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="accountNumber"
+                                                value={formData.accountNumber}
+                                                onChange={handleInputChange}
+                                                placeholder="Write Here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Customer ID
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="customerID"
+                                                value={formData.customerID}
+                                                onChange={handleInputChange}
+                                                placeholder="Write Here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                IFSC Code
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="ifscCode"
+                                                value={formData.ifscCode}
+                                                onChange={handleInputChange}
+                                                placeholder="Write Here"
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div className="col-span-2">
                                             <label className="block text-sm text-gray-500 mb-1">
                                                 Upload Aadhar Card
                                             </label>
                                             <input
                                                 type="file"
                                                 id="aadharCard"
+                                                onChange={handleFileChange}
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-6">
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Account Holder
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="accountHolder"
+                                                value={formData.accountHolder}
+                                                onChange={handleInputChange}
+                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm text-gray-500 mb-1">
+                                                Pass Book
+                                            </label>
+                                            <input
+                                                type="file"
+                                                id="passBook"
                                                 onChange={handleFileChange}
                                                 className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
                                             />

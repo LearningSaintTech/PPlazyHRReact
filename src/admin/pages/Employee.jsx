@@ -132,10 +132,6 @@ const AdminEmployeeDashboard = () => {
 
   };
 
-
-
-
-
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -144,25 +140,25 @@ const AdminEmployeeDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 px-8 pt-8 pb-4 overflow-auto bg-gray-100 rounded-tl-3xl">
+      <div className="flex-1 px-[1.667vw] pt-[1.667vw] pb-[1.667vw] overflow-auto bg-gray-100 rounded-tl-[1.25vw]">
         <AdminHeader />
         {/* Content */}
-        <div className="bg-white py-8 px-12 rounded-lg shadow-md">
-          <div className="mb-6 flex justify-between items-center">
-            <h2 className="text-2xl font-semibold">
+        <div className="bg-white py-[1.667vw] px-[2.5vw] rounded-[0.417vw] shadow-md">
+          <div className="mb-[1.25vw] flex justify-between items-center">
+            <h2 className="text-[1.25vw] font-semibold">
               Welcome back, <span className="text-indigo-500">Admin</span>
             </h2>
-            <p className="text-indigo-500 font-mono text-lg">{currentTime}</p>
+            <p className="text-indigo-500 font-mono text-[0.938vw]">{currentTime}</p>
           </div>
 
           {/* Search & Filters */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Search by Name, ID, status..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                 onChange={handleSearchChange}
                 value={searchTerm}
 
@@ -180,12 +176,12 @@ const AdminEmployeeDashboard = () => {
               <option>Finance</option>
               <option>Marketing</option>
             </select>
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
               <Calendar size={20} className="text-gray-400" />
               <span>{todayDate}</span>
             </div>
             <button
-              className="flex items-center gap-2 bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 shadow-sm"
+              className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50"
               onClick={exportToCSV} // Call exportToCSV function
             >
               <IoCloudUploadOutline />
@@ -196,28 +192,28 @@ const AdminEmployeeDashboard = () => {
 
           {/* Table */}
           <div className="overflow-x-auto">
-            <table className="table-auto w-full bg-white rounded-lg shadow-sm overflow-hidden">
+            <table className="table-auto w-full bg-white rounded-[0.417vw] shadow-sm overflow-hidden">
               <thead>
                 <tr className="bg-gray-100 text-gray-700 text-left">
-                  <th className="px-6 py-4">Emp. ID</th>
-                  <th className="px-6 py-4">Department</th>
-                  <th className="px-6 py-4">Employee Name</th>
-                  <th className="px-6 py-4">Designation</th>
-                  <th className="px-6 py-4">Phone No.</th>
-                  <th className="px-6 py-4">View More</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">Emp. ID</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">Department</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">Employee Name</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">Designation</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">Phone No.</th>
+                  <th className="px-[1.25vw] py-[0.833vw]">View More</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredEmployees.map((employee) => (
                   <tr key={employee.id} className="border-b hover:bg-gray-50">
-                    <td className="px-6 py-4">{employee.empId}</td>
-                    <td className="px-6 py-4">{employee.department}</td>
-                    <td className="px-6 py-4">{employee.firstName}</td>
-                    <td className="px-6 py-4">{employee.designation}</td>
-                    <td className="px-6 py-4">{employee.phno}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-[1.25vw] py-[0.833vw]">{employee.empId}</td>
+                    <td className="px-[1.25vw] py-[0.833vw]">{employee.department}</td>
+                    <td className="px-[1.25vw] py-[0.833vw]">{employee.firstName}</td>
+                    <td className="px-[1.25vw] py-[0.833vw]">{employee.designation}</td>
+                    <td className="px-[1.25vw] py-[0.833vw]">{employee.phno}</td>
+                    <td className="px-[1.25vw] py-[0.833vw]">
                       <button
-                        className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
+                        className="bg-indigo-500 text-white px-[0.833vw] py-[0.417vw] rounded hover:bg-indigo-600"
                         onClick={() => openPopup(employee)}
                       >
                         <FaArrowRight />
@@ -230,18 +226,18 @@ const AdminEmployeeDashboard = () => {
           </div>
           {showPopup && selectedEmployee && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-8 rounded-lg max-w-6xl shadow-lg w-[90%] overflow-y-auto h-[90%]">
-                <h2 className="text-2xl font-bold text-indigo-500 mb-6 text-center">
+              <div className="bg-white p-[36.458vw] rounded-[0.417vw] max-w-[60vw] shadow-lg w-[90%] overflow-y-auto h-[90%]">
+                <h2 className="text-[1.25vw] font-bold text-indigo-500 mb-[1.25vw] text-center">
                   Employee Details
                 </h2>
-                <div className="grid grid-cols-3 gap-6 text-sm">
+                <div className="grid grid-cols-3 [1.25vw] text-[0.729vw]">
                   {/* Personal Information */}
                   <div>
                     <label className="font-bold">ID:</label>
                     <input
                       type="text"
                       value={selectedEmployee.employeeId || "N/A"}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       disabled
                     />
                   </div>
@@ -262,7 +258,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="firstName"
                       value={selectedEmployee.firstName}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -272,7 +268,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="surname"
                       value={selectedEmployee.surname}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -282,7 +278,7 @@ const AdminEmployeeDashboard = () => {
                       type="email"
                       name="email"
                       value={selectedEmployee.email}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -292,7 +288,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="phno"
                       value={selectedEmployee.phno}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -302,7 +298,7 @@ const AdminEmployeeDashboard = () => {
                       type="date"
                       name="dob"
                       value={selectedEmployee.dob}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -312,7 +308,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="gender"
                       value={selectedEmployee.gender}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -322,7 +318,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="address"
                       value={selectedEmployee.address}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -332,7 +328,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="city"
                       value={selectedEmployee.city}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -342,7 +338,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="state"
                       value={selectedEmployee.state}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -352,7 +348,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="pinCode"
                       value={selectedEmployee.pinCode}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -362,7 +358,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="bloodGroup"
                       value={selectedEmployee.bloodGroup}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -374,7 +370,7 @@ const AdminEmployeeDashboard = () => {
                       type="date"
                       name="dateOfJoining"
                       value={selectedEmployee.dateOfJoining || ""}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -384,7 +380,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="department"
                       value={selectedEmployee.department || " "}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -394,7 +390,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="designation"
                       value={selectedEmployee.designation || ""}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -404,7 +400,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="shift"
                       value={selectedEmployee.shift || ""}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -416,7 +412,7 @@ const AdminEmployeeDashboard = () => {
                       type="number"
                       name="salary"
                       value={selectedEmployee.salary}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -426,7 +422,7 @@ const AdminEmployeeDashboard = () => {
                       type="number"
                       name="clBalance"
                       value={selectedEmployee.clBalance}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -436,7 +432,7 @@ const AdminEmployeeDashboard = () => {
                       type="number"
                       name="elBalance"
                       value={selectedEmployee.elBalance}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -446,7 +442,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="bankName"
                       value={selectedEmployee.bankName}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -456,7 +452,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="bankBranch"
                       value={selectedEmployee.bankBranch}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -466,7 +462,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="accountHolder"
                       value={selectedEmployee.accountHolder}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -476,7 +472,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="accountNumber"
                       value={selectedEmployee.accountNumber}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -486,7 +482,7 @@ const AdminEmployeeDashboard = () => {
                       type="text"
                       name="ifscCode"
                       value={selectedEmployee.ifscCode}
-                      className="border w-full px-2 py-1 rounded"
+                      className="border w-full px-[0.417vw] py-[0.208vw] rounded"
                       onChange={handleChange}
                     />
                   </div>
@@ -498,7 +494,7 @@ const AdminEmployeeDashboard = () => {
                       href={selectedEmployee.aadharCardPhoto}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-2"
+                      className="text-indigo-500 underline ml-[0.417vw]"
                     >
                       View Photo
                     </a>
@@ -509,7 +505,7 @@ const AdminEmployeeDashboard = () => {
                       href={selectedEmployee.pancardPhoto}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-2"
+                      className="text-indigo-500 underline ml-[0.417vw]"
                     >
                       View Photo
                     </a>
@@ -520,7 +516,7 @@ const AdminEmployeeDashboard = () => {
                       href={selectedEmployee.passbookPhoto}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-indigo-500 underline ml-2"
+                      className="text-indigo-500 underline ml-[0.417vw]"
                     >
                       View Photo
                     </a>
@@ -528,18 +524,18 @@ const AdminEmployeeDashboard = () => {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex justify-end mt-8 gap-4">
+                <div className="flex justify-end mt-[1.667vw] gap-[0.833vw]">
                   <button
-                    className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+                    className="bg-gray-400 text-white px-[0.833vw] py-[0.417vw] rounded hover:bg-gray-500"
                     onClick={closePopup}
                   >
                     Close
                   </button>
                 </div>
 
-                <div className="flex justify-end mt-8 gap-4">
+                <div className="flex justify-end mt-[1.667vw] gap-[0.833vw]">
                   <button
-                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    className="bg-green-500 text-white px-[0.833vw] py-[0.417vw] rounded hover:bg-green-600"
                     onClick={handleSave}
                   >
                     Save Changes
@@ -548,12 +544,6 @@ const AdminEmployeeDashboard = () => {
               </div>
             </div>
           )}
-
-
-
-
-
-
         </div>
       </div>
     </div>

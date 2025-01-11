@@ -25,8 +25,8 @@ const AdminReimbursement = () => {
 
     const handleImageClick = (fileUrl) => {
         if (!fileUrl) {
-          console.error('No valid image URL found');
-          return;
+            console.error('No valid image URL found');
+            return;
         }
 
         // Prepend 'data:image/jpeg;base64,' if not already present in the base64 string
@@ -106,7 +106,7 @@ const AdminReimbursement = () => {
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <AdminSideBar />
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
                 <AdminHeader
                     title="Admin Dashboard"
                     avatarSrc="/api/placeholder/35/35"
@@ -114,9 +114,9 @@ const AdminReimbursement = () => {
                     showChevron={true}
                 />
 
-                <div className="p-6">
-                    <div className="bg-white rounded-lg shadow-lg p-6">
-                        <div className="flex justify-between items-center p-6">
+                <div className="p-[1.25vw]">
+                    <div className="bg-white rounded-[0.417vw] shadow-lg p-[1.25vw]">
+                        <div className="flex justify-between items-center p-[1.25vw]">
                             <p className="text-gray-500 font-medium">
                                 Welcome back, <span className="text-blue-500">Admin</span>
                             </p>
@@ -126,19 +126,19 @@ const AdminReimbursement = () => {
                         </div>
 
                         {/* Search and Filter Row */}
-                        <div className="flex gap-4 mb-8">
+                        <div className="flex gap-[0.833vw] mb-[1.667vw]">
                             <div className="relative flex-1">
-                                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                                <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                                 <input
                                     type="text"
                                     placeholder="Search by Name, ID, status..."
-                                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                    className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <select
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                             >
@@ -147,24 +147,24 @@ const AdminReimbursement = () => {
                                 <option value="closed">Closed</option>
                                 <option value="pending">Pending</option>
                             </select>
-                            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                                 <Calendar size={20} className="text-gray-400" />
                                 <span>13 Jan, 2024</span>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                                 <Download size={20} />
                                 Export CSV
                             </button>
                         </div>
 
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-gray-700 text-lg font-bold">Reimbursement List</h3>
-                            <div className="flex items-center gap-4">
+                        <div className="flex justify-between items-center mb-[1.25vw]">
+                            <h3 className="text-gray-700 text-[0.938vw] font-bold">Reimbursement List</h3>
+                            <div className="flex items-center gap-[0.833vw]">
                                 <span className="text-gray-600">
                                     Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTickets.length)} of {filteredTickets.length} entries
                                 </span>
                                 <select
-                                    className="p-2 border rounded-lg focus:outline-none focus:border-indigo-500"
+                                    className="p-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                     value={itemsPerPage}
                                     onChange={(e) => {
                                         setItemsPerPage(Number(e.target.value));
@@ -183,21 +183,21 @@ const AdminReimbursement = () => {
                             <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="bg-gray-50">
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Created</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Category</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Description</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Status</th>
-                                        <th className="px-4 py-3 text-left text-gray-600 font-medium">Image</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Created</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Category</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Description</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Status</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Image</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentItems.map((ticket, index) => (
                                         <tr key={index} className="border-t hover:bg-gray-50">
-                                            <td className="px-4 py-3">{ticket.createdAt}</td>
-                                            <td className="px-4 py-3">{ticket.category}</td>
-                                            <td className="px-4 py-3">{ticket.description}</td>
-                                            <td className="px-4 py-3">
-                                                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
+                                            <td className="px-[0.833vw] py-[0.625vw]">{ticket.createdAt}</td>
+                                            <td className="px-[0.833vw] py-[0.625vw]">{ticket.category}</td>
+                                            <td className="px-[0.833vw] py-[0.625vw]">{ticket.description}</td>
+                                            <td className="px-[0.833vw] py-[0.625vw]">
+                                                <span className={`inline-flex px-[0.417vw] py-[0.208vw] text-[0.625vw] font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
                                                     {ticket.status}
                                                 </span>
                                             </td>
@@ -217,22 +217,22 @@ const AdminReimbursement = () => {
                         </div>
 
                         {/* Pagination */}
-                        <div className="flex justify-between items-center mt-6">
+                        <div className="flex justify-between items-center mt-[1.25vw]">
                             <button
-                                className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
+                                className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
                                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                 disabled={currentPage === 1}
                             >
                                 <ChevronLeft size={20} />
                                 Previous
                             </button>
-                            <div className="flex gap-2">
+                            <div className="flex gap-[0.417vw]">
                                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                                     <button
                                         key={page}
-                                        className={`px-4 py-2 rounded ${currentPage === page
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-600 hover:bg-gray-100'
+                                        className={`px-[0.833vw] py-[0.417vw] rounded ${currentPage === page
+                                            ? 'bg-blue-500 text-white'
+                                            : 'text-gray-600 hover:bg-gray-100'
                                             }`}
                                         onClick={() => setCurrentPage(page)}
                                     >
@@ -241,7 +241,7 @@ const AdminReimbursement = () => {
                                 ))}
                             </div>
                             <button
-                                className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
+                                className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
                                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
                             >
@@ -256,10 +256,10 @@ const AdminReimbursement = () => {
             {/* Image Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-4 rounded-lg relative">
+                    <div className="bg-white p-[0.833vw] rounded-[0.417vw] relative">
                         <button
                             onClick={closeModal}
-                            className="absolute top-2 right-2 text-xl text-gray-600"
+                            className="absolute top-[0.469vw] right-[0.417vw] text-[1.042vw] text-gray-600"
                         >
                             &times;
                         </button>

@@ -68,7 +68,7 @@ const Dashboard = () => {
       <UserSideBar />
 
       {/* Main Content */}
-      <div className="flex-1 p-8 ml-[290px]">
+      <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
         {/* Header */}
         <UserHeader
           title="User Dashboard"
@@ -78,9 +78,9 @@ const Dashboard = () => {
         />
 
         {/* Dashboard Content */}
-        <section className="bg-white p-8 rounded-lg shadow relative mt-8">
+        <section className="bg-white p-[1.667vw] rounded-[0.729vw] shadow relative mt-[1.667vw]">
           {/* Welcome Message */}
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-[0.833vw]">
             <p className="text-gray-600 text-lg">
               Welcome back,{" "}
               <span className="text-blue-500 font-semibold">Aditya</span>
@@ -91,8 +91,8 @@ const Dashboard = () => {
           </div>
 
           {/* Date */}
-          <div className="flex justify-end mb-6">
-            <div className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg">
+          <div className="flex justify-end mb-[1.25vw]">
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border border-gray-300 rounded-[0.729vw]">
               <Calendar size={20} className="text-gray-500" />
               <span className="text-gray-700 font-medium">
                 {currentDateTime.date}
@@ -101,12 +101,12 @@ const Dashboard = () => {
           </div>
 
           {/* Leave Form */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Apply Leave</h3>
+          <div className="bg-gray-50 p-[1.25vw] rounded-[0.729vw] shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-800 mb-[0.833vw]">Apply Leave</h3>
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-6 mb-4">
+              <div className="grid grid-cols-2 gap-[1.25vw] mb-[0.833vw]">
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">
+                  <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
                     From Date
                   </label>
                   <input
@@ -114,11 +114,11 @@ const Dashboard = () => {
                     name="fromDate"
                     value={leaveDetails.fromDate}
                     onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-2">
+                  <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
                     To Date
                   </label>
                   <input
@@ -126,12 +126,12 @@ const Dashboard = () => {
                     name="toDate"
                     value={leaveDetails.toDate}
                     onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+              <div className="mb-[0.833vw]">
+                <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
                   Leave Reason
                 </label>
                 <textarea
@@ -139,34 +139,34 @@ const Dashboard = () => {
                   value={leaveDetails.reason}
                   onChange={handleChange}
                   placeholder="Write your reason here..."
-                  className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-[0.677vw] border rounded-[0.729vw] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                   rows={3}
                 />
               </div>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+              <div className="mb-[1.25vw]">
+                <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
                   Leave Type
                 </label>
                 <select
                   name="leaveType"
                   value={leaveDetails.leaveType}
                   onChange={handleChange}
-                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option>Casual Leave</option>
                   <option>Earn Leave</option>
                 </select>
               </div>
-              <div className="flex gap-4">
+              <div className="flex gap-[0.833vw]">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-[1.25vw] py-[0.417vw] bg-blue-600 text-white rounded-[0.729vw] hover:bg-blue-700"
                 >
                   Apply Leave
                 </button>
                 <button
                   type="button"
-                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                  className="px-[1.25vw] py-[0.417vw] bg-gray-300 text-gray-700 rounded-[0.729vw] hover:bg-gray-400"
                 >
                   Cancel
                 </button>

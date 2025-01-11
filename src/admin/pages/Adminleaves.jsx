@@ -94,7 +94,7 @@ const ApplyLeave = () => {
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <AdminSideBar />
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
                 <AdminHeader
                     title="Apply Leave"
                     avatarSrc="/api/placeholder/35/35"
@@ -102,9 +102,9 @@ const ApplyLeave = () => {
                     showChevron={true}
                 />
 
-                <div className="p-6">
-                    <div className="bg-white rounded-lg shadow-lg p-6">
-                        <div className="flex justify-between items-center p-6">
+                <div className="p-[1.25vw]">
+                    <div className="bg-white rounded-[0.417vw] shadow-lg p-[1.25vw]">
+                        <div className="flex justify-between items-center p-[1.25vw]">
                             <p className="text-gray-500 font-medium">
                                 Welcome back, <span className="text-blue-500">Admin</span>
                             </p>
@@ -114,19 +114,19 @@ const ApplyLeave = () => {
                         </div>
 
                         {/* Search and Filter Row */}
-                        <div className="flex gap-4 mb-8">
+                        <div className="flex gap-[0.833vw] mb-[1.667vw]">
                             <div className="relative flex-1">
-                                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                                <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                                 <input
                                     type="text"
                                     placeholder="Search by Date, Time, Status ..."
-                                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                    className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <select
-                                className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                             >
@@ -135,66 +135,66 @@ const ApplyLeave = () => {
                                 <option>NA</option>
                                 <option>NA</option>
                             </select>
-                            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                                 <Calendar size={20} className="text-gray-400" />
                                 <span>13 Jan, 2024</span>
                             </div>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                                 <Download size={20} />
                                 Export CSV
                             </button>
                         </div>
 
                         {/* Leave Statistics Cards */}
-                        <div className="grid grid-cols-2 gap-6 mb-8">
-                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-blue-100 rounded-lg">
-                                        <Calendar className="w-6 h-6 text-blue-600" />
+                        <div className="grid grid-cols-2 gap-[1.25vw] mb-[1.667vw]">
+                            <div className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-200 shadow-sm">
+                                <div className="flex items-center gap-[0.833vw]">
+                                    <div className="p-[0.625vw] bg-blue-100 rounded-[0.417vw]">
+                                        <Calendar className="w-[1.25vw] h-[1.25vw] text-blue-600" />
                                     </div>
                                     <div>
-                                        <p className="text-gray-500 text-sm">Total Casual Leaves</p>
-                                        <p className="text-2xl font-bold text-gray-900">150</p>
+                                        <p className="text-gray-500 text-[0.729vw]">Total Casual Leaves</p>
+                                        <p className="text-[1.25vw] font-bold text-gray-900">150</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-purple-100 rounded-lg">
-                                        <Calendar className="w-6 h-6 text-purple-600" />
+                            <div className="bg-white p-[1.25vw] rounded-[0.417vw] border border-gray-200 shadow-sm">
+                                <div className="flex items-center gap-[0.833vw]">
+                                    <div className="p-[0.625vw] bg-purple-100 rounded-[0.417vw]">
+                                        <Calendar className="w-[1.25vw] h-[1.25vw] text-purple-600" />
                                     </div>
                                     <div>
-                                        <p className="text-gray-500 text-sm">Total Earn Leaves</p>
-                                        <p className="text-2xl font-bold text-gray-900">4</p>
+                                        <p className="text-gray-500 text-[0.729vw]">Total Earn Leaves</p>
+                                        <p className="text-[1.25vw] font-bold text-gray-900">4</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-8">
-                            <h3 className="text-lg font-bold text-gray-700 mb-6">Manage Leaves</h3>
+                        <div className="mt-[1.667vw]">
+                            <h3 className="text-[0.417vw] font-bold text-gray-700 mb-[1.25vw]">Manage Leaves</h3>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th className="px-4 py-3 text-left text-gray-600">From Date</th>
-                                            <th className="px-4 py-3 text-left text-gray-600">To Date</th>
-                                            <th className="px-4 py-3 text-left text-gray-600">No. of Days</th>
-                                            <th className="px-4 py-3 text-left text-gray-600">Leave Type</th>
-                                            <th className="px-4 py-3 text-left text-gray-600">Reason</th>
-                                            <th className="px-4 py-3 text-left text-gray-600">Action</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">From Date</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">To Date</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">No. of Days</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">Leave Type</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">Reason</th>
+                                            <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {currentItems.map((leave, index) => (
                                             <tr key={index} className="border-t">
-                                                <td className="px-4 py-3">{leave.fromDate}</td>
-                                                <td className="px-4 py-3">{leave.toDate}</td>
-                                                <td className="px-4 py-3">{leave.duration}</td>
-                                                <td className="px-4 py-3">{leave.leaveType}</td>
-                                                <td className="px-4 py-3">{leave.reason}</td>
-                                                <td className="px-4 py-3">
-                                                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusStyle(leave.acceptRejectFlag ? "open" : "closed")}`}>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.fromDate}</td>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.toDate}</td>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.duration}</td>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.leaveType}</td>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.reason}</td>
+                                                <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">
+                                                    <span className={`inline-flex px-[0.417vw] py-[0.208vw] text-xs font-semibold rounded-full ${getStatusStyle(leave.acceptRejectFlag ? "open" : "closed")}`}>
                                                         {leave.acceptRejectFlag ? 'Accepted' : 'Rejected'}
                                                     </span>
                                                 </td>
@@ -205,11 +205,11 @@ const ApplyLeave = () => {
                             </div>
 
                             {/* Pagination */}
-                            <div className="mt-4 flex justify-center items-center gap-4">
+                            <div className="mt-[0.833vw] flex justify-center items-center gap-[0.833vw]">
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                     disabled={currentPage === 1}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg"
+                                    className="px-[0.833vw] py-[0.417vw] bg-gray-200 rounded-[0.417vw]"
                                 >
                                     <ChevronLeft size={20} />
                                 </button>
@@ -217,7 +217,7 @@ const ApplyLeave = () => {
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                     disabled={currentPage === totalPages}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg"
+                                    className="px-[0.833vw] py-[0.417vw] bg-gray-200 rounded-[0.417vw]"
                                 >
                                     <ChevronRight size={20} />
                                 </button>

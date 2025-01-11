@@ -24,6 +24,8 @@ import SignUp from './authcomponent/SignUp';
 import UserTaskManagement from './user/pages/UserTaskManagement';
 import SignupForm from './authcomponent/SignupForm';
 import AdminPayroll from './admin/pages/AdminPayroll';
+import TaskGraph from './admin/pages/TaskGraph';
+import AdminPerformance from './admin/pages/AdminPerformance';
 
 function App() {
     return (
@@ -55,6 +57,8 @@ function App() {
                 <Route path="/admin/create-event" element={<AdminCreateEvents />} />
                 <Route path="/admin/payroll" element={<AdminPayroll />} />
 
+                <Route path="/admin/graphs" element={<TaskGraph />} />
+                <Route path="/admin/performance-tracking" element={<AdminPerformance />} />
             </Routes>
     );
 }

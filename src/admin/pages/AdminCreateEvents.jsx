@@ -107,7 +107,7 @@ const AdminCreateEvents = () => {
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <AdminSideBar />
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
                 <AdminHeader
                     title="Admin Dashboard"
                     avatarSrc="/api/placeholder/35/35"
@@ -115,10 +115,10 @@ const AdminCreateEvents = () => {
                     showChevron={true}
                 />
 
-                <div className="p-6">
-                    <div className="bg-white rounded-lg shadow-lg p-6">
+                <div className="p-[1.25vw]">
+                    <div className="bg-white rounded-[0.417vw] shadow-lg p-[1.25vw]">
                         {/* Welcome Section */}
-                        <div className="flex justify-between items-center p-6">
+                        <div className="flex justify-between items-center p-[1.25vw]">
                             <p className="text-gray-500 font-medium">
                                 Welcome back, <span className="text-blue-500">Admin</span>
                             </p>
@@ -128,10 +128,10 @@ const AdminCreateEvents = () => {
                         </div>
 
                         {/* Create Event Form */}
-                        <div className="mt-8">
+                        <div className="mt-[1.667vw]">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-[0.729vw] font-medium text-gray-700 mb-[0.417vw]">
                                         Event Name
                                     </label>
                                     <input
@@ -140,12 +140,12 @@ const AdminCreateEvents = () => {
                                         placeholder="Write your title here..."
                                         value={formData.title}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-[0.625vw] border rounded-[0.417vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    <label className="block text-[0.729vw] font-medium text-gray-700 mb-[0.417vw]">
                                         Description
                                     </label>
                                     <textarea
@@ -154,13 +154,13 @@ const AdminCreateEvents = () => {
                                         value={formData.notes}
                                         onChange={handleInputChange}
                                         rows={4}
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-[0.625vw] border rounded-[0.417vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-6">
+                                <div className="grid grid-cols-2 gap-[1.25vw]">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-[0.729vw] font-medium text-gray-700 mb-[0.417vw]">
                                             From Date/Time
                                         </label>
                                         <input
@@ -168,11 +168,11 @@ const AdminCreateEvents = () => {
                                             name="startTime"
                                             value={formData.startTime}
                                             onChange={handleInputChange}
-                                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full p-[0.625vw] border rounded-[0.417vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        <label className="block text-[0.729vw] font-medium text-gray-700 mb-[0.417vw]">
                                             To Date/Time
                                         </label>
                                         <input
@@ -180,7 +180,7 @@ const AdminCreateEvents = () => {
                                             name="endTime"
                                             value={formData.endTime}
                                             onChange={handleInputChange}
-                                            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full p-[0.625vw] border rounded-[0.417vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@ const AdminCreateEvents = () => {
                                 <div className="flex justify-start">
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="px-[1.25vw] py-[0.417vw] bg-blue-500 text-white rounded-[0.417vw] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
                                         Create Event
                                     </button>
@@ -197,25 +197,25 @@ const AdminCreateEvents = () => {
                         </div>
 
                         {/* Last Created Section */}
-                        <div className="mt-8">
-                            <h3 className="text-lg font-bold text-gray-700 mb-6">Last Created</h3>
+                        <div className="mt-[1.667vw]">
+                            <h3 className="text-[0.938vw] font-bold text-gray-700 mb-[1.25vw]">Last Created</h3>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
                                     <thead className="bg-gray-50">
                                         <tr>
-                                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Created At</th>
-                                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Event</th>
-                                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Description</th>
-                                            <th className="px-6 py-3 text-left text-sm font-medium text-gray-600">Action</th>
+                                            <th className="px-[1.25vw] py-[0.625vw] text-left text-[0.729vw] font-medium text-gray-600">Created At</th>
+                                            <th className="px-[1.25vw] py-[0.625vw] text-left text-[0.729vw] font-medium text-gray-600">Event</th>
+                                            <th className="px-[1.25vw] py-[0.625vw] text-left text-[0.729vw] font-medium text-gray-600">Description</th>
+                                            <th className="px-[1.25vw] py-[0.625vw] text-left text-[0.729vw] font-medium text-gray-600">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {currentItems.map((event, index) => (
                                             <tr key={index} className="border-t">
-                                                <td className="px-6 py-4">{event.startTime ? format(new Date(event.startTime), 'yyyy-MM-dd HH:mm:ss') : "N/A"}</td>
-                                                <td className="px-6 py-4">{event.title || "Untitled"}</td>
-                                                <td className="px-6 py-4">{event.notes || "No description available"}</td>
-                                                <td className="px-6 py-4">
+                                                <td className="px-[1.25vw] py-[0.833vw]">{event.startTime ? format(new Date(event.startTime), 'yyyy-MM-dd HH:mm:ss') : "N/A"}</td>
+                                                <td className="px-[1.25vw] py-[0.833vw]">{event.title || "Untitled"}</td>
+                                                <td className="px-[1.25vw] py-[0.833vw]">{event.notes || "No description available"}</td>
+                                                <td className="px-[1.25vw] py-[0.833vw]">
                                                     <button className="text-blue-600 hover:text-blue-800">
                                                         Edit
                                                     </button>
@@ -228,20 +228,20 @@ const AdminCreateEvents = () => {
                             </div>
 
                             {/* Pagination */}
-                            <div className="flex justify-between items-center mt-6">
+                            <div className="flex justify-between items-center mt-[1.25vw]">
                                 <button
-                                    className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
+                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                     disabled={currentPage === 1}
                                 >
                                     <ChevronLeft size={20} />
                                     Previous
                                 </button>
-                                <div className="flex gap-2">
+                                <div className="flex gap-[0.417vw]">
                                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                                         <button
                                             key={page}
-                                            className={`px-4 py-2 rounded ${currentPage === page
+                                            className={`px-[0.833vw] py-[0.417vw] rounded ${currentPage === page
                                                 ? 'bg-blue-500 text-white'
                                                 : 'text-gray-600 hover:bg-gray-100'
                                                 }`}
@@ -252,7 +252,7 @@ const AdminCreateEvents = () => {
                                     ))}
                                 </div>
                                 <button
-                                    className="px-4 py-2 flex items-center gap-2 text-gray-600 disabled:text-gray-400"
+                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                     disabled={currentPage === totalPages}
                                 >

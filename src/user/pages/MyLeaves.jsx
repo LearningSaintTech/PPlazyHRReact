@@ -64,7 +64,7 @@ const MyLeaves = () => {
       <UserSideBar />
 
       {/* Main Content */}
-      <div className="flex-1 p-8 ml-[290px]">
+      <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
         {/* Header */}
         <UserHeader
           title="User Dashboard"
@@ -74,10 +74,10 @@ const MyLeaves = () => {
         />
 
         {/* My Leaves Content */}
-        <section className="bg-white p-8 rounded-lg shadow relative mt-8">
+        <section className="bg-white p-[1.667vw] rounded-[0.417vw] shadow relative mt-[1.667vw]">
           {/* Welcome Message */}
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-600 text-lg">
+          <div className="flex justify-between items-center mb-[0.833vw]">
+            <p className="text-gray-600 text-[0.938vw]">
               Welcome back,{" "}
               <span className="text-blue-500 font-semibold">Aditya</span>
             </p>
@@ -87,58 +87,58 @@ const MyLeaves = () => {
           </div>
 
           {/* Date */}
-          <div className="flex gap-4 mb-8">
+          <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
               <input
                 type="text"
                 placeholder="Search by Name, ID, status..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
               />
             </div>
             <select
-              className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
             >
               <option value="">Action</option>
               <option value="open">Open</option>
               <option value="closed">Closed</option>
               <option value="pending">Pending</option>
             </select>
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
               <Calendar size={20} className="text-gray-400" />
               <span>13 Jan, 2024</span>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
               <Download size={20} />
               Export CSV
             </button>
           </div>
 
           {/* Leave History */}
-          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Leave History</h3>
+          <div className="bg-gray-50 p-[1.25vw] rounded-[0.417vw] shadow-sm">
+            <h3 className="text-[0.938vw] font-semibold text-gray-800 mb-[0.833vw]">Leave History</h3>
             <div className="overflow-x-auto">
               <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-100 text-gray-500 text-left">
-                    <th className="px-4 py-2">From Date</th>
-                    <th className="px-4 py-2">To Date</th>
-                    <th className="px-4 py-2">No. of Days</th>
-                    <th className="px-4 py-2">Leave Type</th>
-                    <th className="px-4 py-2">Reason</th>
-                    <th className="px-4 py-2">Status</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">From Date</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">To Date</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">No. of Days</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Leave Type</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Reason</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* Map over the leaveHistory state to display data */}
                   {leaveHistory.map((leave, index) => (
                     <tr key={index} className="border-b">
-                      <td className="px-4 py-2">{formatDate(leave.fromDate)}</td>
-                      <td className="px-4 py-2">{formatDate(leave.toDate)}</td>
-                      <td className="px-4 py-2">{calculateDays(leave.fromDate, leave.toDate)}</td>
-                      <td className="px-4 py-2">{leave.leaveType}</td>
-                      <td className="px-4 py-2">{leave.reason}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.fromDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.toDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{calculateDays(leave.fromDate, leave.toDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{leave.leaveType}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{leave.reason}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">
                         {leave.acceptRejectFlag ? "Accepted" : "Pending"}
                       </td>
                     </tr>

@@ -51,14 +51,14 @@ const UserAttendance = () => {
             <UserSideBar />
 
             {/* Main Content */}
-            <div className="flex-1 p-6 ml-[290px]"> {/* Add ml-[290px] to offset the sidebar */}
+            <div className="flex-1 p-[1.25vw] ml-[15.104vw]"> {/* Add ml-[290px] to offset the sidebar */}
                 {/* Header */}
                 <UserHeader title="User Attendance" />
 
                 {/* Attendance Content */}
-                <div className="p-6 bg-white rounded-lg shadow mt-6">
-                    <div className="flex justify-between items-center mb-4">
-                        <p className="text-gray-600 text-lg">
+                <div className="p-[1.25vw] bg-white rounded-[0.417vw] shadow mt-[1.25vw]">
+                    <div className="flex justify-between items-center mb-[0.625vw]">
+                        <p className="text-gray-600 text-[0.938vw]">
                             Welcome back, <span className="text-blue-500 font-semibold">Aditya</span>
                         </p>
                         <p className="text-blue-500 font-medium">
@@ -67,28 +67,28 @@ const UserAttendance = () => {
                     </div>
 
                     {/* Search Box and Filters */}
-                    <div className="flex gap-4 mb-8">
+                    <div className="flex gap-[0.833vw] mb-[1.667vw]">
                         <div className="relative flex-1">
-                            <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+                            <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                             <input
                                 type="text"
                                 placeholder="Search by Name, ID, status..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                             />
                         </div>
                         <select
-                            className="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                         >
                             <option value="">Action</option>
                             <option value="open">Open</option>
                             <option value="closed">Closed</option>
                             <option value="pending">Pending</option>
                         </select>
-                        <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
+                        <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                             <Calendar size={20} className="text-gray-400" />
                             <span>13 Jan, 2024</span>
                         </div>
-                        <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border rounded-lg hover:bg-gray-50">
+                        <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                             <Download size={20} />
                             Export CSV
                         </button>
@@ -99,11 +99,11 @@ const UserAttendance = () => {
                         <table className="table-auto w-full text-gray-700 border-collapse">
                             <thead className="bg-gray-100 border-t border-b">
                                 <tr>
-                                    <th className="p-3 text-left font-medium border-r">Date</th>
-                                    <th className="p-3 text-left font-medium border-r">Check In</th>
-                                    <th className="p-3 text-left font-medium border-r">Check Out</th>
-                                    <th className="p-3 text-left font-medium border-r">Status</th>
-                                    <th className="p-3 text-left font-medium">Late</th>
+                                    <th className="p-[0.625vw] text-left font-medium border-r">Date</th>
+                                    <th className="p-[0.625vw] text-left font-medium border-r">Check In</th>
+                                    <th className="p-[0.625vw] text-left font-medium border-r">Check Out</th>
+                                    <th className="p-[0.625vw] text-left font-medium border-r">Status</th>
+                                    <th className="p-[0.625vw] text-left font-medium ">Late</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -127,12 +127,12 @@ const UserAttendance = () => {
 
                                     return (
                                         <tr key={index} className="border-t hover:bg-gray-50 transition">
-                                            <td className="p-3 border-r">{formattedDate}</td>
-                                            <td className="p-3 border-r">{formattedClockIn}</td>
-                                            <td className="p-3 border-r">{formattedClockOut}</td>
-                                            <td className="p-3 border-r">
+                                            <td className="p-[0.625vw] border-r">{formattedDate}</td>
+                                            <td className="p-[0.625vw] border-r">{formattedClockIn}</td>
+                                            <td className="p-[0.625vw] border-r">{formattedClockOut}</td>
+                                            <td className="p-[0.625vw] border-r">
                                                 <span
-                                                    className={`inline-block px-2 py-1 rounded text-sm font-medium ${item.status === "Present"
+                                                    className={`inline-block px-[0.417vw] py-[0.208vw] rounded text-[0.729vw] font-medium  ${item.status === "Present"
                                                             ? "bg-green-100 text-green-600"
                                                             : item.status === "Absent"
                                                                 ? "bg-red-100 text-red-600"
@@ -142,7 +142,7 @@ const UserAttendance = () => {
                                                     {item.status}
                                                 </span>
                                             </td>
-                                            <td className="p-3">{item.late || "N/A"}</td>
+                                            <td className="p-[0.625vw]">{item.late || "N/A"}</td>
                                         </tr>
                                     );
                                 })}
