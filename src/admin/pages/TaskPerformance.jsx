@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Line, Pie } from "react-chartjs-2";
+import { showCharts, fetchPieData } from "../../commonComponent/Api";
 import { TbGraph } from "react-icons/tb";
 import {
     Chart as ChartJS,
@@ -32,14 +33,9 @@ const TaskPerformance = ({ onClose }) => {
 
     useEffect(() => {
         // Fetch Line Chart Data
-        fetch("http://192.168.0.129:8082/user/tasks/completionData/all")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch line chart data");
-                }
-                return response.json();
-            })
-            .then((data) => {
+        const fetchLineData = async () => {
+            try {
+                const data = await showCharts();
                 const allDates = new Set([
                     ...data.HIGH.dates,
                     ...data.MEDIUM.dates,
@@ -107,27 +103,22 @@ const TaskPerformance = ({ onClose }) => {
                         },
                     ],
                 });
-            })
-            .catch((err) => {
+            } catch (err) {
                 console.error("Error fetching line chart data:", err);
                 setError(err.message);
-            });
+            }
+        };
 
         // Fetch Pie Chart Data
-        fetch("http://192.168.0.129:8082/user/tasks/statusCounts")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch pie chart data");
-                }
-                return response.json();
-            })
-            .then((data) => {
+        const fetchPieDataHandler = async () => {
+            try {
+                const response = await fetchPieData();
                 setPieData({
                     labels: ["Completed", "In-Progress", "Pending"],
                     datasets: [
                         {
                             label: "Task Status",
-                            data: [data.COMPLETED, data.IN_PROGRESS, data.PENDING],
+                            data: [response.COMPLETED, response.IN_PROGRESS, response.PENDING],
                             backgroundColor: [
                                 "rgba(75, 192, 192, 0.7)", // Completed: Green
                                 "rgba(255, 206, 86, 0.7)", // In-Progress: Yellow
@@ -137,10 +128,14 @@ const TaskPerformance = ({ onClose }) => {
                         },
                     ],
                 });
-            })
-            .catch((error) =>
-                console.error("Error fetching task status counts:", error)
-            );
+            } catch (error) {
+                console.error("Error fetching task status counts:", error);
+                setError(error.message);
+            }
+        };
+
+        fetchLineData();
+        fetchPieDataHandler();
     }, []);
 
     return (
@@ -162,7 +157,7 @@ const TaskPerformance = ({ onClose }) => {
                     {error ? (
                         <p className="text-red-500">{error}</p>
                     ) : lineData ? (
-                        <div className="h-[15vw]"> {/* Fixed height for Line Chart */}
+                        <div className="h-[15vw]">
                             <Line
                                 data={lineData}
                                 options={{
@@ -216,7 +211,7 @@ const TaskPerformance = ({ onClose }) => {
                     {error ? (
                         <p className="text-red-500">{error}</p>
                     ) : pieData ? (
-                        <div className="h-[13.333vw]"> {/* Fixed height for Pie Chart */}
+                        <div className="h-[13.333vw]">
                             <Pie
                                 data={pieData}
                                 options={{

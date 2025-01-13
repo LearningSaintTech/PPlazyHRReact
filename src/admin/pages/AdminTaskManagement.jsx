@@ -104,17 +104,17 @@ const TaskManagement = () => {
             )}
 
             {/* Sidebar */}
-            <div className="w-[15%] fixed top-0 left-0 h-fullshadow-lg z-20">
+            <div className="w-[15%] fixed top-0 left-0 h-full shadow-lg z-20">
                 <AdminSidebar />
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 ml-[15%] p-[3.333vw]">
+            <div className="flex-1">
                 <AdminHeader />
 
                 {/* Search and Filters */}
                 <div className="flex gap-[1.25vw] mb-[3.333vw]">
-                    <div className="flex-1 flex items-center gap-3 px-[1.25vw] py-[0.833vw] rounded-xl border border-black/20">
+                    <div className="flex-1 flex items-center gap-[0.625vw] px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20">
                         <Search className="text-black/40" />
                         <input
                             type="text"
@@ -122,13 +122,13 @@ const TaskManagement = () => {
                             className="flex-1 bg-transparent text-black/40 outline-none"
                         />
                     </div>
-                    <div className="px-[1.25vw] py-[0.833vw] rounded-xl border border-black/20">
+                    <div className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20">
                         <span className="text-black text-[1.042vw]">Date</span>
                     </div>
-                    <div className="px-[1.25vw] py-[0.833vw] rounded-xl border border-black/20 flex items-center gap-3">
+                    <div className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20 flex items-center gap-[0.625vw]">
                         <span className="text-black text-[1.042vw]">13 Jan, 2024</span>
                     </div>
-                    <div className="px-[1.25vw] py-[0.833vw] rounded-xl border border-black/20 flex items-center gap-3">
+                    <div className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20 flex items-center gap-[0.625vw]">
                         <span className="text-black text-[1.042vw]">Export CSV</span>
                     </div>
                 </div>

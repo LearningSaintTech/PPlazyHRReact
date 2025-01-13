@@ -1,191 +1,186 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, Upload, Search, ChevronDown, Bell } from 'lucide-react';
-import UserSideBar from '../components/UserSideBar';
-import UserHeader from '../components/UserHeader';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Calendar,
+  FileDown,
+  FileText,
+  Check,
+  ChevronDown,
+} from "lucide-react";
+import UserSidebar from "../components/UserSideBar";
+import UserHeader from "../components/UserHeader";
+import { getAllTask } from "../../commonComponent/Api";
+import { updateTaskStatus } from "../../commonComponent/Api"; // Adjust the path based on your project structure
 
-const UserTaskManagement = () => {
-    const [currentTime, setCurrentTime] = useState('');
-    const [currentDay, setCurrentDay] = useState('');
-    const [currentDate, setCurrentDate] = useState('');
+const TaskDashboard = () => {
+  const [tasks, setTasks] = useState([]);
 
-    const taskData = [
-        { id: 1, task: 'Task 1', priority: 'Low', dueDate: '18/01/2024', description: 'This is for testing.', status: 'Completed' },
-        { id: 2, task: 'Task 2', priority: 'High', dueDate: '18/01/2024', description: 'This is for testing.', status: 'In Progress' },
-        { id: 3, task: 'Task 3', priority: 'Medium', dueDate: '18/01/2024', description: 'This is for testing.', status: 'Pending' },
-        { id: 4, task: 'Task 4', priority: 'Low', dueDate: '18/01/2024', description: 'This is for testing.', status: 'In Progress' },
-        { id: 5, task: 'Task 5', priority: 'Low', dueDate: '18/01/2024', description: 'This is for testing.', status: 'Completed' },
-    ];
-
-    useEffect(() => {
-        const updateDateTime = () => {
-            const now = new Date();
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const time = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
-            setCurrentTime(time);
-            setCurrentDay(days[now.getDay()]);
-            setCurrentDate('13 Jan, 2024');
-        };
-
-        updateDateTime();
-        const timer = setInterval(updateDateTime, 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const getPriorityStyle = (priority) => {
-        switch (priority.toLowerCase()) {
-            case 'high':
-                return 'bg-red-100 text-red-600';
-            case 'medium':
-                return 'bg-yellow-100 text-yellow-600';
-            case 'low':
-                return 'bg-green-100 text-green-600';
-            default:
-                return 'bg-gray-100 text-gray-600';
-        }
+  // Fetch tasks when the component is mounted
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const data = await getAllTask();
+        setTasks(data); // Assuming `data` is an array of tasks
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
     };
 
-    const getStatusStyle = (status) => {
-        switch (status.toLowerCase()) {
-            case 'completed':
-                return 'bg-green-100 text-green-600';
-            case 'in progress':
-                return 'bg-violet-100 text-violet-600';
-            case 'pending':
-                return 'bg-yellow-100 text-yellow-600';
-            default:
-                return 'bg-gray-100 text-gray-600';
-        }
-    };
+    fetchTasks();
+  }, []);
 
-    return (
-        <div className="flex bg-gray-50 min-h-screen">
-            {/* Sidebar */}
-            <UserSideBar />
+  const getPriorityStyle = (priority) => {
+    switch (priority) {
+      case "Low":
+        return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+      case "Medium":
+        return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
+      case "High":
+        return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
+      default:
+        return "bg-gray-100 text-gray-600 border-gray-400";
+    }
+  };
 
-            {/* Main Content */}
-            <div className="flex-1 p-8 ml-[290px]">
-                {/* Header */}
-                <UserHeader
-                    title="User Dashboard"
-                    avatarSrc="/api/placeholder/35/35"
-                    showNotification={true}
-                    showChevron={true}
-                />
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "Completed":
+        return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+      case "In Progress":
+        return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
+      case "Pending":
+        return "bg-[#f5efe6] text-[#ffae00] border-[#ffae00]";
+      default:
+        return "bg-white text-gray-600 border-gray-300";
+    }
+  };
 
-                {/* Content */}
-                <div className="mt-8">
-                    {/* Welcome Section */}
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-gray-700">
-                            Welcome back, <span className="text-indigo-600">Aditya</span>
-                        </h2>
-                        <p className="text-blue-500 font-medium">
-                            {currentDay}, {currentTime}
-                        </p>
-                    </div>
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      // Update status locally for immediate feedback
+      setTasks(
+        tasks.map((task) =>
+          task.id === taskId ? { ...task, status: newStatus } : task
+        )
+      );
 
-                    {/* Search and Filter Section */}
-                    <div className="flex justify-between items-center mb-8">
-                        <div className="relative flex-1 max-w-xl">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                type="text"
-                                placeholder="Search by Date, Time, Status..."
-                                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </div>
-                        <div className="flex gap-4">
-                            <div className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg">
-                                <Calendar className="w-5 h-5 text-gray-500" />
-                                <span>{currentDate}</span>
-                            </div>
-                            <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
-                                Export CSV
-                            </button>
-                        </div>
-                    </div>
+      // Call the API to update the status
+      await updateTaskStatus(taskId, newStatus);
+      console.log(`Task ${taskId} status updated to ${newStatus}`);
+    } catch (error) {
+      console.error(`Error updating task ${taskId} status:`, error);
+    }
+  };
 
-                    {/* Statistics Cards */}
-                    <div className="grid grid-cols-2 gap-6 mb-8">
-                        <div className="bg-white p-6 rounded-lg border border-gray-200">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-indigo-100 rounded-lg">
-                                    <Calendar className="w-6 h-6 text-indigo-600" />
-                                </div>
-                                <div>
-                                    <p className="text-gray-600 text-sm">Total Task Assign</p>
-                                    <p className="text-2xl font-semibold">09</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-white p-6 rounded-lg border border-gray-200">
-                            <div className="flex items-center gap-4">
-                                <div className="p-3 bg-green-100 rounded-lg">
-                                    <Calendar className="w-6 h-6 text-green-600" />
-                                </div>
-                                <div>
-                                    <p className="text-gray-600 text-sm">Total Task Done</p>
-                                    <p className="text-2xl font-semibold">04</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Sidebar */}
+      <div className="w-[250px] flex-shrink-0">
+        <UserSidebar />
+      </div>
 
-                    {/* Task Table */}
-                    <div className="bg-white rounded-lg border border-gray-200">
-                        <div className="p-6 border-b border-gray-200">
-                            <h3 className="text-lg font-semibold">Last Applied</h3>
-                        </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50 border-b border-gray-200">
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Task</th>
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Priority</th>
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Due Date</th>
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Description</th>
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Status</th>
-                                        <th className="text-left py-4 px-6 text-gray-600 font-medium">Comment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {taskData.map((task) => (
-                                        <tr key={task.id} className="border-b border-gray-200">
-                                            <td className="py-4 px-6">{task.task}</td>
-                                            <td className="py-4 px-6">
-                                                <span className={`px-3 py-1 rounded-full text-sm ${getPriorityStyle(task.priority)}`}>
-                                                    {task.priority}
-                                                </span>
-                                            </td>
-                                            <td className="py-4 px-6">{task.dueDate}</td>
-                                            <td className="py-4 px-6">{task.description}</td>
-                                            <td className="py-4 px-6">
-                                                <span className={`px-3 py-1 rounded-full text-sm ${getStatusStyle(task.status)}`}>
-                                                    {task.status}
-                                                </span>
-                                            </td>
-                                            <td className="py-4 px-6">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Comment here"
-                                                    className="w-full px-3 py-1 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <UserHeader />
+
+        {/* Content */}
+        <div className="p-16 bg-white flex-1 overflow-y-auto">
+          {/* Statistics Cards */}
+          <div className="flex gap-6 mb-14">
+            <div className="p-6 border border-black/20 rounded-xl flex items-center justify-between min-w-[250px]">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 border border-black/20 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5" />
                 </div>
+                <span className="text-base font-light">Total Task Assign</span>
+              </div>
+              <span className="text-5xl font-medium">{tasks.length}</span>
             </div>
+            <div className="p-6 border border-[#069855] rounded-xl flex items-center justify-between min-w-[250px]">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 border border-black/20 rounded-lg flex items-center justify-center">
+                  <Check className="w-5 h-5" />
+                </div>
+                <span className="text-[#069855] text-base font-light">
+                  Total Task Done
+                </span>
+              </div>
+              <span className="text-[#069855] text-5xl font-medium">
+                {tasks.filter((task) => task.status === "Completed").length}
+              </span>
+            </div>
+          </div>
+
+          {/* Task List Section */}
+          <div className="mt-14">
+            <h2 className="text-[#5c606a] text-2xl font-medium mb-6">
+              Last Applied
+            </h2>
+            <div className="grid grid-cols-6 gap-2 mb-3">
+              {["Task", "Priority", "Due Date", "Description", "Status", "Comment"].map((header) => (
+                <div
+                  key={header}
+                  className="px-6 py-[22px] bg-neutral-100 rounded-lg shadow-sm border-l-2 text-[#5c606a] text-2xl font-medium"
+                >
+                  {header}
+                </div>
+              ))}
+            </div>
+            {tasks.map((task) => (
+              <div
+                key={task.id}
+                className="grid grid-cols-6 gap-2 border-b border-black/20 py-3"
+              >
+                <div className="px-4 py-4 text-2xl font-light">{task.name}</div>
+                <div className="px-4 py-4">
+                  <span
+                    className={`px-3 py-1 rounded-lg border ${getPriorityStyle(
+                      task.priority
+                    )} text-2xl font-light`}
+                  >
+                    {task.priority}
+                  </span>
+                </div>
+                <div className="px-4 py-4 text-2xl font-light">
+                  {task.dueDate}
+                </div>
+                <div className="px-4 py-4 text-2xl font-light">
+                  {task.messages}
+                </div>
+                <div className="px-4 py-4 relative">
+                  <select
+                    className={`w-full px-3 py-1 rounded-lg border ${getStatusStyle(
+                      task.status
+                    )} text-2xl font-light appearance-none cursor-pointer pr-10`}
+                    value={task.status}
+                    onChange={(e) =>
+                      handleStatusChange(task.id, e.target.value)
+                    }
+                  >
+                    <option value="COMPLETED">Completed</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="Pending">Pending</option>
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-600 pointer-events-none" />
+                </div>
+                <div className="px-4 py-4 flex items-center relative">
+                  <input
+                    type="text"
+                    placeholder="Comment here"
+                    className="w-full h-14 px-4 py-2 border border-black rounded-lg text-base font-light pr-12"
+                  />
+                  <button className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-[#534feb] rounded-full flex items-center justify-center">
+                    <Check className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default UserTaskManagement;
+export default TaskDashboard;

@@ -4,11 +4,13 @@ import {
     FaMoneyCheckAlt, FaCog, FaQuestionCircle, FaDoorOpen, FaClipboardList,
     FaUsers, FaCalendarPlus, FaTasks
 } from 'react-icons/fa';
+import { GrDocumentPerformance } from "react-icons/gr";
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../assets/logowhite.png';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../commonComponent/slice/AuthSlice';
 import { useNavigate } from 'react-router-dom';
+
 const AdminSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
@@ -17,12 +19,15 @@ const AdminSideBar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [activeItem, setActiveItem] = useState('');
+
     const handleItemClick = (item) => {
         setActiveItem(item);
     };
+
     const getActiveClass = (path) => {
         return location.pathname === path ? 'bg-[#534feb] text-white' : 'hover:bg-gray-200 hover:text-gray-800 text-gray-600';
     };
+
     const handleLogout = () => {
         dispatch(logout());
         navigate('/');
@@ -116,38 +121,22 @@ const AdminSideBar = () => {
                     <span className="text-[1.042vw]">Management</span>
                 </Link>
 
-                <div>
-                    <button
-                        className={`w-full flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves')}`}
-                        onClick={() => setShowLeaveOptions(!showLeaveOptions)}
-                    >
-                        <FaCalendarAlt className="mr-[0.625vw]" />
-                        <span className="text-[1.042vw]">Leaves</span>
-                        <div className="ml-auto">
-                            {showLeaveOptions ? (
-                                <FaChevronUp className="w-[1.042vw] h-[1.042vw]" />
-                            ) : (
-                                <FaChevronDown className="w-[1.042vw] h-[1.042vw]" />
-                            )}
-                        </div>
-                    </button>
-                    {showLeaveOptions && (
-                        <div className="ml-[1.667vw] space-y-2">
-                            <Link
-                                to="/admin/leaves/apply"
-                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/apply')}`}
-                            >
-                                <span className="text-[1.042vw]">Apply Leave</span>
-                            </Link>
-                            <Link
-                                to="/admin/leaves/my-leaves"
-                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/my-leaves')}`}
-                            >
-                                <span className="text-[1.042vw]">My Leaves</span>
-                            </Link>
-                        </div>
-                    )}
-                </div>
+                <Link
+                    to="/admin/performance-tracking"
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/performance-tracking')}`}
+                >
+                    <GrDocumentPerformance className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Performance Tracking</span>
+                </Link>
+
+                {/* Removed Apply Leave and My Leaves options */}
+                <Link
+                    to="/admin/leaves/apply"
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/apply')}`}
+                >
+                    <FaCalendarAlt className="mr-[0.625vw]" />
+                    <span className="text-[1.042vw]">Leave Management</span>
+                </Link>
 
                 <Link
                     to="/admin/create-event"

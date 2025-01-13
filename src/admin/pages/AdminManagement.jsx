@@ -112,7 +112,7 @@ const AdminManagement = () => {
                     showChevron={true}
                 />
 
-                <div className="p-[1.25vw]">
+                <div className="">
                     <div className="bg-white rounded-[0.417vw] shadow-sm p-[1.25vw]">
                         <div className="flex justify-between items-center mb-[1.667vw]">
                             <p className="text-gray-600 text-[0.938vw]">

@@ -71,34 +71,34 @@ const Login = () => {
                 <div className="flex items-center w-[7.729vw] h-[4.958vw] ml-[3.542vw] mt-[1.823vw]">
                     <img src={Logo} alt="LazyHR Logo" />
                 </div>
-                <div className="w-[52.083vw] h-[36.094vw] mt-6 ml-[7.135vw] items-center">
+                <div className="w-[52.083vw] h-[36.094vw] mt-[1.25vw] ml-[7.135vw] items-center">
                     <img src={LoginImg} alt="HR Management Illustration" />
-                    <p className="mt-[1.25vw] text-center text-gray-700 text-lg">
+                    <p className="mt-[1.25vw] text-center text-gray-700 text-[0.938vw]">
                         Simplify your HR hustle, One click at a time!
                     </p>
                 </div>
             </header>
 
             <main className="flex-1 flex flex-row items-center justify-center px-[1.833vw]">
-                <div className="w-full max-w-md py-5">
-                    <div className="bg-white rounded-2xl shadow-lg px-[2.646vw] py-[6.969vw]">
-                        <div className="text-center mb-8">
-                            <h2 className="text-3xl font-semibold text-gray-800">
+                <div className="w-full max-w-[23.333vw] py-[1.042vw]">
+                    <div className="bg-white rounded-[0.833vw] shadow-lg px-[2.646vw] py-[6.969vw]">
+                        <div className="text-center mb-[1.667vw]">
+                            <h2 className="text-[1.563vw] font-semibold text-gray-800">
                                 Login to your Account
                             </h2>
-                            <p className="mt-2 text-gray-600">
+                            <p className="mt-[0.417vw] text-gray-600">
                                 See what is going on with your business
                             </p>
                         </div>
 
                         {errorMessage && (
-                            <p className="text-red-600 text-center mb-4">{errorMessage}</p>
+                            <p className="text-red-600 text-center mb-[0.833vw]">{errorMessage}</p>
                         )}
 
                         <form onSubmit={handleSubmit}>
                             <div className="space-y-6 py-[5.167vw]">
                                 <div>
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="email" className="block text-[0.729vw] font-medium text-gray-700">
                                         Email
                                     </label>
                                     <input
@@ -108,16 +108,16 @@ const Login = () => {
                                         placeholder="mail@abc.com"
                                         value={formData.email}
                                         onChange={handleInputChange}
-                                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                        className="mt-[0.208vw] block w-full px-[0.625vw] py-[0.417vw] border border-gray-300 rounded-[0.313vw] shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                         required
                                     />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="password" className="block text-[0.729vw] font-medium text-gray-700">
                                         Password
                                     </label>
-                                    <div className="mt-1 relative">
+                                    <div className="mt-[0.208vw] relative">
                                         <input
                                             type={showPassword ? "text" : "password"}
                                             id="password"
@@ -125,18 +125,18 @@ const Login = () => {
                                             placeholder="********"
                                             value={formData.password}
                                             onChange={handleInputChange}
-                                            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                            className="block w-full px-[0.625vw] py-[0.417vw] border border-gray-300 rounded-[0.313vw] shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                                             required
                                         />
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                            className="absolute inset-y-0 right-0 pr-[0.625vw] flex items-center"
                                         >
                                             {showPassword ? (
-                                                <EyeOff className="h-5 w-5 text-gray-400" />
+                                                <EyeOff className="h-[1.042vw] w-[1.042vw] text-gray-400" />
                                             ) : (
-                                                <Eye className="h-5 w-5 text-gray-400" />
+                                                <Eye className="h-[1.042vw] w-[1.042vw] text-gray-400" />
                                             )}
                                         </button>
                                     </div>
@@ -150,26 +150,26 @@ const Login = () => {
                                             name="rememberMe"
                                             checked={formData.rememberMe}
                                             onChange={handleInputChange}
-                                            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                            className="h-[0.833vw] w-[0.833vw] text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                                         />
-                                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                                        <label htmlFor="remember-me" className="ml-[0.417vw] block text-[0.729vw] text-gray-700">
                                             Remember Me
                                         </label>
                                     </div>
-                                    <a href="#" className="text-sm text-indigo-600 hover:text-indigo-500">
+                                    <a href="#" className="text-[0.729vw] text-indigo-600 hover:text-indigo-500">
                                         Forgot Password?
                                     </a>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="w-full flex justify-center py-[0.417vw] px-[0.833vw] border border-transparent rounded-[0.313vw] shadow-sm text-[0.729vw] font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Login
                                 </button>
                             </div>
                         </form>
-                        <div className="text-center mt-4">
+                        <div className="text-center mt-[0.833vw]">
                             <span className="text-gray-600">Not Registered Yet? </span>
                             <button onClick={handleNavigate} className="text-indigo-600 hover:text-indigo-500">
                                 Create an account

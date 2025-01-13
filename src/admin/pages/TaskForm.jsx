@@ -1,22 +1,49 @@
 import React, { useState } from 'react';
 import { Calendar, CheckCircle, User, Flag } from 'lucide-react';
+import { createTask } from "../../commonComponent/Api";
 
 const TaskForm = () => {
     const [status, setStatus] = useState('');
     const [priority, setPriority] = useState('');
     const [assignee, setAssignee] = useState('');
     const [dueDate, setDueDate] = useState('');
+    const [messages, setTaskDescription] = useState('');
+    const [taskName, setTaskName] = useState('');  // Ensure this is set
 
-    const handleSave = (e) => {
+    const [file, setFile] = useState(null);
+
+    const handleSave = async (e) => {
         e.preventDefault();
-        // Handle save logic here
-        console.log('Task Saved:', { status, priority, assignee, dueDate });
+
+        // Make sure all fields are filled
+        if (!taskName || !priority || !assignee || !dueDate || !messages) {
+            alert('Please fill in all fields!');
+            return;
+        }
+
+        const taskData = {
+            taskName,
+            priority,
+            userId: assignee,
+            messages,
+            dueDate,
+        };
+
+        try {
+            console.log("taskData", taskData);
+            const response = await createTask(taskData);
+            console.log('Task Created:', response);
+            alert('Task successfully created!');
+        } catch (error) {
+            console.error('Error creating task:', error);
+            alert('Failed to create task. Please try again.');
+        }
     };
 
     return (
         <form onSubmit={handleSave} className="w-full max-w-[37.917vw] p-[1.667vw] bg-white rounded-[0.833vw]">
             {/* Header */}
-            <h1 className="text-[2.083vw] font-bold text-[#848892] mb-[2.5vw]">Task 1</h1>
+            <h1 className="text-[2.083vw] font-bold text-[#848892] mb-[2.5vw]">Create Task</h1>
 
             {/* Form Fields */}
             <div className="flex gap-[2.083vw] mb-[2.5vw]">
@@ -24,6 +51,10 @@ const TaskForm = () => {
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
                         <CheckCircle className="w-[1.25vw] h-[1.25vw] text-[#848892]" />
                         <span className="text-[1.042vw] text-[#848892]">Status</span>
+                    </div>
+                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
+                        <CheckCircle className="w-[1.25vw] h-[1.25vw] text-[#848892]" />
+                        <span className="text-[1.042vw] text-[#848892]">Task Name</span>
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
                         <Flag className="w-[1.25vw] h-[1.25vw] text-[#848892]" />
@@ -40,7 +71,17 @@ const TaskForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-[0.625vw] flex-1">
-                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[1.042vw] border border-black/20 rounded">
+                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
+                    </div>
+                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
+                        <input
+                            type="text"
+                            placeholder="Task Name"
+                            value={taskName} // Make sure value is controlled by state
+                            onChange={(e) => setTaskName(e.target.value)} // Update state on change
+                            className="w-full text-[0.833vw] font-light text-black bg-transparent placeholder:text-black/40 outline-none"
+                            required
+                        />
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
                         <select
@@ -84,22 +125,11 @@ const TaskForm = () => {
                     <input
                         type="text"
                         placeholder="Task Description here"
+                        value={messages}
+                        onChange={(e) => setTaskDescription(e.target.value)}
                         className="w-full text-[0.833vw] font-light text-black/40 bg-transparent outline-none"
                         required
                     />
-                </div>
-            </div>
-
-            {/* File Attachments */}
-            <div className="mb-[1.667vw]">
-                <h2 className="text-[1.25vw] font-medium text-[#5c606a] mb-[0.833vw]">Add relevant files</h2>
-                <div className="flex flex-col gap-[0.208vw]">
-                    <div className="px-[1.25vw] py-[0.833vw] border border-black/20 rounded-[0.625vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)]">
-                        <span className="text-[0.833vw] font-medium text-black/40">Google Drive</span>
-                    </div>
-                    <div className="px-[1.25vw] py-[0.833vw] border border-black/20 rounded-[0.625vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)]">
-                        <span className="text-[0.833vw] font-medium text-black/40">Github</span>
-                    </div>
                 </div>
             </div>
 

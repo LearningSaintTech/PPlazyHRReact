@@ -189,7 +189,7 @@ const AdminPage = () => {
   return (
     <div className="flex bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <AdminSideBar />
-      <div className="flex-1 p-8 ml-[290px]">
+      <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
         <AdminHeader
           title="Admin Dashboard"
           avatarSrc="/api/placeholder/35/35"
@@ -197,29 +197,29 @@ const AdminPage = () => {
           showChevron={true}
         />
 
-        <div className="p-6">
-          <div className="bg-white rounded-2xl p-6 mb-8 transition-all duration-300">
-            <div className="flex justify-between items-center p-6 border-b border-gray-100">
+        <div className="">
+          <div className="bg-white rounded-[0.833vw] p-[1.25vw] mb-[1.667vw] transition-all duration-300">
+            <div className="flex justify-between items-center p-[1.25vw] border-b border-gray-100">
               <p className="text-gray-600 font-medium">
                 Welcome back, <span className="text-indigo-600 font-semibold">Admin</span>
               </p>
-              <p className="text-indigo-600 font-medium px-4 py-2 rounded-full">
+              <p className="text-indigo-600 font-medium px-[0.833vw] py-[0.417vw] rounded-full">
                 {currentDateTime.day}, {currentDateTime.time} {currentDateTime.period}
               </p>
             </div>
 
-            <div className="grid grid-cols-4 gap-6 my-8">
+            <div className="grid grid-cols-4 gap-[1.25vw] my-[1.667vw]">
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
                   <Card key={index} className={`${stat.color} border-none transition-all duration-300 `}>
-                    <CardContent className="p-6 flex items-center gap-4">
-                      <div className="p-3 bg-white rounded-lg shadow-sm">
-                        <Icon className="w-6 h-6" />
+                    <CardContent className="p-[1.25vw] flex items-center gap-[0.833vw]">
+                      <div className="p-[0.625vw] bg-white rounded-[0.417vw] shadow-sm">
+                        <Icon className="w-[1.25vw] h-[1.25vw]" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium mb-1">{stat.title}</div>
-                        <div className="text-3xl font-bold">{stat.value}</div>
+                        <div className="text-[0.729vw] font-medium mb-[0.208vw]">{stat.title}</div>
+                        <div className="text-[1.563vw] font-bold">{stat.value}</div>
                       </div>
                     </CardContent>
                   </Card>
@@ -227,13 +227,13 @@ const AdminPage = () => {
               })}
             </div>
 
-            <div className="grid grid-cols-2 gap-8">
-              <Card className="h-[600px] shadow-lg transition-all duration-300 ">
+            <div className="grid grid-cols-2 gap-[1.667vw]">
+              <Card className="h-[31.25vw] shadow-lg transition-all duration-300 ">
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-700">Employee Attendance Ratio</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="w-full h-[400px] flex justify-center items-center">
+                  <div className="w-full h-[20.833vw] flex justify-center items-center">
                     <PieChart width={500} height={600}>
                       <Pie
                         activeIndex={activeIndex}
@@ -259,28 +259,28 @@ const AdminPage = () => {
                         layout="horizontal"
                         verticalAlign="bottom"
                         align="center"
-                        wrapperStyle={{ paddingTop: "20px" }}
+                        wrapperStyle={{ paddingTop: "1.042vw" }}
                       />
                     </PieChart>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="h-[600px] shadow-lg transition-all duration-300">
+              <Card className="h-[31.25vw] shadow-lg transition-all duration-300">
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-700">Employee Calendar</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6">
+                <CardContent className="p-[1.25vw]">
                   <div className="w-full">
-                    <div className="flex justify-between items-center mb-6">
-                      <div className="flex items-center gap-4">
-                        <h2 className="text-lg font-semibold text-gray-700">
+                    <div className="flex justify-between items-center mb-[1.25vw]">
+                      <div className="flex items-center gap-[0.833vw]">
+                        <h2 className="text-[0.938vw] font-semibold text-gray-700">
                           {format(currentDate, "MMMM")}
                         </h2>
                         <select
                           value={currentDate.getFullYear()}
                           onChange={handleYearChange}
-                          className="p-2 border rounded-lg text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="p-[0.417vw] border rounded-[0.417vw] text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           {years.map((year) => (
                             <option key={year} value={year}>
@@ -289,18 +289,18 @@ const AdminPage = () => {
                           ))}
                         </select>
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex gap-[0.417vw]">
                         <button
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          className="p-[0.417vw] hover:bg-gray-100 rounded-full transition-colors"
                           onClick={previousMonth}
                         >
-                          <ChevronLeft className="w-5 h-5" />
+                          <ChevronLeft className="w-[0.26vw] h-[0.26vw]" />
                         </button>
                         <button
-                          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          className="p-[0.417vw] hover:bg-gray-100 rounded-full transition-colors"
                           onClick={nextMonth}
                         >
-                          <ChevronRight className="w-5 h-5" />
+                          <ChevronRight className="w-[0.26vw] h-[0.26vw]" />
                         </button>
                       </div>
                     </div>
@@ -310,7 +310,7 @@ const AdminPage = () => {
                           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
                             <th
                               key={day}
-                              className="p-4 text-sm font-medium text-gray-600"
+                              className="p-[0.833vw] text-[0.729vw] font-medium text-gray-600"
                             >
                               {day}
                             </th>

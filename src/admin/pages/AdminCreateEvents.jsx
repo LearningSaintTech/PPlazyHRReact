@@ -115,7 +115,7 @@ const AdminCreateEvents = () => {
                     showChevron={true}
                 />
 
-                <div className="p-[1.25vw]">
+                <div className="">
                     <div className="bg-white rounded-[0.417vw] shadow-lg p-[1.25vw]">
                         {/* Welcome Section */}
                         <div className="flex justify-between items-center p-[1.25vw]">
