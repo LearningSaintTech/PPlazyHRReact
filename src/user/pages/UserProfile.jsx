@@ -83,7 +83,7 @@ const UserProfile = () => {
         <div className="flex min-h-screen bg-gray-50">
             <UserSideBar />
 
-            <div className="flex-1 p-8 ml-[290px]">
+            <div className="flex-1 ml-[16vw]">
                 <UserHeader
                     title="User Dashboard"
                     avatarSrc="/api/placeholder/35/35"
@@ -91,40 +91,40 @@ const UserProfile = () => {
                     showChevron={true}
                 />
 
-                <div className="mt-6 bg-white rounded-lg p-6">
+                <div className="mt-[1.25vw] bg-white rounded-[0.417vw] p-[1.25vw]">
 
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-8">
+                    <h2 className="text-[1.25vw] font-semibold text-gray-800 mb-[1.667vw]">
                         My Profile
                     </h2>
 
-                    <div className="flex items-center gap-16 mb-12">
+                    <div className="flex items-center gap-[3.333vw] mb-[0.208vw]2">
                         <div className="relative">
-                            <div className="w-48 h-48 rounded-full bg-indigo-50 overflow-hidden border-4 border-white ring-1 ring-gray-100">
+                            <div className="w-[10vw] h-[10vw] rounded-full bg-indigo-50 overflow-hidden border-4 border-white ring-1 ring-gray-100">
                                 <img
                                     src="/api/placeholder/192/192"
                                     alt="Profile"
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <button className="absolute bottom-0 right-0 p-3 bg-indigo-600 text-white rounded-full shadow-lg">
-                                <Camera className="w-6 h-6" />
+                            <button className="absolute bottom-0 right-0 p-[0.625vw] bg-indigo-600 text-white rounded-full shadow-lg">
+                                <Camera className="w-[1.25vw] h-[1.25vw]" />
                             </button>
                         </div>
 
                         <div>
-                            <h3 className="text-2xl font-semibold text-gray-800">Aditya Raj</h3>
-                            <p className="text-lg text-gray-500">Sr. Frontend Developer</p>
-                            <p className="text-gray-500 mt-2">
+                            <h3 className="text-[1.25vw] font-semibold text-gray-800">Aditya Raj</h3>
+                            <p className="text-[0.938vw] text-gray-500">Sr. Frontend Developer</p>
+                            <p className="text-gray-500 mt-[0.417vw]">
                                 Employee ID: <span className="text-indigo-600">PP_01</span>
                             </p>
                         </div>
                     </div>
 
-                    <div className="flex">
-                        <div className="flex flex-col space-y-2 w-[11.667vw] pr-8 border-r border-gray-200">
+                    <div className="flex mt-[2.083vw]">
+                        <div className="flex flex-col space-y-2 w-[11.667vw] pr-[1.667vw] border-r border-gray-200">
                             <button
                                 onClick={() => setActiveTab("personal")}
-                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "personal"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-[0.417vw] transition-colors ${activeTab === "personal"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -133,7 +133,7 @@ const UserProfile = () => {
                             </button>
                             <button
                                 onClick={() => setActiveTab("employment")}
-                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "employment"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-[0.417vw] transition-colors ${activeTab === "employment"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -142,7 +142,7 @@ const UserProfile = () => {
                             </button>
                             <button
                                 onClick={() => setActiveTab("bank")}
-                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-lg transition-colors ${activeTab === "bank"
+                                className={`w-full py-[0.625vw] px-[1.25vw] text-left rounded-[0.417vw] transition-colors ${activeTab === "bank"
                                     ? "bg-indigo-600 text-white"
                                     : "text-indigo-600 hover:bg-indigo-50"
                                     }`}
@@ -151,13 +151,13 @@ const UserProfile = () => {
                             </button>
                         </div>
 
-                        <div className="flex-1 pl-8">
+                        <div className="flex-1 pl-[1.667vw]">
                             {activeTab === "personal" && (
                                 <div className="grid grid-cols-2 space-x-4" >
-                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                                        <div className="grid grid-cols-2 gap-4 col-span-2">
+                                    <div className="grid grid-cols-2 gap-x-[3.333vw] gap-y-[1.25vw]">
+                                        <div className="grid grid-cols-2 gap-[0.833vw] col-span-2">
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     First Name
                                                 </label>
                                                 <input
@@ -165,11 +165,11 @@ const UserProfile = () => {
                                                     id="firstName"
                                                     value={formData.firstName}
                                                     onChange={handleInputChange}
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Surname
                                                 </label>
                                                 <input
@@ -177,13 +177,13 @@ const UserProfile = () => {
                                                     id="surname"
                                                     value={formData.surname}
                                                     onChange={handleInputChange}
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Date of Birth
                                             </label>
                                             <input
@@ -191,19 +191,19 @@ const UserProfile = () => {
                                                 id="dob"
                                                 value={formData.dob}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Gender
                                             </label>
                                             <select
                                                 id="gender"
                                                 value={formData.gender}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             >
                                                 <option value="Select Any" className="text-gray-600">Select Any</option>
                                                 <option value="Male">Male</option>
@@ -213,7 +213,7 @@ const UserProfile = () => {
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Blood Group
                                             </label>
                                             <input
@@ -221,12 +221,12 @@ const UserProfile = () => {
                                                 id="bloodGroup"
                                                 value={formData.bloodGroup}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Email
                                             </label>
                                             <input
@@ -234,11 +234,11 @@ const UserProfile = () => {
                                                 id="email"
                                                 value={formData.email}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
                                         <div className="col-span-2">
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Address
                                             </label>
                                             <input
@@ -246,22 +246,22 @@ const UserProfile = () => {
                                                 id="address"
                                                 value={formData.address}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-6">
                                         <div className="col-span-2">
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Phone Number
                                             </label>
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-[0.417vw]">
                                                 <input
                                                     type="text"
                                                     value="+91"
                                                     disabled
-                                                    className="w-16 p-2.5 border border-gray-200 rounded-lg bg-gray-50"
+                                                    className="w-[3.333vw] p-[0.521vw] border border-gray-200 rounded-[0.417vw] bg-gray-50"
                                                 />
                                                 <input
                                                     type="tel"
@@ -269,14 +269,14 @@ const UserProfile = () => {
                                                     value={formData.phone}
                                                     onChange={handleInputChange}
                                                     placeholder="Mobile Number"
-                                                    className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="flex-1 p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="grid grid-cols-3 space-x-1">
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     City
                                                 </label>
                                                 <input
@@ -284,12 +284,12 @@ const UserProfile = () => {
                                                     id="city"
                                                     value={formData.city}
                                                     onChange={handleInputChange}
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Pin Code
                                                 </label>
                                                 <input
@@ -297,12 +297,12 @@ const UserProfile = () => {
                                                     id="pincode"
                                                     value={formData.pincode}
                                                     onChange={handleInputChange}
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     State
                                                 </label>
                                                 <input
@@ -310,7 +310,7 @@ const UserProfile = () => {
                                                     id="state"
                                                     value={formData.state}
                                                     onChange={handleInputChange}
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
 
@@ -321,9 +321,9 @@ const UserProfile = () => {
 
                             {activeTab === "employment" && (
                                 <div className="grid grid-cols-2 space-x-4">
-                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                    <div className="grid grid-cols-2 gap-x-[3.333vw] gap-y-[1.25vw]">
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Employee Profile
                                             </label>
                                             <input
@@ -332,12 +332,12 @@ const UserProfile = () => {
                                                 value={formData.employeeProfile}
                                                 onChange={handleInputChange}
                                                 placeholder="Write Here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Salary
                                             </label>
                                             <input
@@ -346,12 +346,12 @@ const UserProfile = () => {
                                                 value={formData.salary}
                                                 onChange={handleInputChange}
                                                 placeholder="Write Here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div className="col-span-2">
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Department
                                             </label>
                                             <input
@@ -360,24 +360,24 @@ const UserProfile = () => {
                                                 value={formData.department}
                                                 onChange={handleInputChange}
                                                 placeholder="Write here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Allowances
                                             </label>
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-[0.417vw]">
                                                 <input
                                                     type="text"
                                                     id="allowances"
                                                     value={formData.allowances}
                                                     onChange={handleInputChange}
                                                     placeholder="Write here"
-                                                    className="flex-1 p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="flex-1 p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
-                                                <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
+                                                <button className="px-[0.833vw] py-[0.417vw] bg-gray-100 text-gray-600 rounded-[0.417vw]">
                                                     +
                                                 </button>
                                             </div>
@@ -387,7 +387,7 @@ const UserProfile = () => {
                                     <div className="space-y-6">
                                         <div className="grid grid-cols-2 space-x-2">
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Employment Type
                                                 </label>
                                                 <input
@@ -396,12 +396,12 @@ const UserProfile = () => {
                                                     value={formData.employmentType}
                                                     onChange={handleInputChange}
                                                     placeholder="Write here"
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Work Location
                                                 </label>
                                                 <input
@@ -410,14 +410,14 @@ const UserProfile = () => {
                                                     value={formData.workLocation}
                                                     onChange={handleInputChange}
                                                     placeholder="Write here"
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="grid grid-cols-2 space-x-2">
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Shift Timing
                                                 </label>
                                                 <input
@@ -426,12 +426,12 @@ const UserProfile = () => {
                                                     value={formData.shiftTiming}
                                                     onChange={handleInputChange}
                                                     placeholder="00:00:00"
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
 
                                             <div>
-                                                <label className="block text-sm text-gray-500 mb-1">
+                                                <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                     Date of joining
                                                 </label>
                                                 <input
@@ -440,13 +440,13 @@ const UserProfile = () => {
                                                     value={formData.dateOfJoining}
                                                     onChange={handleInputChange}
                                                     placeholder="dd/mm/yyyy"
-                                                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                    className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Manager
                                             </label>
                                             <input
@@ -455,7 +455,7 @@ const UserProfile = () => {
                                                 value={formData.manager}
                                                 onChange={handleInputChange}
                                                 placeholder="Write here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
@@ -465,9 +465,9 @@ const UserProfile = () => {
 
                             {activeTab === "bank" && (
                                 <div className="grid grid-cols-2 space-x-4">
-                                    <div className="grid grid-cols-2 gap-x-16 gap-y-6">
+                                    <div className="grid grid-cols-2 gap-x-[3.333vw] gap-y-[1.25vw]">
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Bank Name
                                             </label>
                                             <input
@@ -476,12 +476,12 @@ const UserProfile = () => {
                                                 value={formData.bankName}
                                                 onChange={handleInputChange}
                                                 placeholder="123445"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Bank Branch
                                             </label>
                                             <input
@@ -490,12 +490,12 @@ const UserProfile = () => {
                                                 value={formData.bankBranch}
                                                 onChange={handleInputChange}
                                                 placeholder="10/mm/yyyy"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div className="col-span-2">
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Account Number
                                             </label>
                                             <input
@@ -504,12 +504,12 @@ const UserProfile = () => {
                                                 value={formData.accountNumber}
                                                 onChange={handleInputChange}
                                                 placeholder="Write Here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Customer ID
                                             </label>
                                             <input
@@ -518,12 +518,12 @@ const UserProfile = () => {
                                                 value={formData.customerID}
                                                 onChange={handleInputChange}
                                                 placeholder="Write Here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 IFSC Code
                                             </label>
                                             <input
@@ -532,26 +532,26 @@ const UserProfile = () => {
                                                 value={formData.ifscCode}
                                                 onChange={handleInputChange}
                                                 placeholder="Write Here"
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div className="col-span-2">
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Upload Aadhar Card
                                             </label>
                                             <input
                                                 type="file"
                                                 id="aadharCard"
                                                 onChange={handleFileChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Account Holder
                                             </label>
                                             <input
@@ -559,40 +559,40 @@ const UserProfile = () => {
                                                 id="accountHolder"
                                                 value={formData.accountHolder}
                                                 onChange={handleInputChange}
-                                                className="w-full p-2.5 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Pass Book
                                             </label>
                                             <input
                                                 type="file"
                                                 id="passBook"
                                                 onChange={handleFileChange}
-                                                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.417vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm text-gray-500 mb-1">
+                                            <label className="block text-[0.729vw] text-gray-500 mb-[0.208vw]">
                                                 Upload PAN Card
                                             </label>
                                             <input
                                                 type="file"
                                                 id="panCard"
                                                 onChange={handleFileChange}
-                                                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:border-indigo-500"
+                                                className="w-full p-[0.417vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                             />
                                         </div>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="flex justify-end mt-8">
+                            <div className="flex justify-end mt-[1.667vw]">
                                 <button
-                                    className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                                    className="px-[1.25vw] py-[0.417vw] bg-indigo-600 text-white rounded-[0.417vw] hover:bg-indigo-700 transition-colors"
                                     onClick={() => {
                                         console.log("Edit request submitted");
                                     }}

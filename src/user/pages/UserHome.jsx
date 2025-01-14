@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import {clockInAPI,clockOutAPI} from "../../commonComponent/Api"
+import { clockInAPI, clockOutAPI } from "../../commonComponent/Api"
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -30,7 +30,7 @@ const UserHome = () => {
     const [clockOutTime, setClockOutTime] = useState(() =>
         localStorage.getItem("clockOutTime") || "00:00:00 AM"
     );
-    
+
     const [timer, setTimer] = useState(0);
 
     useEffect(() => {
@@ -54,27 +54,27 @@ const UserHome = () => {
     const handleClockIn = async () => {
         const userData = localStorage.getItem('userData');  // Retrieve the userData string from localStorage
         const parsedUserData = JSON.parse(userData);  // Parse the string into an object
-         console.log("parsedUserData",parsedUserData.id)
-         const userId=parsedUserData.id;
+        console.log("parsedUserData", parsedUserData.id)
+        const userId = parsedUserData.id;
         const today = new Date().toISOString().split("T")[0];
         const lastClockInDate = localStorage.getItem("clockInDate");
-    
+
         if (!lastClockInDate || lastClockInDate !== today) {
             try {
                 const now = new Date();
                 const startTime = Math.floor(Date.now() / 1000);
-    
+
                 // Call the clockInAPI
                 const response = await clockInAPI(userId);
-    
+
                 // If the API call is successful, update local storage and state
                 localStorage.setItem("clockInStartTime", startTime);
                 localStorage.setItem("clockInDate", today);
-    
+
                 setIsClockedIn(true);
                 setIsClockedOut(false);
                 setClockInTime(now.toLocaleTimeString("en-US"));
-    
+
                 alert("Clocked in successfully!");
                 console.log("Clock-In API Response:", response);
                 localStorage.setItem("clockingId", response.id);
@@ -91,23 +91,23 @@ const UserHome = () => {
         const confirmLogout = window.confirm(
             "You'll be logged out for the whole day. Do you want to proceed?"
         );
-    
+
         if (confirmLogout && isClockedIn && !isClockedOut) {
             try {
-                
+
                 console.log("ClockOut Data in localStorage:", JSON.stringify(localStorage));
-                console.log("qqqqqqqqqqqqqqqqq",localStorage.getItem("clockingId"))
-                const clockingId =localStorage.getItem("clockingId");
+                console.log("qqqqqqqqqqqqqqqqq", localStorage.getItem("clockingId"))
+                const clockingId = localStorage.getItem("clockingId");
                 const response = await clockOutAPI(clockingId);
                 console.log('Clock-Out Response:', response);
-    
+
                 // Update state on successful clock-out
                 setIsClockedOut(true);
                 setIsClockedIn(false);
-    
+
                 const now = new Date();
                 setClockOutTime(now.toLocaleTimeString("en-US"));
-    
+
                 alert('Clocked out successfully!');
             } catch (error) {
                 console.error('Error during clock-out:', error);
@@ -115,8 +115,8 @@ const UserHome = () => {
             }
         }
     };
-    
-// localStorage.clear();
+
+    // localStorage.clear();
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
@@ -128,61 +128,55 @@ const UserHome = () => {
 
     return (
         <div className="flex h-screen bg-white">
-            {/* Sidebar with fixed position */}
-            <div className="w-64 fixed h-full border-r border-gray-200">
-                <UserSidebar />
-            </div>
+            <UserSidebar />
 
-            {/* Main content with increased spacing */}
-            <div className="flex-1 pl-72">  {/* Changed from pl-64 to pl-72 for more space */}
-                <div className="border-b border-gray-200">  {/* Added border for visual separation */}
-                    <div className="ml-6">  {/* Added margin to header content */}
-                        <UserHeader />
-                    </div>
-                </div>
-                <div className="p-8 bg-white">  {/* Increased padding from p-6 to p-8 */}
-                    <div className="mb-6">
-                        <div className="flex justify-between items-center mb-6">
-                            <h1 className="text-lg">
-                                Welcome back, <span className="text-blue-600">Aditya</span>
+
+            {/* Main content */}
+            <div className="flex-1  pl-[16vw]">
+                <UserHeader />
+                <div className="p-[1.667vw] bg-white">
+                    <div className="mb-[1.25vw]">
+                        <div className="flex justify-between items-center mb-[1.25vw]">
+                            <h1 className="text-[0.938vw]">
+                                Welcome back, <span className="text-blue-600"></span>
                             </h1>
                             <p className="text-gray-600">
-                            <span className="text-blue-600"> Tue, </span> <CustomClock /> <span className="text-blue-600">AM</span>
+                                <span className="text-blue-600"> Tue, </span> <CustomClock /> <span className="text-blue-600">AM</span>
                             </p>
                         </div>
 
                         {/* Main content grid */}
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-2 gap-[1.25vw]">
                             {/* Left Column */}
                             <div className="space-y-4">
                                 {/* Clock In/Out buttons row */}
-                                <div className="flex gap-4">
+                                <div className="flex gap-[0.833vw]">
                                     <div
                                         className={`flex-1 ${isClockedIn ? "bg-gray-100" : "bg-blue-600"
-                                            } text-white p-4 rounded-lg cursor-pointer`}
+                                            } text-white p-[0.833vw] rounded-[0.417vw] cursor-pointer`}
                                         onClick={handleClockIn}
                                     >
                                         <div className="flex justify-between items-center">
                                             <div>
-                                                <h2 className="text-lg font-medium">Clock In</h2>
+                                                <h2 className="text-[0.938vw] font-medium">Clock In</h2>
                                                 <p>{clockInTime}</p>
                                             </div>
-                                            <svg className="w-6 h-6 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg className="w-[1.25vw] h-[1.25vw] transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                             </svg>
                                         </div>
                                     </div>
                                     <div
                                         className={`flex-1 ${isClockedOut || !isClockedIn ? "bg-gray-100" : "bg-green-600"
-                                            } text-white p-4 rounded-lg cursor-pointer`}
+                                            } text-white p-[0.833vw] rounded-[0.417vw] cursor-pointer`}
                                         onClick={handleClockOut}
                                     >
                                         <div className="flex justify-between items-center">
                                             <div>
-                                                <h2 className="text-lg font-medium">Clock Out</h2>
+                                                <h2 className="text-[0.938vw] font-medium">Clock Out</h2>
                                                 <p>{clockOutTime}</p>
                                             </div>
-                                            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <svg className="w-[1.25vw] h-[1.25vw]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                             </svg>
                                         </div>
@@ -190,52 +184,52 @@ const UserHome = () => {
                                 </div>
 
                                 {/* Total Absent box */}
-                                <div className="bg-red-600 text-white p-4 rounded-lg">
+                                <div className="bg-red-600 text-white p-[0.833vw] rounded-[0.417vw]">
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <h2 className="text-lg font-medium">Total Absent</h2>
-                                            <p className="text-sm">1Dec,2024 - 31Dec,2024</p>
+                                            <h2 className="text-[0.938vw] font-medium">Total Absent</h2>
+                                            <p className="text-[0.729vw]">1Dec,2024 - 31Dec,2024</p>
                                         </div>
-                                        <div className="text-4xl font-bold">06</div>
+                                        <div className="text-[1.875vw] font-bold">06</div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Right Column - Working Hours */}
-                            <div className="bg-gray-100 p-4 rounded-lg flex flex-col justify-center items-center h-full">
-                                <h2 className="text-gray-600 mb-2">Working Hours</h2>
-                                <p className="text-5xl font-bold">{formatTime(timer)}</p>
+                            <div className="bg-gray-100 p-[0.833vw] rounded-[0.417vw] flex flex-col justify-center items-center h-full">
+                                <h2 className="text-gray-600 mb-[0.417vw]">Working Hours</h2>
+                                <p className="text-[2.5vw] font-bold">{formatTime(timer)}</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Events and Calendar section */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-white rounded-lg shadow p-4">
-                            <h2 className="text-lg font-medium mb-4">Events</h2>
+                    <div className="grid grid-cols-2 gap-[0.833vw]">
+                        <div className="bg-white rounded-[0.417vw] shadow p-[0.833vw]">
+                            <h2 className="text-[0.938vw] font-medium mb-[0.833vw]">Events</h2>
                             <div className="space-y-3">
-                                <div className="p-4 bg-white border rounded-lg">Event 1</div>
-                                <div className="p-4 bg-white border rounded-lg">Event 2</div>
+                                <div className="p-[0.833vw] bg-white border rounded-[0.417vw]">Event 1</div>
+                                <div className="p-[0.833vw] bg-white border rounded-[0.417vw]">Event 2</div>
                             </div>
                         </div>
-                        <div className="bg-white rounded-lg shadow p-4">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-lg font-medium">Dec 2024</h2>
-                                <div className="flex gap-2">
-                                    <button className="p-1">&lt;</button>
-                                    <button className="p-1">&gt;</button>
+                        <div className="bg-white rounded-[0.417vw] shadow p-[0.833vw]">
+                            <div className="flex justify-between items-center mb-[0.833vw]">
+                                <h2 className="text-[0.938vw] font-medium">Dec 2024</h2>
+                                <div className="flex gap-[0.417vw]">
+                                    <button className="p-[0.208vw]">&lt;</button>
+                                    <button className="p-[0.208vw]">&gt;</button>
                                 </div>
                             </div>
                             <table className="w-full">
                                 <thead>
                                     <tr>
-                                        <th className="p-2 text-sm font-medium">Mo</th>
-                                        <th className="p-2 text-sm font-medium">Tu</th>
-                                        <th className="p-2 text-sm font-medium">We</th>
-                                        <th className="p-2 text-sm font-medium">Th</th>
-                                        <th className="p-2 text-sm font-medium">Fr</th>
-                                        <th className="p-2 text-sm font-medium">Sa</th>
-                                        <th className="p-2 text-sm font-medium">Su</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Mo</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Tu</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">We</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Th</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Fr</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Sa</th>
+                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Su</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -247,7 +241,7 @@ const UserHome = () => {
                                                 return (
                                                     <td
                                                         key={dayIndex}
-                                                        className={`p-2 text-center ${isToday ? "bg-blue-600 text-white rounded-lg" : ""
+                                                        className={`p-[0.417vw] text-center ${isToday ? "bg-blue-600 text-white rounded-[0.417vw]" : ""
                                                             } ${day > 31 ? "text-gray-300" : ""}`}
                                                     >
                                                         {day <= 31 ? day : day - 31}
