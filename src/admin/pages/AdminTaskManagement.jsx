@@ -109,7 +109,7 @@ const TaskManagement = () => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1">
+            <div className="flex-1 ml-[15%] p-[2vw]">
                 <AdminHeader />
 
                 {/* Search and Filters */}

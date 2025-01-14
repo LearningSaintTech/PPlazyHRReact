@@ -31,10 +31,16 @@ const TaskDashboard = () => {
 
   const getPriorityStyle = (priority) => {
     switch (priority) {
+      case "LOW":
+        return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
       case "Low":
         return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+      case "MEDIUM":
+        return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
       case "Medium":
         return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
+      case "HIGH":
+        return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
       case "High":
         return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
       default:
@@ -46,8 +52,12 @@ const TaskDashboard = () => {
     switch (status) {
       case "Completed":
         return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+        case "COMPLETED":
+          return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
       case "In Progress":
         return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
+        case "IN_PROGRESS":
+          return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
       case "Pending":
         return "bg-[#f5efe6] text-[#ffae00] border-[#ffae00]";
       default:
@@ -75,7 +85,7 @@ const TaskDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <div className="w-[250px] flex-shrink-0">
+      <div className="w-[13.021vw] flex-shrink-0">
         <UserSidebar />
       </div>
 
@@ -85,43 +95,43 @@ const TaskDashboard = () => {
         <UserHeader />
 
         {/* Content */}
-        <div className="p-16 bg-white flex-1 overflow-y-auto">
+        <div className="p-[3.333vw] bg-white flex-1 overflow-y-auto">
           {/* Statistics Cards */}
-          <div className="flex gap-6 mb-14">
-            <div className="p-6 border border-black/20 rounded-xl flex items-center justify-between min-w-[250px]">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 border border-black/20 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5" />
+          <div className="flex gap-[1.25vw] mb-[2.917vw]">
+            <div className="p-[1.25vw] border border-black/20 rounded-[0.625vw] flex items-center justify-between min-w-[13.021vw]">
+              <div className="flex items-center gap-[0.833vw]">
+                <div className="w-[2.083vw] h-[2.083vw] border border-black/20 rounded-[0.417vw] flex items-center justify-center">
+                  <FileText className="w-[1.042vw] h-[1.042vw]" />
                 </div>
-                <span className="text-base font-light">Total Task Assign</span>
+                <span className="text-[0.833vw] font-light">Total Task Assign</span>
               </div>
-              <span className="text-5xl font-medium">{tasks.length}</span>
+              <span className="text-[2.5vw] font-medium">{tasks.length}</span>
             </div>
-            <div className="p-6 border border-[#069855] rounded-xl flex items-center justify-between min-w-[250px]">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 border border-black/20 rounded-lg flex items-center justify-center">
-                  <Check className="w-5 h-5" />
+            <div className="p-[1.25vw] border border-[#069855] rounded-[0.625vw] flex items-center justify-between min-w-[13.021vw]">
+              <div className="flex items-center gap-[0.833vw]">
+                <div className="w-[2.083vw] h-[2.083vw] border border-black/20 rounded-[0.417vw] flex items-center justify-center">
+                  <Check className="w-[1.042vw] h-[1.042vw]" />
                 </div>
-                <span className="text-[#069855] text-base font-light">
+                <span className="text-[#069855] text-[0.833vw] font-light">
                   Total Task Done
                 </span>
               </div>
-              <span className="text-[#069855] text-5xl font-medium">
+              <span className="text-[#069855] text-[2.5vw] font-medium">
                 {tasks.filter((task) => task.status === "Completed").length}
               </span>
             </div>
           </div>
 
           {/* Task List Section */}
-          <div className="mt-14">
-            <h2 className="text-[#5c606a] text-2xl font-medium mb-6">
+          <div className="mt-[2.917vw]">
+            <h2 className="text-[#5c606a] text-[1.25vw] font-medium mb-[1.25vw]">
               Last Applied
             </h2>
-            <div className="grid grid-cols-6 gap-2 mb-3">
+            <div className="grid grid-cols-6 gap-[0.417vw] mb-[0.625vw]">
               {["Task", "Priority", "Due Date", "Description", "Status", "Comment"].map((header) => (
                 <div
                   key={header}
-                  className="px-6 py-[22px] bg-neutral-100 rounded-lg shadow-sm border-l-2 text-[#5c606a] text-2xl font-medium"
+                  className="px-[1.25vw] py-[1.146vw] bg-neutral-100 rounded-[0.417vw] shadow-sm border-l-2 text-[#5c606a] text-[1.25vw] font-medium"
                 >
                   {header}
                 </div>
@@ -130,29 +140,29 @@ const TaskDashboard = () => {
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className="grid grid-cols-6 gap-2 border-b border-black/20 py-3"
+                className="grid grid-cols-6 gap-[0.417vw] border-b border-black/20 py-[0.625vw]"
               >
-                <div className="px-4 py-4 text-2xl font-light">{task.name}</div>
-                <div className="px-4 py-4">
+                <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">{task.name}</div>
+                <div className="px-[0.833vw] py-[0.833vw]">
                   <span
-                    className={`px-3 py-1 rounded-lg border ${getPriorityStyle(
+                    className={`px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border ${getPriorityStyle(
                       task.priority
-                    )} text-2xl font-light`}
+                    )} text-[1.25vw] font-light`}
                   >
                     {task.priority}
                   </span>
                 </div>
-                <div className="px-4 py-4 text-2xl font-light">
+                <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
                   {task.dueDate}
                 </div>
-                <div className="px-4 py-4 text-2xl font-light">
+                <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
                   {task.messages}
                 </div>
-                <div className="px-4 py-4 relative">
+                <div className="px-[0.833vw] py-[0.833vw] relative">
                   <select
-                    className={`w-full px-3 py-1 rounded-lg border ${getStatusStyle(
+                    className={`w-full px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border ${getStatusStyle(
                       task.status
-                    )} text-2xl font-light appearance-none cursor-pointer pr-10`}
+                    )} text-[1.25vw] font-light appearance-none cursor-pointer pr-[2.083vw]`}
                     value={task.status}
                     onChange={(e) =>
                       handleStatusChange(task.id, e.target.value)
@@ -162,16 +172,16 @@ const TaskDashboard = () => {
                     <option value="IN_PROGRESS">In Progress</option>
                     <option value="Pending">Pending</option>
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-600 pointer-events-none" />
+                  <ChevronDown className="absolute right-[0.625vw] top-1/2 transform -translate-y-1/2 w-[0.26vw] h-[0.26vw] text-gray-600 pointer-events-none" />
                 </div>
-                <div className="px-4 py-4 flex items-center relative">
+                <div className="px-[0.833vw] py-[0.833vw] flex items-center relative">
                   <input
                     type="text"
                     placeholder="Comment here"
-                    className="w-full h-14 px-4 py-2 border border-black rounded-lg text-base font-light pr-12"
+                    className="w-full h-[2.917vw] px-[0.833vw] py-[0.417vw] border border-black rounded-[0.417vw] text-[0.833vw] font-light pr-[2.5vw]"
                   />
-                  <button className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-[#534feb] rounded-full flex items-center justify-center">
-                    <Check className="w-5 h-5 text-white" />
+                  <button className="absolute right-[0.417vw] top-1/2 transform -translate-y-1/2 w-[0.417vw] h-[0.417vw] bg-[#534feb] rounded-full flex items-center justify-center">
+                    <Check className="w-[0.26vw] h-[0.26vw] text-white" />
                   </button>
                 </div>
               </div>

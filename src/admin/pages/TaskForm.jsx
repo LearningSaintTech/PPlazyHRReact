@@ -70,8 +70,8 @@ const TaskForm = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-[0.625vw] flex-1">
-                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
+                <div className="flex flex-col gap-[0.625vw] flex-1 mt-[0.417vw]">
+                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[1vw] border border-black/20 rounded">
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
                         <input

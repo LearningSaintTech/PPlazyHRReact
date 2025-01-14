@@ -104,6 +104,18 @@ const AdminAttendance = () => {
     link.click();
   };
 
+  const handleStatusChangeA = (newStatus) => {
+    // Call API to update status
+    updateStatusApi(data.id, newStatus)
+      .then(() => {
+        console.log("Status updated successfully!");
+      })
+      .catch((error) => {
+        console.error("Failed to update status:", error);
+      });
+  };
+
+
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
@@ -191,21 +203,36 @@ const AdminAttendance = () => {
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>
                       <td className="p-2 border-b rounded">
-                        <div
-                          className={`h-8 px-3 py-1 inline-flex items-center justify-start gap-2.5 rounded-lg border
+                        <div className="flex items-center gap-2">
+                          <div
+                            className={`h-8 px-3 py-1 inline-flex items-center justify-start gap-2.5 rounded-lg border
       ${data.status.toUpperCase() === 'A'
-                              ? 'bg-red-50 border-red-600 text-red-600'
-                              : data.status.toUpperCase() === 'H'
-                                ? 'bg-yellow-50 border-yellow-600 text-yellow-600'
-                                : data.status.toUpperCase() === 'P'
-                                  ? 'bg-green-50 border-green-600 text-green-600'
-                                  : 'bg-gray-50 border-gray-600 text-gray-600'
-                            }`}
-                        >
-                          <div className="text-lg font-light font-sans leading-normal">
-                            {formatStatus(data.status)}
+                                ? 'bg-red-50 border-red-600 text-red-600 text-[0.938vw]'
+                                : data.status.toUpperCase() === 'H'
+                                  ? 'bg-yellow-50 border-yellow-600 text-yellow-600 text-[0.938vw]'
+                                  : data.status.toUpperCase() === 'P'
+                                    ? 'bg-green-50 border-green-600 text-green-600 text-[0.938vw]'
+                                    : 'bg-gray-50 border-gray-600 text-gray-600'
+                              }`}
+                          >
+                            <div className="text-lg font-light font-sans leading-normal">
+                              {formatStatus(data.status)}
+                            </div>
                           </div>
+
+                          {/* Dropdown for changing status */}
+                          <select
+                            value={data.status}
+                            onChange={(e) => handleStatusChangeA(e.target.value)}
+                            className="h-8 px-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="A">Absent</option>
+                            <option value="H">Half Day</option>
+                            <option value="P">Present</option>
+                            <option value="N">Not Available</option>
+                          </select>
                         </div>
+
                       </td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">
                         <div className="relative group">

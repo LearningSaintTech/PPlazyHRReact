@@ -107,13 +107,19 @@ const AdminTicketQuery = () => {
     const getStatusColor = (status) => {
         switch (status.toLowerCase()) {
             case "open":
-                return "bg-green-100 text-green-800";
-            case "close":
-                return "bg-red-100 text-red-800";
-            case "pending":
-                return "bg-yellow-100 text-yellow-800";
-            default:
-                return "bg-gray-100 text-gray-800";
+                return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+              case "Open":
+                return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+              case "Pending":
+                return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
+              case "pending":
+                return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
+              case "close":
+                return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
+              case "Close":
+                return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
+              default:
+                return "bg-gray-100 text-gray-600 border-gray-400";
         }
     };
 
