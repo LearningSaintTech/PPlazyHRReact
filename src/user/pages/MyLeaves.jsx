@@ -11,6 +11,9 @@ const MyLeaves = () => {
     date: "",
   });
   const [leaveHistory, setLeaveHistory] = useState([]); // State to store leave history
+  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [action, setAction] = useState(""); // State to store selected action (Pending, Accepted, etc.)
+
   const userId = "2"; // Replace this with actual user ID logic
 
   useEffect(() => {
@@ -58,6 +61,22 @@ const MyLeaves = () => {
     return date.toLocaleDateString(); // This will return a readable format like "1/6/2025"
   };
 
+  // Filter leaves based on search term and action
+  const filteredLeaves = leaveHistory.filter((leave) => {
+    const matchesSearch =
+      leave.leaveType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      leave.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      leave.fromDate.includes(searchTerm) ||
+      leave.toDate.includes(searchTerm);
+    
+    const matchesAction =
+      action === "" || // If no action is selected, include all
+      (action === "accepted" && leave.acceptRejectFlag) ||
+      (action === "pending" && !leave.acceptRejectFlag);
+
+    return matchesSearch && matchesAction;
+  });
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
       {/* Sidebar */}
@@ -94,15 +113,18 @@ const MyLeaves = () => {
                 type="text"
                 placeholder="Search by Name, ID, status..."
                 className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)} // Handle search term change
               />
             </div>
             <select
               className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+              value={action}
+              onChange={(e) => setAction(e.target.value)} // Handle action selection change
             >
               <option value="">Action</option>
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
               <option value="pending">Pending</option>
+              <option value="accepted">Accepted</option>
             </select>
             <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
               <Calendar size={20} className="text-gray-400" />
@@ -130,8 +152,8 @@ const MyLeaves = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Map over the leaveHistory state to display data */}
-                  {leaveHistory.map((leave, index) => (
+                  {/* Map over the filtered leaveHistory state to display data */}
+                  {filteredLeaves.map((leave, index) => (
                     <tr key={index} className="border-b">
                       <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.fromDate)}</td>
                       <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.toDate)}</td>

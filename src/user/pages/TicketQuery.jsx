@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { createTicket } from "../../commonComponent/Api"; // Import createTicket function
+import { createTicket } from "../../commonComponent/Api";
 import { Search, Calendar, Download } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import { getTickets } from "../../commonComponent/Api"; // import the getTickets API call
+import { getTickets } from "../../commonComponent/Api";
 
 const TicketQuery = () => {
     const [tickets, setTickets] = useState([]);
@@ -16,6 +16,8 @@ const TicketQuery = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
     const [ticketDescription, setTicketDescription] = useState("");
+    const [selectedDate, setSelectedDate] = useState(""); // New state for selected date
+    
     const getStatusStyles = (status) => {
         switch (status) {
             case 'Open':
@@ -50,38 +52,60 @@ const TicketQuery = () => {
             Object.values(ticket).some(value =>
                 value.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
+
+        const matchesDate = selectedDate === "" ||
+            new Date(ticket.createdAt).toLocaleDateString() === new Date(selectedDate).toLocaleDateString();
+
         const matchesStatus = statusFilter === "" ||
             ticket.status.toLowerCase() === statusFilter.toLowerCase();
-        return matchesSearch && matchesStatus;
+        
+        return matchesSearch && matchesDate && matchesStatus;
     });
 
     useEffect(() => {
         const userId = 1; // Assuming the user ID is 1, replace with actual user ID
         getTickets(userId).then((data) => setTickets(data)).catch((error) => console.error("Error fetching tickets:", error));
     }, []);
-    const userId = 1; // Assuming the user ID is 1, replace with actual user ID
-
+    
     const handleCreateTicket = () => {
         const newTicket = {
             title: ticketTitle,
             description: ticketDescription,
-            userId: userId
-
+            userId: 1, // Replace with the actual user ID
         };
 
-        // Call the createTicket API
         createTicket(newTicket)
             .then((response) => {
-                // On success, you can update the tickets list or show a success message
                 console.log("Ticket created successfully:", response);
                 setTickets((prevTickets) => [...prevTickets, response]);
-                setTicketTitle(""); // Reset ticket title input
-                setTicketDescription(""); // Reset ticket description input
-                console.log("newData", tickets)
+                setTicketTitle(""); 
+                setTicketDescription(""); 
             })
             .catch((error) => {
                 console.error("Error creating ticket:", error);
             });
+    };
+
+    // Function to export tickets as CSV
+    const exportCSV = () => {
+        const headers = ['Date', 'Title', 'Description', 'Status'];
+        const rows = filteredTickets.map(ticket => [
+            new Date(ticket.createdAt).toLocaleDateString(),
+            ticket.title,
+            ticket.description,
+            ticket.status,
+        ]);
+
+        const csvContent = [
+            headers.join(','), 
+            ...rows.map(row => row.join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'tickets.csv';
+        link.click();
     };
 
     return (
@@ -90,7 +114,7 @@ const TicketQuery = () => {
             <UserSideBar />
 
             {/* Main Content */}
-            <div className="flex-1  pl-[16vw]">
+            <div className="flex-1 pl-[16vw]">
                 {/* Header */}
                 <UserHeader
                     title="User Dashboard"
@@ -132,11 +156,17 @@ const TicketQuery = () => {
                             <option value="closed">Closed</option>
                             <option value="pending">Pending</option>
                         </select>
-                        <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                            <Calendar size={20} className="text-gray-400" />
-                            <span>13 Jan, 2024</span>
-                        </div>
-                        <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
+                        {/* Date Picker */}
+                        <input
+                            type="date"
+                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
+                        <button
+                            className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50"
+                            onClick={exportCSV}
+                        >
                             <Download size={20} />
                             Export CSV
                         </button>
@@ -188,25 +218,25 @@ const TicketQuery = () => {
                             {/* Table Headers */}
                             <div className="flex gap-[0.417vw]">
                                 {['Date', 'Title', 'Description', 'Status'].map((header) => (
-                                    <div key={header} className="w-[18.75vw] px-[1.25vw] py-[1.146vw] bg-neutral-100 rounded-[0.417vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-[#5c606a] text-[1.25vw] font-medium">
+                                    <div key={header} className="w-[18.75vw] px-[1.25vw] py-[1.146vw] bg-neutral-100 rounded-[0.417vw]  border-l-2 text-[#5c606a] text-[1.25vw] font-medium">
                                         {header}
                                     </div>
                                 ))}
                             </div>
 
                             {/* Table Rows */}
-                            {tickets.map((ticket) => (
+                            {filteredTickets.map((ticket) => (
                                 <div key={ticket.id} className="flex justify-between border-b border-black/20">
-                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] text-black text-[1.25vw] font-light">
                                         {new Date(ticket.createdAt).toLocaleDateString()}
                                     </div>
-                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] text-black text-[1.25vw] font-light">
                                         {ticket.title}
                                     </div>
-                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2 text-black text-[1.25vw] font-light">
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[1.146vw] text-black text-[1.25vw] font-light">
                                         {ticket.description}
                                     </div>
-                                    <div className="w-[18.75vw] px-[1.25vw] py-[0.781vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)] border-l-2">
+                                    <div className="w-[18.75vw] px-[1.25vw] py-[0.781vw]">
                                         <div className={`w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border flex items-center ${getStatusStyles(ticket.status)}`}>
                                             <span className="text-[1.25vw] font-light">{ticket.status}</span>
                                         </div>

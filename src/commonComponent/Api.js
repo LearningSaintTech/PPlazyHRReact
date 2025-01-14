@@ -595,7 +595,7 @@ export async function createTask(task) {
     try {
         // Make the request to the server
         const response = await request({
-            url: `http://192.168.0.131:8080/user/tasks/create`,
+            url: `http://localhost:8080/user/tasks/create`,
             ...options, // Spread the options to include method, body, and headers
         });
 
@@ -655,7 +655,7 @@ export const updateTaskStatus = async (taskId, status) => {
   try {
       // Make the request to the server
       const response = await request({
-          url: `http://192.168.0.131:8080/user/tasks/update/${taskId}`,
+          url: `http://localhost:8080/user/tasks/update/${taskId}`,
           ...options, // Spread the options to include method, body, and headers
       });
 
