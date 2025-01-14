@@ -77,7 +77,7 @@ const AdminEmployeeDashboard = () => {
     const matchesSearch =
       searchTerm === '' ||
       emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      emp.employeeId.toString().toLowerCase().includes(searchTerm.toLowerCase()) || // Ensure employeeId is string
+      emp.empId.toString().toLowerCase().includes(searchTerm.toLowerCase()) || // Ensure employeeId is string
       emp.designation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.department.toLowerCase().includes(searchTerm.toLowerCase());
 

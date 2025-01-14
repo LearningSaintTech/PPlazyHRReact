@@ -4,6 +4,9 @@ import { Calendar, ChevronLeft, ChevronRight, Search, Download } from "lucide-re
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
 import { getAllLeaves } from "../../commonComponent/Api";
+import { updateLeaveStatus } from "../../commonComponent/Api";  // Ensure the correct path for the updateLeaveStatus function
+import DatePicker from 'react-datepicker'; // Importing DatePicker for calendar functionality
+import 'react-datepicker/dist/react-datepicker.css'; // Required CSS for DatePicker
 
 const ApplyLeave = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +18,7 @@ const ApplyLeave = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [selectedDate, setSelectedDate] = useState(null); // For calendar date
 
     const [leaveHistory, setLeaveHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -44,6 +48,7 @@ const ApplyLeave = () => {
     useEffect(() => {
         getAllLeaves()
             .then(response => {
+                console.log("response", response)
                 setLeaveHistory(response);
             })
             .catch(error => {
@@ -64,30 +69,43 @@ const ApplyLeave = () => {
         }));
     };
 
-    const handleAction = (index, action) => {
+    const handleStatusChange = async (index, status) => {
         const updatedLeaves = [...leaveHistory];
-        updatedLeaves[index].acceptRejectFlag = action === "accept" ? "accepted" : "rejected";
+        updatedLeaves[index].acceptRejectFlag = status;
         setLeaveHistory(updatedLeaves);
+
+        try {
+            // Call the API to update the status
+            const leaveId = updatedLeaves[index].id; // Ensure 'id' exists in your leave data
+            const response = await updateLeaveStatus(leaveId, status);
+            console.log("Leave status updated:", response);
+        } catch (error) {
+            console.error("Error updating leave status:", error);
+        }
     };
 
     const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = leaveHistory.slice(indexOfFirstItem, indexOfLastItem);
+
+    const currentItems = leaveHistory
+        .filter(leave => {
+            // Search by username and selected date
+            const matchesSearchTerm = leave.username.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesDate = selectedDate ? format(new Date(leave.fromDate), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') : true;
+            return matchesSearchTerm && matchesDate;
+        })
+        .slice(indexOfFirstItem, indexOfLastItem);
 
     const formatDate = (date) => format(new Date(date), 'dd/MM/yyyy');
 
     const getStatusStyle = (status) => {
-        switch (status.toLowerCase()) {
-            case 'accepted':
-                return 'bg-green-100 text-green-800';
-            case 'rejected':
-                return 'bg-red-100 text-red-800';
-            case 'pending':
-                return 'bg-yellow-100 text-yellow-800';
-            default:
-                return 'bg-gray-100 text-gray-800';
+        if (status === true) {
+            return 'bg-green-100 text-green-800'; // Accepted
+        } else if (status === false) {
+            return 'bg-red-100 text-red-800'; // Rejected
         }
+        return 'bg-yellow-100 text-yellow-800'; // Pending
     };
 
     return (
@@ -116,25 +134,21 @@ const ApplyLeave = () => {
                             <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                             <input
                                 type="text"
-                                placeholder="Search by Date, Time, Status ..."
+                                placeholder="Search by Username ..."
                                 className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <select
-                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                            <option value="">Date</option>
-                            <option>NA</option>
-                            <option>NA</option>
-                            <option>NA</option>
-                        </select>
                         <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                             <Calendar size={20} className="text-gray-400" />
-                            <span>13 Jan, 2024</span>
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={(date) => setSelectedDate(date)}
+                                dateFormat="dd/MM/yyyy"
+                                className="w-full p-2 border rounded-[0.417vw]"
+                                placeholderText="Select Date"
+                            />
                         </div>
                         <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                             <Download size={20} />
@@ -148,6 +162,7 @@ const ApplyLeave = () => {
                             <table className="w-full">
                                 <thead className="bg-gray-50">
                                     <tr>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">User Name</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">From Date</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">To Date</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 text-[1.042vw]">No. of Days</th>
@@ -159,26 +174,22 @@ const ApplyLeave = () => {
                                 <tbody>
                                     {currentItems.map((leave, index) => (
                                         <tr key={index} className="border-t">
+                                            <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.username}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{formatDate(leave.fromDate)}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{formatDate(leave.toDate)}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.duration}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.leaveType}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.reason}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">
-                                                {leave.acceptRejectFlag ? (
-                                                    <span className={`inline-flex px-[0.417vw] py-[0.208vw] text-xs font-semibold rounded-full ${getStatusStyle(leave.acceptRejectFlag)}`}>
-                                                        {leave.acceptRejectFlag.charAt(0).toUpperCase() + leave.acceptRejectFlag.slice(1)}
-                                                    </span>
-                                                ) : (
-                                                    <div className="flex gap-[0.417vw]">
-                                                        <button onClick={() => handleAction(index, "accept")} className="bg-green-500 text-white px-[0.625vw] py-[0.417vw] rounded">
-                                                            Accept
-                                                        </button>
-                                                        <button onClick={() => handleAction(index, "reject")} className="bg-red-500 text-white px-[0.625vw] py-[0.417vw] rounded">
-                                                            Reject
-                                                        </button>
-                                                    </div>
-                                                )}
+                                                <select
+                                                    className="px-[0.625vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none"
+                                                    value={leave.acceptRejectFlag === true ? 'accepted' : leave.acceptRejectFlag === false ? 'rejected' : 'pending'}
+                                                    onChange={(e) => handleStatusChange(index, e.target.value === 'accepted' ? true : e.target.value === 'rejected' ? false : null)}
+                                                >
+                                                    <option value="pending">Pending</option>
+                                                    <option value="accepted">Accepted</option>
+                                                    <option value="rejected">Rejected</option>
+                                                </select>
                                             </td>
                                         </tr>
                                     ))}

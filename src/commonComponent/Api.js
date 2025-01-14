@@ -439,7 +439,7 @@ export async function getTotalAbsentEmployee() {
 }
 
 export async function updateClockingStatus(id, status) {
-  const url = new URL(`${API_BASE_URL}/updateStatus/${id}`);
+  const url = new URL(`${API_BASE_URL}/api/clockings/updateStatus/${id}`);
   url.searchParams.append("status", status);
 
   const options = {
@@ -667,3 +667,41 @@ export const updateTaskStatus = async (taskId, status) => {
       throw error; // Rethrow the error to handle it elsewhere
   }
 }
+
+
+export async function updateLeaveStatus(id, action) {
+  console.log("id", id);
+  console.log("action", action);
+
+  // Map the boolean action to 'accept' or 'reject'
+  const status = action === true ? "accept" : action === false ? "reject" : "pending";
+
+  const url = new URL(`${API_BASE_URL}/api/leaves/manage/${status}/${id}`);
+  url.searchParams.append("status", status);
+
+  const options = {
+      url: url.toString(),
+      method: "PUT",
+  };
+
+  try {
+      const response = await request(options);
+      return response;
+  } catch (error) {
+      return Promise.reject(error);
+  }
+}
+export  const updateEvent = async (id, eventData) => {
+  const options = {
+      url: `${API_BASE_URL}/api/events/${id}`,  // The URL to the PUT endpoint with the event ID
+      method: 'PUT',             // HTTP method is PUT for updating
+      body: JSON.stringify(eventData),  // The event data to update in the request body
+  };
+
+  try {
+      const updatedEvent = await request(options);  // Call the request function
+      return updatedEvent;  // Return the updated event
+  } catch (error) {
+      console.error("Error updating event:", error);  // Handle error
+      throw error;  // Propagate the error
+  }}

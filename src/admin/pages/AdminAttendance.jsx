@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Calendar, Download, Info } from "lucide-react";
 import AdminSideBar from '../component/AdminSidebar';
 import AdminHeader from '../component/AdminHeader';
-import { getAllAttendance } from '../../commonComponent/Api'; // Adjust the import path as needed
+import { getAllAttendance,updateClockingStatus } from '../../commonComponent/Api'; // Adjust the import path as needed
 
 const AdminAttendance = () => {
   const [attendanceData, setAttendanceData] = useState([]);
@@ -104,15 +104,21 @@ const AdminAttendance = () => {
     link.click();
   };
 
-  const handleStatusChangeA = (newStatus) => {
-    // Call API to update status
-    updateStatusApi(data.id, newStatus)
+  const handleStatusChangeA = (id,newStatus) => {
+    updateClockingStatus(id, newStatus)
       .then(() => {
         console.log("Status updated successfully!");
       })
       .catch((error) => {
         console.error("Failed to update status:", error);
       });
+      setAttendanceData((prevData) =>
+        prevData.map((record) =>
+          record.id === id ? { ...record, status: newStatus } : record
+        )
+      );
+    console.log("data id ",id)
+    console.log("status",newStatus)
   };
 
 
@@ -223,7 +229,7 @@ const AdminAttendance = () => {
                           {/* Dropdown for changing status */}
                           <select
                             value={data.status}
-                            onChange={(e) => handleStatusChangeA(e.target.value)}
+                            onChange={(e) => handleStatusChangeA(data.id,e.target.value)}
                             className="h-8 px-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
                           >
                             <option value="A">Absent</option>

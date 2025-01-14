@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { Calendar, ChevronLeft, ChevronRight, Search, Download } from "lucide-react";
 import AdminSideBar from "../component/AdminSidebar";
 import AdminHeader from "../component/AdminHeader";
-import { getAllEvents, createEvent } from "../../commonComponent/Api"; // Import API functions
+import { getAllEvents, createEvent, updateEvent } from "../../commonComponent/Api"; // Import API functions
 
 const AdminCreateEvents = () => {
     const [formData, setFormData] = useState({
@@ -40,7 +40,7 @@ const AdminCreateEvents = () => {
         const interval = setInterval(updateDateTime, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, []);  
 
     // Fetch all events when the component mounts
     useEffect(() => {
@@ -48,7 +48,7 @@ const AdminCreateEvents = () => {
             try {
                 const events = await getAllEvents();
                 setEventHistory(events);
-                console.log("events", eventHistory)
+                console.log("events", eventHistory);
             } catch (error) {
                 console.error("Error fetching events:", error);
             }
@@ -57,7 +57,7 @@ const AdminCreateEvents = () => {
         fetchEvents();
     }, []);
 
-    // Handle form submission to create an event
+    // Handle form submission to create or update an event
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -70,10 +70,15 @@ const AdminCreateEvents = () => {
                 endTime: formData.endTime
             };
 
-            // Call the API to create the event
-            await createEvent(payload);
+            if (formData.id) {
+                // If there's an event ID, we are updating the event
+                await updateEvent(formData.id, payload);
+            } else {
+                // If there's no event ID, we are creating a new event
+                await createEvent(payload);
+            }
 
-            // After creating an event, refetch the events
+            // After creating or updating an event, refetch the events
             const events = await getAllEvents();
             setEventHistory(events);
 
@@ -86,7 +91,7 @@ const AdminCreateEvents = () => {
             });
 
         } catch (error) {
-            console.error("Error creating event:", error);
+            console.error("Error saving event:", error);
         }
     };
 
@@ -96,6 +101,17 @@ const AdminCreateEvents = () => {
             ...prev,
             [name]: value
         }));
+    };
+
+    // Handle Edit button click - populate the form with event data
+    const handleEditClick = (event) => {
+        setFormData({
+            id: event.id,  // Store the event ID to be used for updating
+            title: event.title || '',
+            notes: event.notes || '',
+            startTime: event.startTime || '',
+            endTime: event.endTime || ''
+        });
     };
 
     // Pagination calculations
@@ -127,7 +143,7 @@ const AdminCreateEvents = () => {
                             </p>
                         </div>
 
-                        {/* Create Event Form */}
+                        {/* Create/Update Event Form */}
                         <div className="mt-[1.667vw]">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
@@ -190,7 +206,7 @@ const AdminCreateEvents = () => {
                                         type="submit"
                                         className="px-[1.25vw] py-[0.417vw] bg-blue-500 text-white rounded-[0.417vw] hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        Create Event
+                                        {formData.id ? 'Update Event' : 'Create Event'}
                                     </button>
                                 </div>
                             </form>
@@ -216,48 +232,32 @@ const AdminCreateEvents = () => {
                                                 <td className="px-[1.25vw] py-[0.833vw]">{event.title || "Untitled"}</td>
                                                 <td className="px-[1.25vw] py-[0.833vw]">{event.notes || "No description available"}</td>
                                                 <td className="px-[1.25vw] py-[0.833vw]">
-                                                    <button className="text-blue-600 hover:text-blue-800">
+                                                    <button
+                                                        className="text-blue-600 hover:text-blue-800"
+                                                        onClick={() => handleEditClick(event)}
+                                                    >
                                                         Edit
                                                     </button>
                                                 </td>
                                             </tr>
                                         ))}
                                     </tbody>
-
                                 </table>
                             </div>
 
                             {/* Pagination */}
                             <div className="flex justify-between items-center mt-[1.25vw]">
                                 <button
-                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
+                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-700"
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                    disabled={currentPage === 1}
                                 >
-                                    <ChevronLeft size={20} />
-                                    Previous
+                                    <ChevronLeft /> Previous
                                 </button>
-                                <div className="flex gap-[0.417vw]">
-                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                        <button
-                                            key={page}
-                                            className={`px-[0.833vw] py-[0.417vw] rounded ${currentPage === page
-                                                ? 'bg-blue-500 text-white'
-                                                : 'text-gray-600 hover:bg-gray-100'
-                                                }`}
-                                            onClick={() => setCurrentPage(page)}
-                                        >
-                                            {page}
-                                        </button>
-                                    ))}
-                                </div>
                                 <button
-                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
+                                    className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-700"
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                    disabled={currentPage === totalPages}
                                 >
-                                    Next
-                                    <ChevronRight size={20} />
+                                    Next <ChevronRight />
                                 </button>
                             </div>
                         </div>

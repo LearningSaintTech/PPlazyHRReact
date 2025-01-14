@@ -9,6 +9,7 @@ const AdminPayroll = () => {
   const [currentPayroll, setCurrentPayroll] = useState(null); 
   const [loading, setLoading] = useState(false); 
   const [error, setError] = useState(null); 
+  const [searchTerm, setSearchTerm] = useState(''); // state for search term
 
   const [newAllowance, setNewAllowance] = useState({ type: '', percentage: '' });
   const [newDeduction, setNewDeduction] = useState({ type: '', percentage: '' });
@@ -18,7 +19,7 @@ const AdminPayroll = () => {
       setLoading(true);
       try {
         const response = await getAllPayroll(); 
-        console.log("response",response)
+        console.log("response",response);
         setPayrollData(response); 
       } catch (error) {
         console.error('Error fetching payroll data:', error);
@@ -44,18 +45,21 @@ const AdminPayroll = () => {
 
     setLoading(true);
     try {
-      console.log("currentPayroll.id",currentPayroll.id)
-      console.log("currentPayroll",currentPayroll)
-
+      console.log("currentPayroll.id", currentPayroll.id);
+      console.log("currentPayroll", currentPayroll);
 
       const response = await updatePayroll(currentPayroll.id, currentPayroll);
       console.log('Payroll updated successfully:', response);
+
       setPayrollData((prevData) =>
         prevData.map((payroll) =>
           payroll.id === currentPayroll.id ? response : payroll
         )
       );
+      
       setEditMode(false);
+      setCurrentPayroll(null);
+
     } catch (error) {
       console.error('Error updating payroll:', error);
       setError('Failed to update payroll data');
@@ -98,7 +102,7 @@ const AdminPayroll = () => {
       ...prev,
       allowances: [...prev.allowances, newAllowance],
     }));
-    setNewAllowance({ type: '', percentage: '' }); 
+    setNewAllowance({ type: '', percentage: '' });
   };
 
   const addNewDeduction = () => {
@@ -111,10 +115,9 @@ const AdminPayroll = () => {
       ...prev,
       deductions: [...prev.deductions, newDeduction],
     }));
-    setNewDeduction({ type: '', percentage: '' }); 
+    setNewDeduction({ type: '', percentage: '' });
   };
 
-  // Delete an allowance
   const deleteAllowance = (index) => {
     setCurrentPayroll((prev) => ({
       ...prev,
@@ -122,7 +125,6 @@ const AdminPayroll = () => {
     }));
   };
 
-  // Delete a deduction
   const deleteDeduction = (index) => {
     setCurrentPayroll((prev) => ({
       ...prev,
@@ -130,97 +132,114 @@ const AdminPayroll = () => {
     }));
   };
 
+  // Filter payroll data based on search term
+  const filteredPayrollData = payrollData.filter((payroll) =>
+    payroll.employeeDetail.empId.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="flex">
-      <div className="w-[15%] fixed top-0 left-0 h-full bg-white shadow-lg z-10">
+    <div className="flex bg-gray-100">
+      <div className="w-[20%] fixed top-0 left-0 h-full bg-white shadow-xl p-4">
         <AdminSideBar />
       </div>
-      <div className="flex-1 ml-[15%]">
+      <div className="flex-1 ml-[20%] p-6">
         <AdminHeader />
-        
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-4">Payroll Information</h1>
-          
-          {error && <div className="text-red-500 mb-4">{error}</div>}
-          
+
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <h1 className="text-3xl font-semibold mb-6">Payroll Information</h1>
+
+          {error && <div className="text-red-600 mb-4">{error}</div>}
+
+          <div className="mb-6 flex items-center space-x-4">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by Employee ID"
+              className="p-3 border rounded-md w-1/4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
           {loading ? (
-            <div className="text-center">Loading...</div>
+            <div className="text-center text-gray-600">Loading...</div>
           ) : (
-            <table className="min-w-full table-auto border-collapse">
+            <table className="min-w-full table-auto border-collapse bg-white shadow-md rounded-md">
               <thead>
-                <tr>
-                  <th className="border-b p-2 text-left">ID</th>
-                  <th className="border-b p-2 text-left">Basic Salary</th>
-                  <th className="border-b p-2 text-left">Bonus</th>
-                  <th className="border-b p-2 text-left">Pay Date</th>
-                  <th className="border-b p-2 text-left">CTC</th>
-                  <th className="border-b p-2 text-left">Deductions</th>
-                  <th className="border-b p-2 text-left">Allowances</th>
-                  <th className="border-b p-2 text-left">Actions</th>
+                <tr className="bg-gray-200">
+                  <th className="border p-3 text-left">ID</th>
+                  <th className="border p-3 text-left">EMP ID</th>
+                  <th className="border p-3 text-left">Basic Salary</th>
+                  <th className="border p-3 text-left">Bonus</th>
+                  <th className="border p-3 text-left">Pay Date</th>
+                  <th className="border p-3 text-left">CTC</th>
+                  <th className="border p-3 text-left">Deductions</th>
+                  <th className="border p-3 text-left">Allowances</th>
+                  <th className="border p-3 text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {payrollData.length > 0 ? (
-                  payrollData.map((payroll) => (
-                    <tr key={payroll.id}>
-                      <td className="border-b p-2">{payroll.id}</td>
-                      <td className="border-b p-2">
+                {filteredPayrollData.length > 0 ? (
+                  filteredPayrollData.map((payroll) => (
+                    <tr key={payroll.id} className="border-b hover:bg-gray-50">
+                      <td className="p-3">{payroll.id}</td>
+                      <td className="p-3">{payroll.employeeDetail.empId}</td>
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <input
                             type="number"
                             name="basicSalary"
                             value={currentPayroll.basicSalary}
                             onChange={handleChange}
-                            className="p-2 border rounded"
+                            className="p-2 border rounded-md shadow-sm w-full"
                           />
                         ) : (
                           payroll.basicSalary
                         )}
                       </td>
-                      <td className="border-b p-2">
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <input
                             type="number"
                             name="bonus"
                             value={currentPayroll.bonus}
                             onChange={handleChange}
-                            className="p-2 border rounded"
+                            className="p-2 border rounded-md shadow-sm w-full"
                           />
                         ) : (
                           payroll.bonus
                         )}
                       </td>
-                      <td className="border-b p-2">
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <input
                             type="date"
                             name="payDate"
                             value={currentPayroll.payDate}
                             onChange={handleChange}
-                            className="p-2 border rounded"
+                            className="p-2 border rounded-md shadow-sm w-full"
                           />
                         ) : (
                           payroll.payDate
                         )}
                       </td>
-                      <td className="border-b p-2">
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <input
                             type="number"
                             name="ctc"
                             value={currentPayroll.ctc}
                             onChange={handleChange}
-                            className="p-2 border rounded"
+                            className="p-2 border rounded-md shadow-sm w-full"
                           />
                         ) : (
                           payroll.ctc
                         )}
                       </td>
-                      <td className="border-b p-2">
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <>
                             {currentPayroll.deductions.map((deduction, index) => (
-                              <div key={index} className="flex items-center">
+                              <div key={index} className="flex items-center space-x-2 mb-2">
                                 <input
                                   type="text"
                                   name="type"
@@ -230,7 +249,7 @@ const AdminPayroll = () => {
                                     updatedDeductions[index].type = e.target.value;
                                     setCurrentPayroll((prev) => ({ ...prev, deductions: updatedDeductions }));
                                   }}
-                                  className="p-2 border rounded"
+                                  className="p-2 border rounded-md shadow-sm w-1/2"
                                 />
                                 <input
                                   type="number"
@@ -241,11 +260,11 @@ const AdminPayroll = () => {
                                     updatedDeductions[index].percentage = e.target.value;
                                     setCurrentPayroll((prev) => ({ ...prev, deductions: updatedDeductions }));
                                   }}
-                                  className="p-2 border rounded"
+                                  className="p-2 border rounded-md shadow-sm w-1/4"
                                 />
                                 <button
                                   onClick={() => deleteDeduction(index)}
-                                  className="ml-2 bg-red-500 text-white p-2 rounded"
+                                  className="bg-red-500 text-white px-2 py-1 rounded-md"
                                 >
                                   Delete
                                 </button>
@@ -257,7 +276,7 @@ const AdminPayroll = () => {
                               value={newDeduction.type}
                               onChange={handleNewDeductionChange}
                               placeholder="Type"
-                              className="p-2 border rounded"
+                              className="p-2 border rounded-md shadow-sm mb-2 w-1/2"
                             />
                             <input
                               type="number"
@@ -265,11 +284,11 @@ const AdminPayroll = () => {
                               value={newDeduction.percentage}
                               onChange={handleNewDeductionChange}
                               placeholder="Percentage"
-                              className="p-2 border rounded"
+                              className="p-2 border rounded-md shadow-sm mb-2 w-1/4"
                             />
                             <button
                               onClick={addNewDeduction}
-                              className="ml-2 bg-blue-500 text-white p-2 rounded"
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md"
                             >
                               Add Deduction
                             </button>
@@ -282,11 +301,11 @@ const AdminPayroll = () => {
                           ))
                         )}
                       </td>
-                      <td className="border-b p-2">
+                      <td className="p-3">
                         {editMode && currentPayroll.id === payroll.id ? (
                           <>
                             {currentPayroll.allowances.map((allowance, index) => (
-                              <div key={index} className="flex items-center">
+                              <div key={index} className="flex items-center space-x-2 mb-2">
                                 <input
                                   type="text"
                                   name="type"
@@ -296,7 +315,7 @@ const AdminPayroll = () => {
                                     updatedAllowances[index].type = e.target.value;
                                     setCurrentPayroll((prev) => ({ ...prev, allowances: updatedAllowances }));
                                   }}
-                                  className="p-2 border rounded"
+                                  className="p-2 border rounded-md shadow-sm w-1/2"
                                 />
                                 <input
                                   type="number"
@@ -307,11 +326,11 @@ const AdminPayroll = () => {
                                     updatedAllowances[index].percentage = e.target.value;
                                     setCurrentPayroll((prev) => ({ ...prev, allowances: updatedAllowances }));
                                   }}
-                                  className="p-2 border rounded"
+                                  className="p-2 border rounded-md shadow-sm w-1/4"
                                 />
                                 <button
                                   onClick={() => deleteAllowance(index)}
-                                  className="ml-2 bg-red-500 text-white p-2 rounded"
+                                  className="bg-red-500 text-white px-2 py-1 rounded-md"
                                 >
                                   Delete
                                 </button>
@@ -323,7 +342,7 @@ const AdminPayroll = () => {
                               value={newAllowance.type}
                               onChange={handleNewAllowanceChange}
                               placeholder="Type"
-                              className="p-2 border rounded"
+                              className="p-2 border rounded-md shadow-sm mb-2 w-1/2"
                             />
                             <input
                               type="number"
@@ -331,11 +350,11 @@ const AdminPayroll = () => {
                               value={newAllowance.percentage}
                               onChange={handleNewAllowanceChange}
                               placeholder="Percentage"
-                              className="p-2 border rounded"
+                              className="p-2 border rounded-md shadow-sm mb-2 w-1/4"
                             />
                             <button
                               onClick={addNewAllowance}
-                              className="ml-2 bg-blue-500 text-white p-2 rounded"
+                              className="bg-blue-500 text-white px-4 py-2 rounded-md"
                             >
                               Add Allowance
                             </button>
@@ -348,32 +367,42 @@ const AdminPayroll = () => {
                           ))
                         )}
                       </td>
-                      <td className="border-b p-2">
-                        {editMode && currentPayroll.id === payroll.id ? (
-                          <button
-                            onClick={handleSave}
-                            className="bg-green-500 text-white p-2 rounded"
-                          >
-                            Save
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleEdit(payroll)}
-                            className="bg-yellow-500 text-white p-2 rounded"
-                          >
-                            Edit
-                          </button>
-                        )}
+                      <td className="p-3">
+                        <button
+                          onClick={() => handleEdit(payroll)}
+                          className="bg-green-500 text-white px-4 py-2 rounded-md"
+                        >
+                          Edit
+                        </button>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="8" className="p-2 text-center">No payroll data available</td>
+                    <td colSpan="9" className="text-center py-4">
+                      No payroll records found.
+                    </td>
                   </tr>
                 )}
               </tbody>
             </table>
+          )}
+
+          {editMode && (
+            <div className="flex justify-end space-x-4 mt-6">
+              <button
+                onClick={() => setEditMode(false)}
+                className="bg-gray-400 text-white px-4 py-2 rounded-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Save Changes
+              </button>
+            </div>
           )}
         </div>
       </div>
