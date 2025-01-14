@@ -90,7 +90,7 @@ const TicketQuery = () => {
             <UserSideBar />
 
             {/* Main Content */}
-            <div className="flex-1 p-[1.667vw] pl-[17.583vw]">
+            <div className="flex-1  pl-[16vw]">
                 {/* Header */}
                 <UserHeader
                     title="User Dashboard"
