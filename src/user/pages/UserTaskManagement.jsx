@@ -85,17 +85,17 @@ const TaskDashboard = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <div className="w-[13.021vw] flex-shrink-0">
+      <div className="w-[15%] flex-shrink-0">
         <UserSidebar />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col px-11">
         {/* Header */}
         <UserHeader />
 
         {/* Content */}
-        <div className="p-[3.333vw] bg-white flex-1 overflow-y-auto">
+        <div className="p-[1vw] bg-white flex-1 overflow-y-auto">
           {/* Statistics Cards */}
           <div className="flex gap-[1.25vw] mb-[2.917vw]">
             <div className="p-[1.25vw] border border-black/20 rounded-[0.625vw] flex items-center justify-between min-w-[13.021vw]">

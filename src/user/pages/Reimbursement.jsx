@@ -101,7 +101,7 @@ const Reimbursement = () => {
   return (
     <div className="flex bg-gray-100 min-h-screen">
       <UserSideBar />
-      <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
+      <div className="flex-1 ml-[16vw]">
         <UserHeader title="User Dashboard" avatarSrc="/api/placeholder/35/35" showNotification={true} showChevron={true} />
 
         <div className="p-[1.25vw] bg-white rounded-[0.417vw] shadow-sm">

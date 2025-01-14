@@ -51,7 +51,7 @@ const UserAttendance = () => {
             <UserSideBar />
 
             {/* Main Content */}
-            <div className="flex-1 p-[1.25vw] ml-[15.104vw]"> {/* Add ml-[290px] to offset the sidebar */}
+            <div className="flex-1 ml-[16vw]">
                 {/* Header */}
                 <UserHeader title="User Attendance" />
 

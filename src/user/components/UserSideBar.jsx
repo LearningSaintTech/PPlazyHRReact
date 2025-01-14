@@ -22,66 +22,66 @@ const UserSideBar = () => {
     };
 
     return (
-        <div className="bg-white h-screen w-[290px] px-6 py-8 flex flex-col shadow-lg fixed left-0 top-0 bottom-0">
-            <div className="flex items-center mb-2">
-                <img src={Logo} alt="LazyHR" className="h-[5.208vw] w-[10.5vw] mr-2" />
+        <div className="bg-white h-screen w-[15.104vw] px-[1.25vw] py-[1.667vw] flex flex-col shadow-lg fixed left-0 top-0 bottom-0">
+            <div className="flex items-center mb-[0.417vw]">
+                <img src={Logo} alt="LazyHR" className="h-[5.208vw] w-[10.5vw] mr-[0.417vw]" />
             </div>
             <nav className="flex-1 space-y-0 overflow-y-auto">
                 {/* Home */}
                 <Link
                     to="/user/home"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Home' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Home' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Home')}
                 >
-                    <FaHome className="mr-3" />
+                    <FaHome className="mr-[0.625vw]" />
                     <span>Home</span>
                 </Link>
 
                 {/* Profile */}
                 <Link
                     to="/profile"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'My Profile' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'My Profile' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('My Profile')}
                 >
-                    <FaUser className="mr-3" />
+                    <FaUser className="mr-[0.625vw]" />
                     <span>My Profile</span>
                 </Link>
 
                 {/* Attendance */}
                 <Link
                     to="/attendance"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Attendance' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Attendance' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Attendance')}
                 >
-                    <FaCalendarAlt className="mr-3" />
+                    <FaCalendarAlt className="mr-[0.625vw]" />
                     <span>Attendance</span>
                 </Link>
 
                 {/* Ticket */}
                 <div>
                     <div
-                        className={`flex items-center p-3 rounded-md ${activeItem === 'Ticket' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Ticket' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowTicketOptions(!showTicketOptions);
                             handleItemClick('Ticket');
                         }}
                     >
-                        <FaTicketAlt className="mr-3" />
+                        <FaTicketAlt className="mr-[0.625vw]" />
                         <span>Ticket</span>
                         <div className="ml-auto">
                             {showTicketOptions ? (
-                                <FaChevronUp className={`w-5 h-5 ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-5 h-5 ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
 
                     {showTicketOptions && (
-                        <div className="ml-8 space-y-2 transition-all duration-300 ease-in-out">
+                        <div className="ml-[1.667vw] space-y-2 transition-all duration-300 ease-in-out">
                             <Link
                                 to="/ticket/query"
-                                className={`flex items-center p-2 rounded-md ${activeItem === 'Query' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Query' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Query')}
                             >
                                 <span>Query</span>
@@ -89,7 +89,7 @@ const UserSideBar = () => {
 
                             <Link
                                 to="/ticket/reimbursement"
-                                className={`flex items-center p-2 rounded-md ${activeItem === 'Reimbursement' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Reimbursement' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Reimbursement')}
                             >
                                 <span>Reimbursement</span>
@@ -101,35 +101,35 @@ const UserSideBar = () => {
                 {/* Leave */}
                 <div>
                     <div
-                        className={`flex items-center p-3 rounded-md ${activeItem === 'Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowLeaveOptions(!showLeaveOptions);
                             handleItemClick('Leave');
                         }}
                     >
-                        <FaCalendarAlt className="mr-3" />
+                        <FaCalendarAlt className="mr-[0.625vw]" />
                         <span>Leave</span>
                         <div className="ml-auto">
                             {showLeaveOptions ? (
-                                <FaChevronUp className={`w-5 h-5 ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-5 h-5 ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
 
                     {showLeaveOptions && (
-                        <div className="ml-8 space-y-2 transition-all duration-300 ease-in-out">
+                        <div className="ml-[1.667vw] space-y-2 transition-all duration-300 ease-in-out">
                             <Link
                                 to="/leave/apply"
-                                className={`flex items-center p-2 rounded-md ${activeItem === 'Apply Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Apply Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Apply Leave')}
                             >
                                 <span>Apply Leave</span>
                             </Link>
                             <Link
                                 to="/leave/my-leaves"
-                                className={`flex items-center p-2 rounded-md ${activeItem === 'My Leaves' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'My Leaves' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('My Leaves')}
                             >
                                 <span>My Leaves</span>
@@ -141,48 +141,48 @@ const UserSideBar = () => {
                 {/* Payroll */}
                 <Link
                     to="/payroll"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Payroll' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Payroll' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Payroll')}
                 >
-                    <FaMoneyCheckAlt className="mr-3" />
+                    <FaMoneyCheckAlt className="mr-[0.625vw]" />
                     <span>Payroll</span>
                 </Link>
 
                 {/* Task Management */}
                 <Link
                     to="/task-management"
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Task Management' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Task Management' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Task Management')}
                 >
-                    <FaTasks className="mr-3" />
+                    <FaTasks className="mr-[0.625vw]" />
                     <span>Task Management</span>
                 </Link>
 
                 {/* Settings */}
                 <div>
                     <div
-                        className={`flex items-center p-3 rounded-md ${activeItem === 'Setting' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Setting' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowSettingOptions(!showSettingOptions);
                             handleItemClick('Setting');
                         }}
                     >
-                        <FaCalendarAlt className="mr-3" />
+                        <FaCalendarAlt className="mr-[0.625vw]" />
                         <span>Setting</span>
                         <div className="ml-auto">
                             {showLeaveOptions ? (
-                                <FaChevronUp className={`w-5 h-5 ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-5 h-5 ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
 
                     {showSettingOptions && (
-                        <div className="ml-8 space-y-2 transition-all duration-300 ease-in-out">
+                        <div className="ml-[1.667vw] space-y-2 transition-all duration-300 ease-in-out">
                             <Link
                                 to="/setting/changepassword"
-                                className={`flex items-center p-2 rounded-md ${activeItem === 'Change Password' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Change Password' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Apply Leave')}
                             >
                                 <span>Change Password</span>
@@ -195,19 +195,19 @@ const UserSideBar = () => {
             {/* Help */}
             <div className='space-y-0'>
                 <div
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Help')}
                 >
-                    <FaQuestionCircle className="mr-2" />
+                    <FaQuestionCircle className="mr-[0.417vw]" />
                     <span>Help</span>
                 </div>
 
                 {/* Logout */}
                 <div
-                    className={`flex items-center p-3 rounded-md ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={handleLogout}
                 >
-                    <FaDoorOpen className="mr-2" />
+                    <FaDoorOpen className="mr-[0.417vw]" />
                     <span>Logout</span>
                 </div>
             </div>

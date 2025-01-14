@@ -26,6 +26,7 @@ import SignupForm from './authcomponent/SignupForm';
 import AdminPayroll from './admin/pages/AdminPayroll';
 import TaskGraph from './admin/pages/TaskGraph';
 import AdminPerformance from './admin/pages/AdminPerformance';
+import Dummy from './user/pages/Dummy';
 
 function App() {
     return (
@@ -44,6 +45,8 @@ function App() {
                 <Route path="/payroll" element={<Payroll />} />
                 <Route path="/setting/changepassword" element={<ChangePassword />} />
                 <Route path="/task-management" element={<UserTaskManagement />} />
+                <Route path="/dummy" element={<Dummy />} />
+
 
 
                 <Route path="/admin/home" element={<AdminHome />} />

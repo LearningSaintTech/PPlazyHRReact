@@ -64,7 +64,7 @@ const MyLeaves = () => {
       <UserSideBar />
 
       {/* Main Content */}
-      <div className="flex-1 p-[1.667vw] ml-[15.104vw]">
+      <div className="flex-1 ml-[16vw]">
         {/* Header */}
         <UserHeader
           title="User Dashboard"
