@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Calendar } from "lucide-react";
-import UserSideBar from "../components/UserSideBar";
-import UserHeader from "../components/UserHeader";
-import { applyLeaveAPI } from '../../commonComponent/Api'; // Import the API function for applying leave
+import React, { useState, useEffect } from 'react';
+import { Calendar } from 'lucide-react';
+import UserSideBar from '../components/UserSideBar';
+import UserHeader from '../components/UserHeader';
+import { applyLeaveAPI } from '../../commonComponent/Api';
 
-const Dashboard = () => {
+const LeaveApplicationForm = () => {
+  // State for current date and time
   const [currentDateTime, setCurrentDateTime] = useState({
     day: "",
     time: "",
     date: "",
   });
 
+  // State for form data
   const [leaveDetails, setLeaveDetails] = useState({
     fromDate: "",
     toDate: "",
@@ -39,21 +41,21 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle form input change
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setLeaveDetails({ ...leaveDetails, [name]: value });
+    setLeaveDetails(prev => ({ ...prev, [name]: value }));
   };
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    applyLeaveAPI(leaveDetails) // Call the API to apply leave
+    applyLeaveAPI(leaveDetails)
       .then((response) => {
         if (typeof response === 'string') {
-          alert(response); // If the response is a success message string
+          alert(response);
         } else {
-          alert('Leave applied successfully!'); // If response is JSON, show a generic success message
+          alert('Leave applied successfully!');
         }
       })
       .catch((error) => {
@@ -61,14 +63,24 @@ const Dashboard = () => {
         alert('There was an error applying for leave!');
       });
   };
-  
+
+  // Handle form cancellation
+  const handleCancel = () => {
+    setLeaveDetails({
+      fromDate: "",
+      toDate: "",
+      reason: "",
+      leaveType: "Casual Leave",
+    });
+  };
+
   return (
     <div className="flex bg-gray-100 min-h-screen">
       {/* Sidebar */}
       <UserSideBar />
 
       {/* Main Content */}
-      <div className="flex-1 ml-[16vw]">
+      <div className="flex-1 pl-[16vw]">
         {/* Header */}
         <UserHeader
           title="User Dashboard"
@@ -77,106 +89,145 @@ const Dashboard = () => {
           showChevron={true}
         />
 
-        {/* Dashboard Content */}
-        <section className="bg-white p-[1.667vw] rounded-[0.729vw] shadow relative mt-[1.667vw]">
-          {/* Welcome Message */}
-          <div className="flex justify-between items-center mb-[0.833vw]">
-            <p className="text-gray-600 text-lg">
-              Welcome back,{" "}
-              <span className="text-blue-500 font-semibold">Aditya</span>
-            </p>
-            <p className="text-blue-500 font-medium">
-              {currentDateTime.day}, {currentDateTime.time}
-            </p>
-          </div>
+        {/* Main Form Container */}
+        <div className="w-full p-[1.667vw] bg-white rounded-[0.417vw] mt-[1.25vw]">
+          {/* Header Section */}
+          <div className="pb-[1.667vw] border-b border-black/20">
+            <div className="flex justify-between items-center mb-[1.25vw]">
+              <div className="text-[0.938vw] font-medium">
+                <span className="text-[#5c606a]">Welcome back,</span>{' '}
+                <span className="text-[#534feb]">Aditya</span>
+              </div>
+              <div className="flex items-center gap-[0.208vw] text-[0.938vw] font-medium">
+                <span className="text-[#848892]">{currentDateTime.day},</span>
+                <span className="text-[#848892]">{currentDateTime.time}</span>
+              </div>
+            </div>
 
-          {/* Date */}
-          <div className="flex justify-end mb-[1.25vw]">
-            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border border-gray-300 rounded-[0.729vw]">
-              <Calendar size={20} className="text-gray-500" />
-              <span className="text-gray-700 font-medium">
-                {currentDateTime.date}
-              </span>
+            <div className="flex justify-between items-start">
+              <div className="flex gap-[0.833vw]">
+                {/* Leave Count Cards */}
+                <div className="flex items-center p-[0.833vw] bg-white rounded-[0.417vw] border border-black/20">
+                  <div className="flex items-center gap-[0.625vw]">
+                    <div className="p-[0.417vw] rounded-[0.313vw] border border-black/20">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <span className="text-[0.729vw] font-light">Total Casual Leaves</span>
+                  </div>
+                  <span className="ml-[0.625vw] text-[1.875vw] font-medium">150</span>
+                </div>
+
+                <div className="flex items-center p-[0.833vw] bg-white rounded-[0.417vw] border border-black/20">
+                  <div className="flex items-center gap-[0.625vw]">
+                    <div className="p-[0.417vw] rounded-[0.313vw] border border-black/20">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <span className="text-[0.729vw] font-light">Total Earn Leaves</span>
+                  </div>
+                  <span className="ml-[0.625vw] text-[1.875vw] font-medium">4</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.625vw] bg-white rounded-[0.417vw] border border-black/20">
+                <Calendar className="w-5 h-5" />
+                <span className="text-[0.729vw] font-light">{currentDateTime.date}</span>
+              </div>
             </div>
           </div>
 
-          {/* Leave Form */}
-          <div className="bg-gray-50 p-[1.25vw] rounded-[0.729vw] shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-800 mb-[0.833vw]">Apply Leave</h3>
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-2 gap-[1.25vw] mb-[0.833vw]">
-                <div>
-                  <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
-                    From Date
-                  </label>
+          {/* Form Section */}
+          <form onSubmit={handleSubmit} className="py-[1.667vw] space-y-8">
+            {/* Date Selection */}
+            <div className="flex gap-[0.833vw] items-start">
+              <div className="w-[15vw] space-y-6">
+                <label className="block text-[0.938vw] font-medium text-[#5c606a]">
+                  From Date
+                </label>
+                <div className="relative">
                   <input
                     type="date"
                     name="fromDate"
                     value={leaveDetails.fromDate}
                     onChange={handleChange}
-                    className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-[0.833vw] py-[0.625vw] text-[0.729vw] font-light rounded-[0.417vw] border border-black/20 focus:outline-none focus:ring-2 focus:ring-[#534feb]"
+                    required
                   />
+                  <Calendar className="absolute right-[0.833vw] top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none" />
                 </div>
-                <div>
-                  <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
-                    To Date
-                  </label>
+              </div>
+
+              <div className="w-[15vw] space-y-6">
+                <label className="block text-[0.938vw] font-medium text-[#5c606a]">
+                  To Date
+                </label>
+                <div className="relative">
                   <input
                     type="date"
                     name="toDate"
                     value={leaveDetails.toDate}
                     onChange={handleChange}
-                    className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-[0.833vw] py-[0.625vw] text-[0.729vw] font-light rounded-[0.417vw] border border-black/20 focus:outline-none focus:ring-2 focus:ring-[#534feb]"
+                    required
                   />
+                  <Calendar className="absolute right-[0.833vw] top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none" />
                 </div>
               </div>
-              <div className="mb-[0.833vw]">
-                <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
-                  Leave Reason
-                </label>
-                <textarea
-                  name="reason"
-                  value={leaveDetails.reason}
-                  onChange={handleChange}
-                  placeholder="Write your reason here..."
-                  className="w-full p-[0.677vw] border rounded-[0.729vw] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  rows={3}
-                />
-              </div>
-              <div className="mb-[1.25vw]">
-                <label className="block text-[0.729vw] font-medium text-gray-600 mb-[0.417vw]">
+            </div>
+
+            {/* Leave Reason */}
+            <div className="space-y-6">
+              <label className="block text-[0.938vw] font-medium text-[#5c606a]">
+                Leave Reason
+              </label>
+              <textarea
+                name="reason"
+                value={leaveDetails.reason}
+                onChange={handleChange}
+                placeholder="Write your Reason here...."
+                className="w-full px-[0.833vw] py-[0.625vw] text-[0.729vw] font-light rounded-[0.417vw] border border-black/20 focus:outline-none focus:ring-2 focus:ring-[#534feb] min-h-28 resize-none"
+                required
+              />
+            </div>
+
+            {/* Leave Type and Buttons */}
+            <div className="flex gap-[0.833vw] items-end">
+              <div className="w-[15vw] space-y-6">
+                <label className="block text-[0.938vw] font-medium text-[#5c606a]">
                   Leave Type
                 </label>
                 <select
                   name="leaveType"
                   value={leaveDetails.leaveType}
                   onChange={handleChange}
-                  className="w-full p-[0.677vw] border rounded-[0.729vw] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-[0.833vw] py-[0.625vw] text-[0.729vw] font-light rounded-[0.417vw] border border-black/20 focus:outline-none focus:ring-2 focus:ring-[#534feb] appearance-none bg-white"
+                  required
                 >
-                  <option>Casual Leave</option>
-                  <option>Earn Leave</option>
+                  <option value="Casual Leave">Casual Leave</option>
+                  <option value="Earn Leave">Earn Leave</option>
                 </select>
               </div>
-              <div className="flex gap-[0.833vw]">
+
+              <div className="flex gap-[0.417vw]">
                 <button
                   type="submit"
-                  className="px-[1.25vw] py-[0.417vw] bg-blue-600 text-white rounded-[0.729vw] hover:bg-blue-700"
+                  className="px-[1.667vw] py-[0.625vw] text-[0.833vw] font-medium text-white bg-[#534feb] rounded-[0.417vw] hover:bg-[#4338ca] transition-colors"
                 >
                   Apply Leave
                 </button>
                 <button
                   type="button"
-                  className="px-[1.25vw] py-[0.417vw] bg-gray-300 text-gray-700 rounded-[0.729vw] hover:bg-gray-400"
+                  onClick={handleCancel}
+                  className="px-[1.667vw] py-[0.625vw] text-[0.833vw] font-medium text-white bg-[#534feb] rounded-[0.417vw] hover:bg-[#4338ca] transition-colors"
                 >
                   Cancel
                 </button>
               </div>
-            </form>
-          </div>
-        </section>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default LeaveApplicationForm;

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaChevronDown, FaChevronUp, FaHome, FaUser, FaCalendarAlt, FaTicketAlt, FaMoneyCheckAlt, FaCog, FaQuestionCircle, FaDoorOpen, FaTasks } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Logo from '../../assets/logowhite.png';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../commonComponent/slice/AuthSlice';
 import { useNavigate } from 'react-router-dom';
+
 const UserSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
@@ -12,6 +13,35 @@ const UserSideBar = () => {
     const [activeItem, setActiveItem] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Update active item based on current path
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.includes('/user/home')) setActiveItem('Home');
+        else if (path.includes('/profile')) setActiveItem('My Profile');
+        else if (path.includes('/attendance')) setActiveItem('Attendance');
+        else if (path.includes('/ticket')) {
+            setActiveItem('Ticket');
+            setShowTicketOptions(true);
+            if (path.includes('/query')) setActiveItem('Query');
+            if (path.includes('/reimbursement')) setActiveItem('Reimbursement');
+        }
+        else if (path.includes('/leave')) {
+            setActiveItem('Leave');
+            setShowLeaveOptions(true);
+            if (path.includes('/apply')) setActiveItem('Apply Leave');
+            if (path.includes('/my-leaves')) setActiveItem('My Leaves');
+        }
+        else if (path.includes('/payroll')) setActiveItem('Payroll');
+        else if (path.includes('/task-management')) setActiveItem('Task Management');
+        else if (path.includes('/setting')) {
+            setActiveItem('Setting');
+            setShowSettingOptions(true);
+            if (path.includes('/changepassword')) setActiveItem('Change Password');
+        }
+    }, [location.pathname]);
+
     const handleItemClick = (item) => {
         setActiveItem(item);
     };
@@ -60,7 +90,7 @@ const UserSideBar = () => {
                 {/* Ticket */}
                 <div>
                     <div
-                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Ticket' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] cursor-pointer ${activeItem === 'Ticket' || activeItem === 'Query' || activeItem === 'Reimbursement' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowTicketOptions(!showTicketOptions);
                             handleItemClick('Ticket');
@@ -70,9 +100,9 @@ const UserSideBar = () => {
                         <span>Ticket</span>
                         <div className="ml-auto">
                             {showTicketOptions ? (
-                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' || activeItem === 'Query' || activeItem === 'Reimbursement' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Ticket' || activeItem === 'Query' || activeItem === 'Reimbursement' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
@@ -81,7 +111,7 @@ const UserSideBar = () => {
                         <div className="ml-[1.667vw] space-y-2 transition-all duration-300 ease-in-out">
                             <Link
                                 to="/ticket/query"
-                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Query' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] mt-[0.417vw] rounded-[0.313vw] ${activeItem === 'Query' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Query')}
                             >
                                 <span>Query</span>
@@ -101,7 +131,7 @@ const UserSideBar = () => {
                 {/* Leave */}
                 <div>
                     <div
-                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] cursor-pointer ${activeItem === 'Leave' || activeItem === 'Apply Leave' || activeItem === 'My Leaves' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowLeaveOptions(!showLeaveOptions);
                             handleItemClick('Leave');
@@ -111,9 +141,9 @@ const UserSideBar = () => {
                         <span>Leave</span>
                         <div className="ml-auto">
                             {showLeaveOptions ? (
-                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' || activeItem === 'Apply Leave' || activeItem === 'My Leaves' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Leave' || activeItem === 'Apply Leave' || activeItem === 'My Leaves' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
@@ -122,7 +152,7 @@ const UserSideBar = () => {
                         <div className="ml-[1.667vw] space-y-2 transition-all duration-300 ease-in-out">
                             <Link
                                 to="/leave/apply"
-                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Apply Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                                className={`flex items-center p-[0.417vw] mt-[0.417vw] rounded-[0.313vw] ${activeItem === 'Apply Leave' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                                 onClick={() => handleItemClick('Apply Leave')}
                             >
                                 <span>Apply Leave</span>
@@ -161,19 +191,19 @@ const UserSideBar = () => {
                 {/* Settings */}
                 <div>
                     <div
-                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Setting' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                        className={`flex items-center p-[0.625vw] rounded-[0.313vw] cursor-pointer ${activeItem === 'Setting' || activeItem === 'Change Password' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                         onClick={() => {
                             setShowSettingOptions(!showSettingOptions);
                             handleItemClick('Setting');
                         }}
                     >
-                        <FaCalendarAlt className="mr-[0.625vw]" />
+                        <FaCog className="mr-[0.625vw]" />
                         <span>Setting</span>
                         <div className="ml-auto">
-                            {showLeaveOptions ? (
-                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                            {showSettingOptions ? (
+                                <FaChevronUp className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' || activeItem === 'Change Password' ? 'text-white' : 'text-gray-600'}`} />
                             ) : (
-                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' ? 'text-white' : 'text-gray-600'}`} />
+                                <FaChevronDown className={`w-[1.042vw] h-[1.042vw] ${activeItem === 'Setting' || activeItem === 'Change Password' ? 'text-white' : 'text-gray-600'}`} />
                             )}
                         </div>
                     </div>
@@ -183,7 +213,7 @@ const UserSideBar = () => {
                             <Link
                                 to="/setting/changepassword"
                                 className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${activeItem === 'Change Password' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
-                                onClick={() => handleItemClick('Apply Leave')}
+                                onClick={() => handleItemClick('Change Password')}
                             >
                                 <span>Change Password</span>
                             </Link>
@@ -195,7 +225,7 @@ const UserSideBar = () => {
             {/* Help */}
             <div className='space-y-0'>
                 <div
-                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] cursor-pointer ${activeItem === 'Help' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={() => handleItemClick('Help')}
                 >
                     <FaQuestionCircle className="mr-[0.417vw]" />
@@ -204,7 +234,7 @@ const UserSideBar = () => {
 
                 {/* Logout */}
                 <div
-                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
+                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] cursor-pointer ${activeItem === 'Logout' ? 'bg-[#534feb] text-white' : 'hover:bg-gray-100 hover:text-gray-800 text-gray-600'}`}
                     onClick={handleLogout}
                 >
                     <FaDoorOpen className="mr-[0.417vw]" />
