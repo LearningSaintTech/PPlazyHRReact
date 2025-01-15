@@ -475,6 +475,34 @@ export const updateTicketStatus = async (ticketId, status) => {
   }
 };
 
+export const updateReimbursementStatus = async (reimbursementId, status, userRole) => {
+  console.log("Reimbursement ID: ", reimbursementId);
+  console.log("Status: ", status);
+  console.log("User Role: ", userRole);
+
+  // Check if the user role is admin
+  if (userRole !== "admin") {
+    console.error("Unauthorized action. Only admins can update the reimbursement status.");
+    throw new Error("Unauthorized: Only admins can update the reimbursement status.");
+  }
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/api/reimbursements/update-status?ticketId=${reimbursementId}&status=${status}`, // Send as query parameters
+      method: "POST",
+    });
+
+    // Handle the success response
+    console.log("Reimbursement status updated successfully:", response);
+    return response;
+  } catch (error) {
+    // Handle error response
+    console.error("Error updating reimbursement status:", error);
+    throw error;
+  }
+};
+
+
 export const showCharts = async () => {
   console.log("inside fetchPieData");
 

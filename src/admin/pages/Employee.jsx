@@ -37,6 +37,7 @@ const AdminEmployeeDashboard = () => {
       employee.firstName,
       employee.designation,
       employee.phno,
+      employee.empId
     ]);
 
     const csvContent = [
@@ -251,6 +252,7 @@ const AdminEmployeeDashboard = () => {
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {renderFormGroup("Employee ID", "employeeId", selectedEmployee.employeeId, "text", true)}
+                        {renderFormGroup("Emp ID", "empId", selectedEmployee.empId)}
                         {renderFormGroup("First Name", "firstName", selectedEmployee.firstName)}
                         {renderFormGroup("Surname", "surname", selectedEmployee.surname)}
                         {renderFormGroup("Email", "email", selectedEmployee.email, "email")}
