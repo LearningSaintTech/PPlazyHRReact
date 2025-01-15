@@ -52,12 +52,12 @@ const TaskDashboard = () => {
     switch (status) {
       case "Completed":
         return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
-        case "COMPLETED":
-          return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
+      case "COMPLETED":
+        return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
       case "In Progress":
         return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
-        case "IN_PROGRESS":
-          return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
+      case "IN_PROGRESS":
+        return "bg-[#e9e6f5] text-[#534feb] border-[#534feb]";
       case "Pending":
         return "bg-[#f5efe6] text-[#ffae00] border-[#ffae00]";
       default:
@@ -90,7 +90,7 @@ const TaskDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col px-11">
+      <div className="flex-1 flex flex-col px-[0.833vw]">
         {/* Header */}
         <UserHeader />
 
@@ -153,7 +153,11 @@ const TaskDashboard = () => {
                   </span>
                 </div>
                 <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
-                  {task.dueDate}
+                  {new Date(task.dueDate).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </div>
                 <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
                   {task.messages}
@@ -172,7 +176,7 @@ const TaskDashboard = () => {
                     <option value="IN_PROGRESS">In Progress</option>
                     <option value="Pending">Pending</option>
                   </select>
-                  <ChevronDown className="absolute right-[0.625vw] top-1/2 transform -translate-y-1/2 w-[0.26vw] h-[0.26vw] text-gray-600 pointer-events-none" />
+                  <ChevronDown className="absolute right-[0.625vw] top-1/2 transform -translate-y-1/2 w-[18px] h-[18px] text-gray-600 pointer-events-none" />
                 </div>
                 <div className="px-[0.833vw] py-[0.833vw] flex items-center relative">
                   <input
@@ -181,7 +185,7 @@ const TaskDashboard = () => {
                     className="w-full h-[2.917vw] px-[0.833vw] py-[0.417vw] border border-black rounded-[0.417vw] text-[0.833vw] font-light pr-[2.5vw]"
                   />
                   <button className="absolute right-[0.417vw] top-1/2 transform -translate-y-1/2 w-[0.417vw] h-[0.417vw] bg-[#534feb] rounded-full flex items-center justify-center">
-                    <Check className="w-[0.26vw] h-[0.26vw] text-white" />
+                    <Check className="w-[18px] h-[18px] text-white" />
                   </button>
                 </div>
               </div>

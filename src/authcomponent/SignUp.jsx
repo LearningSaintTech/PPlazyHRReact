@@ -79,13 +79,13 @@ const SignUp = () => {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-row items-center justify-center px-[1vw]">
-                <div className="w-full max-w-[23.333vw] py-[1.25vw]">
+                <div className="w-full max-w-[26.333vw] py-[1.25vw]">
                     <div className="bg-white rounded-[0.833vw] shadow-lg px-[3vw] py-[5.6vw]">
                         <div className="text-center mb-[1.667vw]">
                             <h2 className="text-[1.563vw] font-semibold text-gray-800">
                                 Create your Account
                             </h2>
-                            <p className="mt-[0.417vw] text-gray-600">
+                            <p className="mt-[0.417vw] text-gray-600 text-[1vw]">
                                 See what is going on with your business
                             </p>
                         </div>
@@ -94,7 +94,7 @@ const SignUp = () => {
                             <div className="space-y-6 py-[5.167vw]">
                                 {/* Full Name Input */}
                                 <div>
-                                    <label htmlFor="name" className="block text-[0.729vw] font-medium text-gray-700">
+                                    <label htmlFor="name" className="block text-[1vw] font-medium text-gray-700">
                                         Full Name
                                     </label>
                                     <input
@@ -111,7 +111,7 @@ const SignUp = () => {
 
                                 {/* Email Input */}
                                 <div>
-                                    <label htmlFor="email" className="block text-[0.729vw] font-medium text-gray-700">
+                                    <label htmlFor="email" className="block text-[1vw] font-medium text-gray-700">
                                         Email
                                     </label>
                                     <input
@@ -128,7 +128,7 @@ const SignUp = () => {
 
                                 {/* Password Input */}
                                 <div>
-                                    <label htmlFor="password" className="block text-[0.729vw] font-medium text-gray-700">
+                                    <label htmlFor="password" className="block text-[1vw] font-medium text-gray-700">
                                         Password
                                     </label>
                                     <div className="mt-[0.208vw] relative">
@@ -148,9 +148,9 @@ const SignUp = () => {
                                             className="absolute inset-y-0 right-0 pr-[0.625vw] flex items-center"
                                         >
                                             {showPassword ? (
-                                                <EyeOff className="h-[0.26vw] w-[0.26vw] text-gray-400" />
+                                                <EyeOff className="h-[18px] w-[18px] text-gray-400" />
                                             ) : (
-                                                <Eye className="h-[0.26vw] w-[0.26vw] text-gray-400" />
+                                                <Eye className="h-[18px] w-[18px] text-gray-400" />
                                             )}
                                         </button>
                                     </div>
@@ -164,9 +164,9 @@ const SignUp = () => {
                                         name="rememberMe"
                                         checked={formData.rememberMe}
                                         onChange={handleInputChange}
-                                        className="h-[0.208vw] w-[0.208vw] text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        className="h-[15px] w-[15px] text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                                     />
-                                    <label htmlFor="remember-me" className="ml-[0.417vw] block text-sm text-gray-700">
+                                    <label htmlFor="remember-me" className="ml-[0.417vw] block text-[1vw] text-gray-700">
                                         Remember Me
                                     </label>
                                 </div>
@@ -174,7 +174,7 @@ const SignUp = () => {
                                 {/* Create Account Button */}
                                 <button
                                     type="submit"
-                                    className="w-full flex justify-center py-[0.417vw] px-[0.833vw] border border-transparent rounded-[0.313vw] shadow-sm text-[0.729vw] font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="w-full flex justify-center py-[0.417vw] px-[0.833vw] border border-transparent rounded-[0.313vw] shadow-sm text-[1vw] font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Create Account
                                 </button>
@@ -182,8 +182,8 @@ const SignUp = () => {
                         </form>
                         {/* Login Link */}
                         <div className="text-center mt-[0.833vw]">
-                            <span className="text-gray-600">Already Have An Account? </span>
-                            <button onClick={handleNavigate} className="text-indigo-600 hover:text-indigo-500">
+                            <span className="text-gray-600 text-[1vw]">Already Have An Account? </span>
+                            <button onClick={handleNavigate} className="text-indigo-600 text-[1vw] hover:text-indigo-500">
                                 Login Here
                             </button>
                         </div>
