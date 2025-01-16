@@ -1,107 +1,128 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import { Download, X, Search, Calendar } from "lucide-react"; 
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; 
+import { Download, X, Search, Calendar } from "lucide-react";
+import { getSalarySlipByID } from "../../commonComponent/Api";
+import { jsPDF } from "jspdf";
 
 const Payroll = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [salarySlips, setSalarySlips] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [salaryMonth, setSalaryMonth] = useState(""); // Only store the month for search
+    const [showModal, setShowModal] = useState(false);
+    const [selectedSlip, setSelectedSlip] = useState(null);
 
-    // Example file password (for simplicity)
-    const correctPassword = "RAMU234"; // Update dynamically as needed
+    useEffect(() => {
+        const fetchSalarySlips = async () => {
+            try {
+                const response = await getSalarySlipByID();
+                setSalarySlips(response);
+                setLoading(false);
+            } catch (err) {
+                setError("Failed to fetch salary slips. Please try again later.");
+                setLoading(false);
+            }
+        };
 
-    const payrolls = [
-        { id: 1, date: "10-May-2024", fileName: "Document.pdf" },
-        { id: 2, date: "10-Jun-2024", fileName: "Document.pdf" },
-        { id: 3, date: "10-Jul-2024", fileName: "Document.pdf" },
-        { id: 4, date: "10-Aug-2024", fileName: "Document.pdf" },
-        { id: 5, date: "10-Sep-2024", fileName: "Document.pdf" },
-        { id: 6, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 7, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 8, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 9, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 10, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 11, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 12, date: "10-Oct-2024", fileName: "Document.pdf" },
-        { id: 13, date: "10-Oct-2024", fileName: "Document.pdf" },
-    ];
+        fetchSalarySlips();
+    }, []);
 
-    // Opens the pop-up and sets the file to download
-    const handleDownloadClick = (file) => {
-        setSelectedFile(file);
-        setIsModalOpen(true);
+    // Filtering salary slips based only on salaryMonth (no employeeId)
+    const filteredSalarySlips = salarySlips.filter((slip) => {
+        return slip.salaryMonth?.toLowerCase().includes(salaryMonth.toLowerCase());
+    });
+
+    const openModal = (slip) => {
+        setSelectedSlip(slip);
+        setShowModal(true);
     };
 
-    // Closes the pop-up
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setPassword("");
+    const closeModalDetails = () => {
+        setSelectedSlip(null);
+        setShowModal(false);
     };
 
-    // Validates password and triggers download
-    const handlePasswordSubmit = () => {
-        if (password === correctPassword) {
-            alert(`File ${selectedFile} will download now!`);
-            // Simulate file download
-            const link = document.createElement("a");
-            link.href = `/path/to/files/${selectedFile}`;
-            link.download = selectedFile;
-            link.click();
+    const generatePDF = (slip) => {
+        const doc = new jsPDF();
+        doc.setFontSize(18);
+        doc.text("Salary Slip", 14, 20);
 
-            closeModal();
-        } else {
-            alert("Incorrect Password! Please try again.");
-        }
+        const employeeDetails = [
+            ["Employee ID", slip.employeeDetail.empId],
+            ["Name", `${slip.employeeDetail.firstName} ${slip.employeeDetail.surname}`],
+            ["Department", slip.employeeDetail.department],
+            ["Designation", slip.employeeDetail.designation],
+            ["Salary Month", slip.salaryMonth],
+            ["Generated Date", slip.generatedDate],
+        ];
+
+        doc.autoTable({
+            startY: 30,
+            head: [["Field", "Details"]],
+            body: employeeDetails,
+        });
+
+        const salaryDetails = [
+            ["Basic Salary", `₹${slip.payroll.basicSalary.toFixed(2)}`],
+            ["Bonus", `₹${slip.payroll.bonus.toFixed(2)}`],
+            ["Deductions", `₹${slip.totalDeductions.toFixed(2)}`],
+            ["Net Salary", `₹${slip.netSalary.toFixed(2)}`],
+        ];
+
+        doc.autoTable({
+            startY: doc.lastAutoTable.finalY + 10,
+            head: [["Description", "Amount"]],
+            body: salaryDetails,
+        });
+
+        doc.save(`SalarySlip_${slip.employeeDetail.empId}_${slip.salaryMonth}.pdf`);
     };
 
-    // Toggle Password Visibility
-    const togglePasswordVisibility = () => {
-        setIsPasswordVisible((prev) => !prev);
+    const handleMonthChange = (e) => {
+        const month = e.target.value;
+        setSalaryMonth(month);
     };
 
     return (
         <div className="flex bg-gray-100 min-h-screen">
-            {/* Sidebar */}
             <UserSideBar />
 
-            {/* Main Content */}
             <div className="flex-1 ml-[16vw]">
-                {/* Header */}
                 <UserHeader title="Payroll Dashboard" />
 
-                {/* Payroll Section */}
                 <section className="bg-white p-[1.667vw] rounded-[0.417vw] shadow relative mt-[1.667vw]">
-                    {/* Welcome Message */}
                     <div className="flex justify-between items-center mb-[0.833vw]">
                         <p className="text-gray-600 text-[0.938vw]">
                             Welcome back,{" "}
                             <span className="text-blue-500 font-semibold">Aditya</span>
                         </p>
-                        <p className="text-blue-500 font-medium">
-                        </p>
                     </div>
 
-                    {/* Search & Filter  */}
                     <div className="flex gap-[0.833vw] mb-[1.667vw]">
+                        {/* Search bar only filters by salary month */}
                         <div className="relative flex-1">
                             <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
                             <input
                                 type="text"
-                                placeholder="Search by Name, ID, status..."
+                                placeholder="Search by salary month..."
                                 className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                                onChange={(e) => setSalaryMonth(e.target.value)}
                             />
                         </div>
-                        <select
+
+                        {/* Calendar input for month selection */}
+                        <input
+                            type="month"
                             className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
-                        >
-                            <option value="">Action</option>
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
-                            <option value="pending">Pending</option>
-                        </select>
+                            onChange={handleMonthChange}
+                            value={salaryMonth}
+                        />
+
                         <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                             <Calendar size={20} className="text-gray-400" />
                             <span>13 Jan, 2024</span>
@@ -112,85 +133,72 @@ const Payroll = () => {
                         </button>
                     </div>
 
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full border-collapse">
-                            <thead>
-                                <tr className="bg-gray-50">
-                                    <th className="px-[0.833vw] py-[0.417vw] text-left text-gray-600 font-medium">Serial No.</th>
-                                    <th className="px-[0.833vw] py-[0.417vw] text-left text-gray-600 font-medium">Date</th>
-                                    <th className="px-[0.833vw] py-[0.417vw] text-left text-gray-600 font-medium">Slip Name</th>
-                                    <th className="px-[0.833vw] py-[0.417vw] text-left text-gray-600 font-medium">Get Your Slip</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {payrolls.map((payroll, index) => (
-                                    <tr key={payroll.id} className="border-t hover:bg-gray-50">
-                                        <td className="px-[0.833vw] py-[0.625vw]">{String(index + 1).padStart(2, "0")}</td>
-                                        <td className="px-[0.833vw] py-[0.625vw]">{payroll.date}</td>
-                                        <td className="px-[0.833vw] py-[0.625vw] flex items-center gap-[0.417vw]">
-                                            <img
-                                                src="https://img.icons8.com/color/20/fa314a/pdf.png"
-                                                alt="PDF Icon"
-                                            />
-                                            {payroll.fileName}
+                    <table className="min-w-full bg-white border border-gray-200">
+                        <thead>
+                            <tr>
+                                <th className="border-b px-4 py-2 text-left">Serial No.</th>
+                                <th className="border-b px-4 py-2 text-left">Salary Month</th>
+                                <th className="border-b px-4 py-2 text-left">View Action</th>
+                                <th className="border-b px-4 py-2 text-left">Download Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredSalarySlips.length > 0 ? (
+                                filteredSalarySlips.map((slip, index) => (
+                                    <tr key={slip.id} className="hover:bg-gray-50">
+                                        <td className="border-b px-4 py-2">{index + 1}</td>
+                                        <td className="border-b px-4 py-2">{slip.salaryMonth}</td>
+                                        <td className="border-b px-4 py-2">
+                                            <button
+                                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 mr-2"
+                                                onClick={() => openModal(slip)}
+                                            >
+                                                View
+                                            </button>
                                         </td>
+
                                         <td className="px-[0.833vw] py-[0.625vw]">
                                             <button
                                                 className="bg-blue-600 text-white px-[0.833vw] py-[0.417vw] rounded-[0.417vw] flex items-center gap-[0.417vw] hover:bg-blue-700"
-                                                onClick={() => handleDownloadClick(payroll.fileName)}
+                                                onClick={() => generatePDF(slip)}
                                             >
                                                 <Download size={16} />
                                                 Download
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="4" className="text-center py-4 text-gray-500">
+                                        No salary slips found.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </section>
 
-                {/* Password Confirmation Pop-up */}
-                {isModalOpen && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                        <div className="bg-white p-[1.667vw] rounded-[0.417vw] shadow-lg relative w-[20vw]">
+                {showModal && selectedSlip && (
+                    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+                        <div className="bg-white rounded-lg shadow-lg w-3/4 p-6">
+                            <h2 className="text-xl font-bold mb-4">Salary Slip Details</h2>
+                            <p><strong>Employee ID:</strong> {selectedSlip.employeeDetail.empId}</p>
+                            <p><strong>Name:</strong> {selectedSlip.employeeDetail.firstName} {selectedSlip.employeeDetail.surname}</p>
+                            <p><strong>Department:</strong> {selectedSlip.employeeDetail.department}</p>
+                            <p><strong>Designation:</strong> {selectedSlip.employeeDetail.designation}</p>
+                            <p><strong>Salary Month:</strong> {selectedSlip.salaryMonth}</p>
+                            <p><strong>Basic Salary:</strong> ₹{selectedSlip.payroll.basicSalary.toFixed(2)}</p>
+                            <p><strong>Bonus:</strong> ₹{selectedSlip.payroll.bonus.toFixed(2)}</p>
+                            <p><strong>Total Earnings:</strong> ₹{selectedSlip.totalEarnings.toFixed(2)}</p>
+                            <p><strong>Total Deductions:</strong> ₹{selectedSlip.totalDeductions.toFixed(2)}</p>
+                            <p><strong>Net Salary:</strong> ₹{selectedSlip.netSalary.toFixed(2)}</p>
                             <button
-                                onClick={closeModal}
-                                className="absolute top-[0.833vw] right-[0.833vw] text-gray-500 hover:text-gray-800"
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                onClick={closeModalDetails}
                             >
                                 <X size={20} />
-                            </button>
-                            <h2 className="text-[1.042vw] font-semibold mb-[0.833vw]">Confirm Password</h2>
-
-                            {/* Password Input with Show/Hide */}
-                            <div className="relative">
-                                <input
-                                    type={isPasswordVisible ? "text" : "password"}
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full p-[0.625vw] border rounded-[0.417vw] pr-[2.083vw] focus:outline-none focus:border-indigo-500"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={togglePasswordVisibility}
-                                    className="absolute right-[0.625vw] top-[0.625vw] text-gray-500 hover:text-gray-700"
-                                >
-                                    {isPasswordVisible ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
-                                </button>
-                            </div>
-
-                            <p className="text-gray-500 text-[0.729vw] mt-[0.833vw] mb-[0.833vw]">
-                                Your password is a combination of your <i>first four letters</i> of your name and the last three digits of your <i>Aadhar</i>.
-                                Eg. <span className="text-blue-500 font-semibold">RAMU123</span>
-                            </p>
-
-                            <button
-                                onClick={handlePasswordSubmit}
-                                className="w-full bg-blue-600 text-white p-[0.625vw] rounded-[0.417vw] hover:bg-blue-700"
-                            >
-                                Confirm
+                                Close
                             </button>
                         </div>
                     </div>

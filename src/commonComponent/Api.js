@@ -348,9 +348,7 @@ export const clockOutAPI = async (clockingId) => {
   }
 };
 
-/**
- * Get a list of all events.
- */
+
 export function getAllEvents() {
   return request({
     url: `${API_BASE_URL}/api/events`,
@@ -363,10 +361,7 @@ export async function getAllLeaves() {
     method: "GET",
   });
 }
-/**
- * Create a new event.
- * This requires either ADMIN or MANAGER role.
- */
+
 export function createEvent(eventData) {
   return request({
     url: `${API_BASE_URL}/api/events`,
@@ -375,10 +370,7 @@ export function createEvent(eventData) {
   });
 }
 
-/**
- * Delete an event by its ID.
- * This requires either ADMIN or MANAGER role.
- */
+
 export function deleteEvent(id) {
   return request({
     url: `${API_BASE_URL}/api/events/${id}`,
@@ -386,9 +378,7 @@ export function deleteEvent(id) {
   });
 }
 
-/**
- * Get a single event by its ID.
- */
+
 export function getEventById(id) {
   return request({
     url: `${API_BASE_URL}/api/events/${id}`,
@@ -512,106 +502,72 @@ export const fetchPieData = async () => {
   }
 };
 
-// export async function createTask(task) {
-//   const formData = new FormData();
-//   formData.append("taskName", task.taskName); // Corrected taskName
-//   formData.append("priority", task.priority); // Corrected from 'description'
-//   formData.append("userId", task.userId); // Corrected from 'assignee'
-//   formData.append("description", task.taskDescription); // Corrected from 'message'
-//   formData.append("dueDate", task.dueDate); // Corrected field name
 
-
-//   const headers = new Headers();
-
-//   if (localStorage.getItem("ACCESS_TOKEN")) {
-//     headers.append(
-//       "Authorization",
-//       "Bearer " + localStorage.getItem("ACCESS_TOKEN")
-//     );
-//   }
-
-//   const options = {
-//     method: "POST",
-//     body: formData,
-//     headers: headers,
-//   };
-
-//   try {
-//     const response = await fetch(
-//       "http://localhost:8080/user/tasks/create",
-//       options
-//     );
-//     return await response.json(); // Ensure the response is in JSON format
-//   } catch (error) {
-//     console.error("Error creating task:", error);
-//     throw error;
-//   }
-// }
 
 export async function createTask(task) {
-    console.log("inside createTask", task.taskName);
+  console.log("inside createTask", task.taskName);
 
-    // Function to format the date as yyyy-MM-dd'T'HH:mm:ss
-    const formatDate = (date) => {
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
-        const day = String(d.getDate()).padStart(2, '0');
-        const hours = String(d.getHours()).padStart(2, '0');
-        const minutes = String(d.getMinutes()).padStart(2, '0');
-        const seconds = String(d.getSeconds()).padStart(2, '0');
-        
-        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-    };
+  // Function to format the date as yyyy-MM-dd'T'HH:mm:ss
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const seconds = String(d.getSeconds()).padStart(2, '0');
 
-    // Format the dueDate to the required format (yyyy-MM-dd'T'HH:mm:ss)
-    const formattedDueDate = formatDate(task.dueDate);
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  };
 
-    // Create a new FormData object to send the task data
-    const formData = new FormData();
-    formData.append("taskName", task.taskName); // Task name
-    formData.append("priority", task.priority); // Task priority
-    formData.append("userId", task.userId); // User ID (assignee)
-    formData.append("messages", task.messages); // Task description
-    formData.append("dueDate", formattedDueDate); // Formatted due date
+  // Format the dueDate to the required format (yyyy-MM-dd'T'HH:mm:ss)
+  const formattedDueDate = formatDate(task.dueDate);
 
-    // Set up request headers
-    const headers = new Headers();
-    const accessToken = localStorage.getItem(ACCESS_TOKEN);
-    if (accessToken) {
-        headers.append("Authorization", `Bearer ${accessToken}`);
-    }
+  // Create a new FormData object to send the task data
+  const formData = new FormData();
+  formData.append("taskName", task.taskName); // Task name
+  formData.append("priority", task.priority); // Task priority
+  formData.append("userId", task.userId); // User ID (assignee)
+  formData.append("messages", task.messages); // Task description
+  formData.append("dueDate", formattedDueDate); // Formatted due date
 
-    // Log the FormData for debugging purposes
-    console.log("formData", formData);
+  // Set up request headers
+  const headers = new Headers();
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
+  if (accessToken) {
+    headers.append("Authorization", `Bearer ${accessToken}`);
+  }
 
-    // Define the request options
-    const options = {
-        method: "POST", // HTTP method
-        body: formData, // The body containing the task data
-        headers: headers, // Authorization headers
-    };
+  // Log the FormData for debugging purposes
+  console.log("formData", formData);
 
-    try {
-        // Make the request to the server
-        const response = await request({
-            url: `http://localhost:8080/user/tasks/create`,
-            ...options, // Spread the options to include method, body, and headers
-        });
+  // Define the request options
+  const options = {
+    method: "POST", // HTTP method
+    body: formData, // The body containing the task data
+    headers: headers, // Authorization headers
+  };
 
-        // Return the response from the server
-        return response;
-    } catch (error) {
-        // Log the error if request fails
-        console.error("Error creating task:", error);
-        throw error; // Rethrow the error to handle it elsewhere
-    }
+  try {
+    // Make the request to the server
+    const response = await request({
+      url: `http://localhost:8080/user/tasks/create`,
+      ...options, // Spread the options to include method, body, and headers
+    });
+
+    // Return the response from the server
+    return response;
+  } catch (error) {
+    // Log the error if request fails
+    console.error("Error creating task:", error);
+    throw error; // Rethrow the error to handle it elsewhere
+  }
 }
 export const getAllTask = async () => {
   console.log("inside getAllTask");
 
   try {
-    
+
     const response = await request({
       url: `${API_BASE_URL}/user/tasks/user/2`, // Send as query parameters
       method: "GET",
@@ -629,17 +585,17 @@ export const getAllTask = async () => {
 
 
 export const updateTaskStatus = async (taskId, status) => {
-  console.log("Updating task status...",status);
-  console.log("Updating task status... taskId",taskId);
+  console.log("Updating task status...", status);
+  console.log("Updating task status... taskId", taskId);
   const formData = new FormData();
-  formData.append("status",status); // Task name
-  console.log("form data",formData)
+  formData.append("status", status); // Task name
+  console.log("form data", formData)
 
   // Set up request headers
   const headers = new Headers();
   const accessToken = localStorage.getItem(ACCESS_TOKEN);
   if (accessToken) {
-      headers.append("Authorization", `Bearer ${accessToken}`);
+    headers.append("Authorization", `Bearer ${accessToken}`);
   }
 
   // Log the FormData for debugging purposes
@@ -647,24 +603,24 @@ export const updateTaskStatus = async (taskId, status) => {
 
   // Define the request options
   const options = {
-      method: "PATCH", // HTTP method
-      body: formData, // The body containing the task data
-      headers: headers, // Authorization headers
+    method: "PATCH", // HTTP method
+    body: formData, // The body containing the task data
+    headers: headers, // Authorization headers
   };
 
   try {
-      // Make the request to the server
-      const response = await request({
-          url: `http://localhost:8080/user/tasks/update/${taskId}`,
-          ...options, // Spread the options to include method, body, and headers
-      });
+    // Make the request to the server
+    const response = await request({
+      url: `http://localhost:8080/user/tasks/update/${taskId}`,
+      ...options, // Spread the options to include method, body, and headers
+    });
 
-      // Return the response from the server
-      return response;
+    // Return the response from the server
+    return response;
   } catch (error) {
-      // Log the error if request fails
-      console.error("Error creating task:", error);
-      throw error; // Rethrow the error to handle it elsewhere
+    // Log the error if request fails
+    console.error("Error creating task:", error);
+    throw error; // Rethrow the error to handle it elsewhere
   }
 }
 
@@ -680,28 +636,100 @@ export async function updateLeaveStatus(id, action) {
   url.searchParams.append("status", status);
 
   const options = {
-      url: url.toString(),
-      method: "PUT",
+    url: url.toString(),
+    method: "PUT",
   };
 
   try {
-      const response = await request(options);
-      return response;
+    const response = await request(options);
+    return response;
   } catch (error) {
-      return Promise.reject(error);
+    return Promise.reject(error);
   }
 }
-export  const updateEvent = async (id, eventData) => {
+export const updateEvent = async (id, eventData) => {
   const options = {
-      url: `${API_BASE_URL}/api/events/${id}`,  // The URL to the PUT endpoint with the event ID
-      method: 'PUT',             // HTTP method is PUT for updating
-      body: JSON.stringify(eventData),  // The event data to update in the request body
+    url: `${API_BASE_URL}/api/events/${id}`,  // The URL to the PUT endpoint with the event ID
+    method: 'PUT',             // HTTP method is PUT for updating
+    body: JSON.stringify(eventData),  // The event data to update in the request body
   };
 
   try {
-      const updatedEvent = await request(options);  // Call the request function
-      return updatedEvent;  // Return the updated event
+    const updatedEvent = await request(options);  // Call the request function
+    return updatedEvent;  // Return the updated event
   } catch (error) {
-      console.error("Error updating event:", error);  // Handle error
-      throw error;  // Propagate the error
-  }}
+    console.error("Error updating event:", error);  // Handle error
+    throw error;
+  }
+}
+
+export const getAllSalarySlips = async () => {
+  console.log("inside getAllSalarySlips");
+
+  try {
+
+    const response = await request({
+      url: `${API_BASE_URL}/api/salary_slips`, // Send as query parameters
+      method: "GET",
+    });
+
+    // Handle the success response
+    console.log("Salry Slip  updated successfully:", response);
+    return response;
+  } catch (error) {
+    // Handle error response
+    console.error("Error updating ticket status:", error);
+    throw error;
+  }
+};
+
+export const calculateSalarySlips = async (startDate, endDate) => {
+  console.log("Inside calculateSalarySlips");
+  const formData = new FormData();
+  formData.append("startDate", startDate); // Task name
+  formData.append("endDate", endDate); // Task name
+
+  console.log("endDate", endDate)
+  const headers = new Headers();
+  const accessToken = localStorage.getItem(ACCESS_TOKEN);
+  if (accessToken) {
+    headers.append("Authorization", `Bearer ${accessToken}`);
+  }
+  const options = {
+    method: "POST", // HTTP method
+    body: formData, // The body containing the task data
+    headers: headers, // Authorization headers
+  };
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/api/salary_slips/calculate`, 
+      ...options,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error creating task:", error);
+    throw error; 
+  }
+};
+
+
+export function getSalarySlipByID() {
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
+
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
+
+  console.log(parsedUserData); // You can log the parsed object to inspect its contents
+
+  return request({
+    // url: API_BASE_URL + "/admin/getAllUsers",
+    url: `${API_BASE_URL}/api/salary_slips/by_user/${parsedUserData.id}`,
+
+    method: "GET",
+  });
+}
