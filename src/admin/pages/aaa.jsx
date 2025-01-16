@@ -29,13 +29,8 @@ const AdminReimbursement = () => {
             return;
         }
 
-        // Prepend 'data:image/jpeg;base64,' if not already present in the base64 string
         const base64Image = `data:image/jpeg;base64,${fileUrl}`;
-
-        // Set the image preview to the base64 string
         setImagePreview(base64Image);
-
-        // Open the modal to display the image
         setModalOpen(true);
     };
 
@@ -58,7 +53,6 @@ const AdminReimbursement = () => {
 
         fetchReimbursements();
 
-        // Update date and time every second
         const updateDateTime = () => {
             const now = new Date();
             const time = format(now, 'HH:mm:ss');
@@ -97,16 +91,15 @@ const AdminReimbursement = () => {
         return matchesSearch && matchesStatus;
     });
 
-    // Pagination calculations
     const totalPages = Math.ceil(filteredTickets.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredTickets.slice(indexOfFirstItem, indexOfLastItem);
 
     const handleStatusChange = async (reimbursementId, newStatus) => {
-        console.log(">>>>>>>>>>>>>>>",reimbursementId)
         try {
             await updateReimbursementStatus(reimbursementId, newStatus, "admin"); // Assuming the userRole is always 'admin' for this example
+            console.log(`Status updated to ${newStatus}`);
             setReimbursements(prevState =>
                 prevState.map(ticket =>
                     ticket.id === reimbursementId ? { ...ticket, status: newStatus } : ticket
@@ -139,7 +132,6 @@ const AdminReimbursement = () => {
                             </p>
                         </div>
 
-                        {/* Search and Filter Row */}
                         <div className="flex gap-[0.833vw] mb-[1.667vw]">
                             <div className="relative flex-1">
                                 <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
@@ -161,38 +153,8 @@ const AdminReimbursement = () => {
                                 <option value="closed">Closed</option>
                                 <option value="pending">Pending</option>
                             </select>
-                            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                                <Calendar size={20} className="text-gray-400" />
-                                <span>13 Jan, 2024</span>
-                            </div>
-                            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
-                                <Download size={20} />
-                                Export CSV
-                            </button>
                         </div>
 
-                        <div className="flex justify-between items-center mb-[1.25vw]">
-                            <h3 className="text-gray-700 text-[0.938vw] font-bold">Reimbursement List</h3>
-                            <div className="flex items-center gap-[0.833vw]">
-                                <span className="text-gray-600">
-                                    Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTickets.length)} of {filteredTickets.length} entries
-                                </span>
-                                <select
-                                    className="p-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
-                                    value={itemsPerPage}
-                                    onChange={(e) => {
-                                        setItemsPerPage(Number(e.target.value));
-                                        setCurrentPage(1);
-                                    }}
-                                >
-                                    <option value={10}>10 per page</option>
-                                    <option value={20}>20 per page</option>
-                                    <option value={50}>50 per page</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        {/* Updated Table Structure */}
                         <div className="overflow-x-auto">
                             <table className="w-full border-collapse">
                                 <thead>
@@ -201,7 +163,7 @@ const AdminReimbursement = () => {
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Category</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Description</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Status</th>
-                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Status</th>
+                                        <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Action</th>
                                         <th className="px-[0.833vw] py-[0.625vw] text-left text-gray-600 font-medium">Image</th>
                                     </tr>
                                 </thead>
@@ -217,21 +179,17 @@ const AdminReimbursement = () => {
                                                 </span>
                                             </td>
                                             <td>
-                                                <select
-                                                    value={ticket.status}
-                                                    onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
-                                                    className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                                                <button
+                                                    className="text-indigo-600 hover:text-indigo-700"
+                                                    onClick={() => handleStatusChange(ticket.id, 'closed')}
                                                 >
-                                                    <option value="open">Open</option>
-                                                    <option value="closed">Closed</option>
-                                                    <option value="pending">Pending</option>
-                                                </select>
+                                                    Mark as Closed
+                                                </button>
                                             </td>
-
                                             <td>
                                                 <button
                                                     className="text-indigo-600 hover:text-indigo-700"
-                                                    onClick={() => handleImageClick(ticket.image)} // Assuming 'fileUrl' is the field containing the image URL
+                                                    onClick={() => handleImageClick(ticket.image)}
                                                 >
                                                     View
                                                 </button>
@@ -242,61 +200,42 @@ const AdminReimbursement = () => {
                             </table>
                         </div>
 
-                        {/* Pagination */}
-                        <div className="flex justify-between items-center mt-[1.25vw]">
+                        <div className="mt-[1.667vw] flex justify-between items-center">
                             <button
-                                className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
+                                className="flex items-center text-gray-500 hover:text-gray-700"
+                                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                             >
                                 <ChevronLeft size={20} />
-                                Previous
+                                <span className="ml-[0.417vw]">Previous</span>
                             </button>
-                            <div className="flex gap-[0.417vw]">
-                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                    <button
-                                        key={page}
-                                        className={`px-[0.833vw] py-[0.417vw] rounded ${currentPage === page
-                                            ? 'bg-blue-500 text-white'
-                                            : 'text-gray-600 hover:bg-gray-100'
-                                            }`}
-                                        onClick={() => setCurrentPage(page)}
-                                    >
-                                        {page}
-                                    </button>
-                                ))}
-                            </div>
+                            <span className="text-sm text-gray-500">
+                                Page {currentPage} of {totalPages}
+                            </span>
                             <button
-                                className="px-[0.833vw] py-[0.417vw] flex items-center gap-[0.417vw] text-gray-600 disabled:text-gray-400"
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
+                                className="flex items-center text-gray-500 hover:text-gray-700"
+                                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                             >
-                                Next
+                                <span className="mr-[0.417vw]">Next</span>
                                 <ChevronRight size={20} />
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {/* Image Modal */}
-            {modalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-[0.833vw] rounded-[0.417vw] relative">
-                        <button
-                            onClick={closeModal}
-                            className="absolute top-[0.469vw] right-[0.417vw] text-[1.042vw] text-gray-600"
-                        >
-                            &times;
-                        </button>
-                        <img
-                            src={imagePreview}  // Use base64 encoded image
-                            alt="Preview"
-                            className="max-w-full max-h-[80vh] object-contain"
-                        />
+                {modalOpen && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center">
+                        <div className="bg-white p-[1.25vw] rounded-md w-[80%] max-w-lg">
+                            <button
+                                className="absolute top-[0.417vw] right-[0.417vw] text-black"
+                                onClick={closeModal}
+                            >
+                                X
+                            </button>
+                            <img src={imagePreview} alt="Reimbursement Image" className="w-full h-auto" />
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

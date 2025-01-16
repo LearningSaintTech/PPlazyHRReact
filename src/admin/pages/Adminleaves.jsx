@@ -22,7 +22,7 @@ const ApplyLeave = () => {
 
     const [leaveHistory, setLeaveHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    //const itemsPerPage = 5;
 
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "Sunday",
@@ -89,24 +89,26 @@ const ApplyLeave = () => {
             const leaveId = updatedLeaves[index].id; // Ensure 'id' exists in your leave data
             const response = await updateLeaveStatus(leaveId, newStatus);
             console.log("Leave status updated:", response);
+
+            setCurrentPage(1);
         } catch (error) {
             console.error("Error updating leave status:", error);
         }
     };
 
 
-    const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+   // const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
+    //const indexOfLastItem = currentPage * itemsPerPage;
+    //const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
     const currentItems = leaveHistory
-        .filter(leave => {
-            // Search by username and selected date
-            const matchesSearchTerm = leave.username.toLowerCase().includes(searchTerm.toLowerCase());
-            const matchesDate = selectedDate ? format(new Date(leave.fromDate), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') : true;
-            return matchesSearchTerm && matchesDate;
-        })
-        .slice(indexOfFirstItem, indexOfLastItem);
+        // .filter(leave => {
+        //     // Search by username and selected date
+        //     const matchesSearchTerm = leave.username.toLowerCase().includes(searchTerm.toLowerCase());
+        //     const matchesDate = selectedDate ? format(new Date(leave.fromDate), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') : true;
+        //     return matchesSearchTerm && matchesDate;
+        // })
+        // .slice(indexOfFirstItem, indexOfLastItem);
 
     const formatDate = (date) => format(new Date(date), 'dd/MM/yyyy');
 
@@ -214,7 +216,7 @@ const ApplyLeave = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="mt-[0.833vw] flex justify-center items-center gap-[0.833vw]">
+                        {/* <div className="mt-[0.833vw] flex justify-center items-center gap-[0.833vw]">
                             <button
                                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                 disabled={currentPage === 1}
@@ -230,7 +232,7 @@ const ApplyLeave = () => {
                             >
                                 <ChevronRight size={20} />
                             </button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
