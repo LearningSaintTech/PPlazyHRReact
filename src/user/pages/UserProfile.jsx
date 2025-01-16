@@ -113,9 +113,9 @@ const UserProfile = () => {
 
                         <div>
                             <h3 className="text-[1.25vw] font-semibold text-gray-800">Aditya Raj</h3>
-                            <p className="text-[0.938vw] text-gray-500">Sr. Frontend Developer</p>
-                            <p className="text-gray-500 mt-[0.417vw]">
-                                Employee ID: <span className="text-indigo-600">PP_01</span>
+                            <p className="text-[1.1vw] text-gray-500">Sr. Frontend Developer</p>
+                            <p className="text-gray-500 text-[0.9vw] mt-[0.417vw]">
+                                Employee ID: <span className="text-indigo-600 text-[0.9vw]">PP_01</span>
                             </p>
                         </div>
                     </div>

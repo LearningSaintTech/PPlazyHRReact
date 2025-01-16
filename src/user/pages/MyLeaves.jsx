@@ -68,14 +68,16 @@ const MyLeaves = () => {
       leave.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
       leave.fromDate.includes(searchTerm) ||
       leave.toDate.includes(searchTerm);
-    
+
     const matchesAction =
       action === "" || // If no action is selected, include all
-      (action === "accepted" && leave.acceptRejectFlag) ||
-      (action === "pending" && !leave.acceptRejectFlag);
+      (action === "accepted" && leave.acceptRejectFlag === true) ||
+      (action === "rejected" && leave.acceptRejectFlag === false) ||
+      (action === "pending" && leave.acceptRejectFlag == null); // Handle pending status
 
     return matchesSearch && matchesAction;
   });
+
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
@@ -120,12 +122,14 @@ const MyLeaves = () => {
             <select
               className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
               value={action}
-              onChange={(e) => setAction(e.target.value)} // Handle action selection change
+              onChange={(e) => setAction(e.target.value)}
             >
               <option value="">Action</option>
               <option value="pending">Pending</option>
               <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
             </select>
+
             <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
               <Calendar size={20} className="text-gray-400" />
               <span>13 Jan, 2024</span>
@@ -161,8 +165,21 @@ const MyLeaves = () => {
                       <td className="px-[0.833vw] py-[0.417vw]">{leave.leaveType}</td>
                       <td className="px-[0.833vw] py-[0.417vw]">{leave.reason}</td>
                       <td className="px-[0.833vw] py-[0.417vw]">
-                        {leave.acceptRejectFlag ? "Accepted" : "Pending"}
+                        {leave.acceptRejectFlag === null ? (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5efe6] rounded-[0.417vw] border border-[#ffae00] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#ffae00] text-2xl  font-normal leading-normal">Pending</div>
+                          </div>
+                        ) : leave.acceptRejectFlag ? (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw]  py-[0.208vw] bg-[#e6f5ee] rounded-[0.417vw] border border-[#069855] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#069855] text-2xl  font-normal  leading-normal">Accepted</div>
+                          </div>
+                        ) : (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5e6e6] rounded-[0.417vw] border border-[#d62525] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#d62525] text-2xl font-normal leading-normal">Rejected</div>
+                          </div>
+                        )}
                       </td>
+
                     </tr>
                   ))}
                 </tbody>

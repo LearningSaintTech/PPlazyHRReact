@@ -87,7 +87,7 @@ const AdminAttendance = () => {
         index + 1,
         formatDate(data.date),
         data.id,
-        data.employeeDetail.empId,
+        data.employeeDetail.firstName,
         formatTime(data.clockInDate),
         formatTime(data.clockOutDate),
         data.workingTime,
@@ -190,6 +190,7 @@ const AdminAttendance = () => {
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Date</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">User ID</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Employee</th>
+                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Department</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock In</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
                   <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Working Time</th>
@@ -204,7 +205,8 @@ const AdminAttendance = () => {
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{index + 1}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatDate(data.date)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.id}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.empId}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.firstName}</td>
+                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.department}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockInDate)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
                       <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>

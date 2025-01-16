@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { clockInAPI, clockOutAPI } from "../../commonComponent/Api";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import { clockInAPI, clockOutAPI } from "../../commonComponent/Api"
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -14,10 +14,11 @@ const CustomClock = () => {
         return () => clearInterval(interval);
     }, []);
 
-    return <span>{time}</span>;
+    return time;
 };
 
-const UserHome = () => {
+const Dashboard = () => {
+    // State initialization with localStorage
     const [isClockedIn, setIsClockedIn] = useState(() =>
         JSON.parse(localStorage.getItem("isClockedIn")) || false
     );
@@ -30,9 +31,33 @@ const UserHome = () => {
     const [clockOutTime, setClockOutTime] = useState(() =>
         localStorage.getItem("clockOutTime") || "00:00:00 AM"
     );
-
     const [timer, setTimer] = useState(0);
+    const [currentTime, setCurrentTime] = useState({
+        day: "Tue",
+        time: "00:00:00",
+        period: "AM"
+    });
 
+    // Calendar state
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    // Update current time
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = new Date();
+            const day = now.toLocaleDateString('en-US', { weekday: 'short' });
+            const time = now.toLocaleTimeString();
+            const period = time.slice(-2);
+            setCurrentTime({
+                day,
+                time: time.slice(0, -3),
+                period
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Persist state to localStorage
     useEffect(() => {
         localStorage.setItem("isClockedIn", JSON.stringify(isClockedIn));
         localStorage.setItem("isClockedOut", JSON.stringify(isClockedOut));
@@ -40,6 +65,7 @@ const UserHome = () => {
         localStorage.setItem("clockOutTime", clockOutTime);
     }, [isClockedIn, isClockedOut, clockInTime, clockOutTime]);
 
+    // Timer effect
     useEffect(() => {
         if (isClockedIn && !isClockedOut) {
             const interval = setInterval(() => {
@@ -51,10 +77,11 @@ const UserHome = () => {
         }
     }, [isClockedIn, isClockedOut]);
 
-    const handleClockIn = async () => {
-        const userData = localStorage.getItem('userData');  // Retrieve the userData string from localStorage
-        const parsedUserData = JSON.parse(userData);  // Parse the string into an object
-        console.log("parsedUserData", parsedUserData.id)
+    const handleClockIn = async (confirm) => {
+        if (confirm) return;
+
+        const userData = localStorage.getItem('userData');
+        const parsedUserData = JSON.parse(userData);
         const userId = parsedUserData.id;
         const today = new Date().toISOString().split("T")[0];
         const lastClockInDate = localStorage.getItem("clockInDate");
@@ -64,10 +91,8 @@ const UserHome = () => {
                 const now = new Date();
                 const startTime = Math.floor(Date.now() / 1000);
 
-                // Call the clockInAPI
                 const response = await clockInAPI(userId);
 
-                // If the API call is successful, update local storage and state
                 localStorage.setItem("clockInStartTime", startTime);
                 localStorage.setItem("clockInDate", today);
 
@@ -76,7 +101,6 @@ const UserHome = () => {
                 setClockInTime(now.toLocaleTimeString("en-US"));
 
                 alert("Clocked in successfully!");
-                console.log("Clock-In API Response:", response);
                 localStorage.setItem("clockingId", response.id);
             } catch (error) {
                 console.error("Error during clock-in:", error);
@@ -87,21 +111,18 @@ const UserHome = () => {
         }
     };
 
-    const handleClockOut = async () => {
+    const handleClockOut = async (confirm) => {
+        if (confirm) return;
+
         const confirmLogout = window.confirm(
             "You'll be logged out for the whole day. Do you want to proceed?"
         );
 
         if (confirmLogout && isClockedIn && !isClockedOut) {
             try {
-
-                console.log("ClockOut Data in localStorage:", JSON.stringify(localStorage));
-                console.log("qqqqqqqqqqqqqqqqq", localStorage.getItem("clockingId"))
                 const clockingId = localStorage.getItem("clockingId");
                 const response = await clockOutAPI(clockingId);
-                console.log('Clock-Out Response:', response);
 
-                // Update state on successful clock-out
                 setIsClockedOut(true);
                 setIsClockedIn(false);
 
@@ -116,7 +137,6 @@ const UserHome = () => {
         }
     };
 
-    // localStorage.clear();
     const formatTime = (seconds) => {
         const hrs = Math.floor(seconds / 3600);
         const mins = Math.floor((seconds % 3600) / 60);
@@ -126,132 +146,204 @@ const UserHome = () => {
             .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
 
+    // Calendar navigation functions
+    const nextMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    };
+
+    const prevMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    };
+
+    // Calendar helper functions
+    const getDaysInMonth = (date) => {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    };
+
+    const getFirstDayOfMonth = (date) => {
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        return firstDay === 0 ? 6 : firstDay - 1; // Adjust for Monday start
+    };
+
+    // Generate calendar days
+    const generateCalendarDays = () => {
+        const daysInMonth = getDaysInMonth(currentDate);
+        const firstDay = getFirstDayOfMonth(currentDate);
+        const days = [];
+
+        // Add empty cells for days before the first day of the month
+        for (let i = 0; i < firstDay; i++) {
+            days.push("");
+        }
+
+        // Add the days of the month
+        for (let i = 1; i <= daysInMonth; i++) {
+            days.push(i);
+        }
+
+        return days;
+    };
+
+    // Format month and year
+    const formatMonthYear = (date) => {
+        return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    };
+
+    // Check if a date is today
+    const isToday = (day) => {
+        const today = new Date();
+        return day === today.getDate() &&
+            currentDate.getMonth() === today.getMonth() &&
+            currentDate.getFullYear() === today.getFullYear();
+    };
+
+    const dashboardData = {
+        name: "Aditya",
+        absenceData: {
+            dateRange: "1Dec,2024 - 31Dec,2024",
+            count: 6
+        },
+        events: ["Event 1", "Event 2"],
+        calendar: {
+            month: "Dec",
+            year: "2024"
+        }
+    };
     return (
         <div className="flex h-screen bg-white">
             <UserSidebar />
-
-
-            {/* Main content */}
-            <div className="flex-1  pl-[16vw]">
+            <div className="flex-1 pl-[16vw]">
                 <UserHeader />
-                <div className="p-[1.667vw] bg-white">
-                    <div className="mb-[1.25vw]">
-                        <div className="flex justify-between items-center mb-[1.25vw]">
-                            <h1 className="text-[0.938vw]">
-                                Welcome back, <span className="text-blue-600"></span>
-                            </h1>
-                            <p className="text-gray-600">
-                                <span className="text-blue-600"> Tue, </span> <CustomClock /> <span className="text-blue-600">AM</span>
-                            </p>
+                <div className="w-full min-h-screen bg-white p-[1.25vw]">
+                    {/* Header Section */}
+                    <div className="flex justify-between items-center mb-[1.667vw]">
+                        <div>
+                            <span className="text-gray-600 text-[1.25vw] font-medium">Welcome back, </span>
+                            <span className="text-indigo-600 text-[1.25vw] font-medium">{dashboardData.name}</span>
+                        </div>
+                        <div className="flex items-center gap-[0.208vw]">
+                            <span className="text-indigo-600 text-[1.25vw] font-medium">{currentTime.day}</span>
+                            <span className="text-gray-600 text-[1.25vw] font-medium">, </span>
+                            <span className="text-gray-600 text-[1.25vw] font-medium"><CustomClock /> </span>
+                            <span className="text-indigo-600 text-[1.25vw] font-medium">{currentTime.period}</span>
+                        </div>
+                    </div>
+
+                    {/* Action Cards Section */}
+                    <div className="grid grid-cols-3 gap-[1.25vw] ">
+                        {/* Clock In Card */}
+                        <div
+                            className="flex items-center bg-indigo-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer"
+                            onClick={() => handleClockIn(false)}
+                        >
+                            <div>
+                                <h3 className="text-[1.25vw] font-medium">Clock In</h3>
+                                <p className="text-[0.938vw] font-medium mt-[0.208vw]">{clockInTime}</p>
+                            </div>
+                            <div className="w-[1.667vw] h-[1.667vw] rotate-90 bg-transparent" />
                         </div>
 
-                        {/* Main content grid */}
-                        <div className="grid grid-cols-2 gap-[1.25vw]">
-                            {/* Left Column */}
-                            <div className="space-y-4">
-                                {/* Clock In/Out buttons row */}
-                                <div className="flex gap-[0.833vw]">
-                                    <div
-                                        className={`flex-1 ${isClockedIn ? "bg-gray-100" : "bg-blue-600"
-                                            } text-white p-[0.833vw] rounded-[0.417vw] cursor-pointer`}
-                                        onClick={handleClockIn}
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <h2 className="text-[0.938vw] font-medium">Clock In</h2>
-                                                <p>{clockInTime}</p>
-                                            </div>
-                                            <svg className="w-[1.25vw] h-[1.25vw] transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`flex-1 ${isClockedOut || !isClockedIn ? "bg-gray-100" : "bg-green-600"
-                                            } text-white p-[0.833vw] rounded-[0.417vw] cursor-pointer`}
-                                        onClick={handleClockOut}
-                                    >
-                                        <div className="flex justify-between items-center">
-                                            <div>
-                                                <h2 className="text-[0.938vw] font-medium">Clock Out</h2>
-                                                <p>{clockOutTime}</p>
-                                            </div>
-                                            <svg className="w-[1.25vw] h-[1.25vw]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Total Absent box */}
-                                <div className="bg-red-600 text-white p-[0.833vw] rounded-[0.417vw]">
-                                    <div className="flex justify-between items-center">
-                                        <div>
-                                            <h2 className="text-[0.938vw] font-medium">Total Absent</h2>
-                                            <p className="text-[0.729vw]">1Dec,2024 - 31Dec,2024</p>
-                                        </div>
-                                        <div className="text-[1.875vw] font-bold">06</div>
-                                    </div>
-                                </div>
+                        {/* Clock Out Card */}
+                        <div
+                            className="flex items-center bg-green-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer"
+                            onClick={() => handleClockOut(false)}
+                        >
+                            <div>
+                                <h3 className="text-[1.25vw] font-medium">Clock Out</h3>
+                                <p className="text-[0.938vw] font-medium mt-[0.208vw]">{clockOutTime}</p>
                             </div>
+                            <div className="w-[1.667vw] h-[1.667vw] -rotate-90 bg-transparent" />
+                        </div>
 
-                            {/* Right Column - Working Hours */}
-                            <div className="bg-gray-100 p-[0.833vw] rounded-[0.417vw] flex flex-col justify-center items-center h-full">
-                                <h2 className="text-gray-600 mb-[0.417vw]">Working Hours</h2>
-                                <p className="text-[2.5vw] font-bold">{formatTime(timer)}</p>
+                        {/* Working Hours Card */}
+                        <div className="bg-gray-100 rounded-[0.833vw] flex flex-col items-center justify-center h-[5vw]">
+                            <div className="bg-white shadow-sm border rounded-[0.417vw] px-[0.833vw] py-[0.417vw] mb-[0.417vw]">
+                                <h3 className="text-gray-600 text-[0.938vw] font-medium">Working Hours</h3>
+                            </div>
+                            <p className="text-black text-[1.875vw] font-medium">{formatTime(timer)}</p>
+                        </div>
+
+                        {/* Absence Card */}
+                        <div className="flex items-center bg-red-600 text-white rounded-[0.833vw] p-[1.25vw] mb-[1.25vw] justify-between h-[5vw]">
+                            <div>
+                                <h3 className="text-[1.25vw] font-medium">Total Absent</h3>
+                                <p className="text-[0.938vw] font-medium mt-[0.208vw]">{dashboardData.absenceData.dateRange}</p>
+                            </div>
+                            <div className="bg-white text-red-600 text-[2.5vw] font-medium px-[1.25vw] py-[0.417vw] rounded-[0.417vw]">
+                                {dashboardData.absenceData.count.toString().padStart(2, '0')}
                             </div>
                         </div>
                     </div>
 
-                    {/* Events and Calendar section */}
-                    <div className="grid grid-cols-2 gap-[0.833vw]">
-                        <div className="bg-white rounded-[0.417vw] shadow p-[0.833vw]">
-                            <h2 className="text-[0.938vw] font-medium mb-[0.833vw]">Events</h2>
-                            <div className="space-y-3">
-                                <div className="p-[0.833vw] bg-white border rounded-[0.417vw]">Event 1</div>
-                                <div className="p-[0.833vw] bg-white border rounded-[0.417vw]">Event 2</div>
+                    {/* Events and Calendar Section */}
+                    <div className="grid grid-cols-2 gap-[1.25vw]">
+                        {/* Events Panel */}
+                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[27.042vw]">
+                            <div className="h-[2.5vw] px-[0.833vw] py-[0.625vw] bg-white rounded-[0.417vw] shadow-sm border mb-[0.833vw]">
+                                <div className="text-gray-600 text-[0.938vw] font-medium">Events</div>
+                            </div>
+                            <div className="space-y-4">
+                                {dashboardData.events.map((event, index) => (
+                                    <div key={index} className="p-[1.25vw] bg-white rounded-[0.417vw] shadow-sm border border-yellow-400 flex justify-center items-center">
+                                        <div className="text-black text-[1.25vw] font-bold">{event}</div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <div className="bg-white rounded-[0.417vw] shadow p-[0.833vw]">
-                            <div className="flex justify-between items-center mb-[0.833vw]">
-                                <h2 className="text-[0.938vw] font-medium">Dec 2024</h2>
-                                <div className="flex gap-[0.417vw]">
-                                    <button className="p-[0.208vw]">&lt;</button>
-                                    <button className="p-[0.208vw]">&gt;</button>
+
+                        {/* Calendar Panel */}
+                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[27.042vw]">
+                            <div className="h-[2.5vw] px-[0.833vw] py-[0.625vw] bg-white rounded-[0.417vw] shadow-sm border mb-[0.833vw]">
+                                <div className="text-gray-600 text-[0.938vw] font-medium">Calendar</div>
+                            </div>
+                            <div className="bg-white rounded-[0.417vw] p-[1.25vw]">
+                                {/* Calendar Header */}
+                                <div className="flex justify-between items-center mb-[1.25vw]">
+                                    <div className="text-black text-[1.25vw] font-bold">
+                                        {formatMonthYear(currentDate)}
+                                    </div>
+                                    <div className="flex gap-[0.417vw]">
+                                        <button
+                                            onClick={prevMonth}
+                                            className="p-[0.417vw] hover:bg-gray-100 rounded-full"
+                                        >
+                                            <div className="w-[0.833vw] h-[0.833vw] bg-gray-400 rounded-full" />
+                                        </button>
+                                        <button
+                                            onClick={nextMonth}
+                                            className="p-[0.417vw] hover:bg-gray-100 rounded-full transform rotate-180"
+                                        >
+                                            <div className="w-[0.833vw] h-[0.833vw] bg-gray-400 rounded-full" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Calendar Days Header */}
+                                <div className="grid grid-cols-7 gap-[0.833vw] mb-[0.833vw]">
+                                    {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => (
+                                        <div key={day} className="text-center text-black text-[0.729vw] font-medium">
+                                            {day}
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Calendar Days Grid */}
+                                <div className="grid grid-cols-7">
+                                    {generateCalendarDays().map((day, index) => (
+                                        <div
+                                            key={index}
+                                            className={`h-[2.8vw] flex justify-center border border-[#d4d3df] items-center ${isToday(day)
+                                                    ? 'bg-indigo-600 text-white'
+                                                    : day
+                                                        ? 'hover:bg-gray-50'
+                                                        : ''
+                                                } `}
+                                        >
+                                            <span className="text-[0.729vw]">{day}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                            <table className="w-full">
-                                <thead>
-                                    <tr>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Mo</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Tu</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">We</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Th</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Fr</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Sa</th>
-                                        <th className="p-[0.417vw] text-[0.729vw] font-medium">Su</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[...Array(5)].map((_, weekIndex) => (
-                                        <tr key={weekIndex}>
-                                            {[...Array(7)].map((_, dayIndex) => {
-                                                const day = weekIndex * 7 + dayIndex + 1;
-                                                const isToday = day === 19;
-                                                return (
-                                                    <td
-                                                        key={dayIndex}
-                                                        className={`p-[0.417vw] text-center ${isToday ? "bg-blue-600 text-white rounded-[0.417vw]" : ""
-                                                            } ${day > 31 ? "text-gray-300" : ""}`}
-                                                    >
-                                                        {day <= 31 ? day : day - 31}
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -260,4 +352,4 @@ const UserHome = () => {
     );
 };
 
-export default UserHome;
+export default Dashboard;

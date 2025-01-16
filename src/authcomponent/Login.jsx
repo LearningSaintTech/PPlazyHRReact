@@ -80,13 +80,13 @@ const Login = () => {
             </header>
 
             <main className="flex-1 flex flex-row items-center justify-center px-[1.833vw]">
-                <div className="w-full max-w-[23.333vw] py-[1.042vw]">
+                <div className="w-full max-w-[26.333vw] py-[1.042vw]">
                     <div className="bg-white rounded-[0.833vw] shadow-lg px-[2.646vw] py-[6.969vw]">
                         <div className="text-center mb-[1.667vw]">
                             <h2 className="text-[1.563vw] font-semibold text-gray-800">
                                 Login to your Account
                             </h2>
-                            <p className="mt-[0.417vw] text-gray-600">
+                            <p className="mt-[0.417vw] text-[1vw] text-gray-600">
                                 See what is going on with your business
                             </p>
                         </div>
@@ -98,7 +98,7 @@ const Login = () => {
                         <form onSubmit={handleSubmit}>
                             <div className="space-y-6 py-[5.167vw]">
                                 <div>
-                                    <label htmlFor="email" className="block text-[0.729vw] font-medium text-gray-700">
+                                    <label htmlFor="email" className="block text-[1vw] font-medium text-gray-700">
                                         Email
                                     </label>
                                     <input
@@ -114,7 +114,7 @@ const Login = () => {
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="block text-[0.729vw] font-medium text-gray-700">
+                                    <label htmlFor="password" className="block text-[1vw] font-medium text-gray-700">
                                         Password
                                     </label>
                                     <div className="mt-[0.208vw] relative">
@@ -152,26 +152,26 @@ const Login = () => {
                                             onChange={handleInputChange}
                                             className="h-[0.833vw] w-[0.833vw] text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                                         />
-                                        <label htmlFor="remember-me" className="ml-[0.417vw] block text-[0.729vw] text-gray-700">
+                                        <label htmlFor="remember-me" className="ml-[0.417vw] block text-[1vw] text-gray-700">
                                             Remember Me
                                         </label>
                                     </div>
-                                    <a href="#" className="text-[0.729vw] text-indigo-600 hover:text-indigo-500">
+                                    <a href="#" className="text-[1vw] text-indigo-600 hover:text-indigo-500">
                                         Forgot Password?
                                     </a>
                                 </div>
 
                                 <button
                                     type="submit"
-                                    className="w-full flex justify-center py-[0.417vw] px-[0.833vw] border border-transparent rounded-[0.313vw] shadow-sm text-[0.729vw] font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="w-full flex justify-center py-[0.417vw] px-[0.833vw] border border-transparent rounded-[0.313vw] shadow-sm text-[1vw] font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Login
                                 </button>
                             </div>
                         </form>
                         <div className="text-center mt-[0.833vw]">
-                            <span className="text-gray-600">Not Registered Yet? </span>
-                            <button onClick={handleNavigate} className="text-indigo-600 hover:text-indigo-500">
+                            <span className="text-gray-600 text-[1vw]">Not Registered Yet? </span>
+                            <button onClick={handleNavigate} className="text-indigo-600 text-[1vw] hover:text-indigo-500">
                                 Create an account
                             </button>
                         </div>
