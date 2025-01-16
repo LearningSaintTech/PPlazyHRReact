@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Search, Calendar, Download } from "lucide-react";
+import { Calendar, Download, Search } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
-import { getLeaves } from "../../commonComponent/Api";
+import { getLeaves } from "../../commonComponent/Api"; // Import your getLeaves function
 
-const LeaveManagementDashboard = () => {
+const MyLeaves = () => {
   const [currentDateTime, setCurrentDateTime] = useState({
     day: "",
     time: "",
     date: "",
   });
-  const [leaveHistory, setLeaveHistory] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [action, setAction] = useState("pending"); // Default to "Pending"
-  const [loading, setLoading] = useState(true);
+  const [leaveHistory, setLeaveHistory] = useState([]); // State to store leave history
+  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [action, setAction] = useState(""); // State to store selected action (Pending, Accepted, etc.)
 
-  const userId = "2"; // Replace with dynamic user ID as needed
+  const userId = "2"; // Replace this with actual user ID logic
 
-  // Update Date and Time
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
@@ -38,67 +36,40 @@ const LeaveManagementDashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch Leaves
   useEffect(() => {
-    setLoading(true);
+    // Fetch leave data when the component mounts
     getLeaves(userId)
-      .then((response) => {
-        console.log("Leave History from API:", response); // Debug Log
-        setLeaveHistory(response);
-        setLoading(false);
+      .then(response => {
+        setLeaveHistory(response); // Update state with the fetched leave history
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching leave history:", error);
-        setLoading(false);
       });
   }, [userId]);
 
-  // Calculate Total Days
+  // Function to calculate the number of days between two dates
   const calculateDays = (fromDate, toDate) => {
     const start = new Date(fromDate);
     const end = new Date(toDate);
     const diffTime = Math.abs(end - start);
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Add 1 to include the start day
   };
 
-  // Format Date
+  // Function to format date into a readable format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    return date.toLocaleDateString(); // This will return a readable format like "1/6/2025"
   };
 
-  // Get Status Styling
-  const getStatusStyle = (status) => {
-    if (status === true) return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
-    if (status === false) return "bg-[#f5e6e6] text-[#d62525] border-[#d62525]";
-    return "bg-[#f5efe6] text-[#ffae00] border-[#ffae00]";
-  };
-
-  // Get Status Text
-  const getStatusText = (status) => {
-    if (status === true) return "Approved";
-    if (status === false) return "Rejected";
-    return "Pending";
-  };
-
-  // Filter Leaves
+  // Filter leaves based on search term and action
   const filteredLeaves = leaveHistory.filter((leave) => {
     const matchesSearch =
-      leave.leaveType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      leave.reason?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      leave.fromDate?.includes(searchTerm) ||
-      leave.toDate?.includes(searchTerm);
-
       leave.leaveType.toLowerCase().includes(searchTerm.toLowerCase()) ||
       leave.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
       leave.fromDate.includes(searchTerm) ||
       leave.toDate.includes(searchTerm);
 
     const matchesAction =
-      action === "" ||
-      (action === "pending" && leave.acceptRejectFlag === null) ||
-      (action === "accepted" && leave.acceptRejectFlag === true) ||
-      (action === "rejected" && leave.acceptRejectFlag === false);
       action === "" || // If no action is selected, include all
       (action === "accepted" && leave.acceptRejectFlag === true) ||
       (action === "rejected" && leave.acceptRejectFlag === false) ||
@@ -123,56 +94,19 @@ const LeaveManagementDashboard = () => {
           showChevron={true}
         />
 
-        <div className="w-full bg-white p-16">
-          {/* Header Section */}
-          <div className="border-b border-black/20 pb-16 mb-14">
-            <div className="flex justify-between items-center mb-12">
-              <div>
-                <span className="text-[#5c606a] text-2xl font-medium">Welcome back, </span>
-                <span className="text-[#534feb] text-2xl font-medium">Aditya</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-[#848892] text-2xl font-medium">
-                  {currentDateTime.day},{" "}
-                </span>
-                <span className="text-[#848892] text-2xl font-medium">
-                  {currentDateTime.time}
-                </span>
-              </div>
-            </div>
+        {/* My Leaves Content */}
+        <section className="bg-white p-[1.667vw] rounded-[0.417vw] shadow relative mt-[1.667vw]">
+          {/* Welcome Message */}
+          <div className="flex justify-between items-center mb-[0.833vw]">
+            <p className="text-gray-600 text-[0.938vw]">
+              Welcome back,{" "}
+              <span className="text-blue-500 font-semibold">Aditya</span>
+            </p>
+            <p className="text-blue-500 font-medium">
+              {currentDateTime.day}, {currentDateTime.time}
+            </p>
+          </div>
 
-            {/* Search and Filter Section */}
-            <div className="flex gap-6 mb-12">
-              <div className="flex-1 max-w-md">
-                <div className="flex items-center px-6 py-4 border border-black/20 rounded-xl shadow-sm">
-                  <Search className="w-5 h-5 text-gray-400 mr-2" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search by Date, Time, Status..."
-                    className="w-full text-base font-light focus:outline-none"
-                  />
-                </div>
-              </div>
-              <select
-                className="px-6 py-4 border border-black/20 rounded-xl shadow-sm"
-                value={action}
-                onChange={(e) => setAction(e.target.value)}
-              >
-                <option value="">Action</option>
-                <option value="pending">Pending</option>
-                <option value="accepted">Accepted</option>
-                <option value="rejected">Rejected</option>
-              </select>
-              <button className="px-6 py-4 border border-black/20 rounded-xl shadow-sm flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span>{currentDateTime.date}</span>
-              </button>
-              <button className="px-6 py-4 border border-black/20 rounded-xl shadow-sm flex items-center gap-2">
-                <Download className="w-5 h-5" />
-                <span>Export CSV</span>
-              </button>
           {/* Date */}
           <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
@@ -200,52 +134,12 @@ const LeaveManagementDashboard = () => {
               <Calendar size={20} className="text-gray-400" />
               <span>13 Jan, 2024</span>
             </div>
+            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
+              <Download size={20} />
+              Export CSV
+            </button>
           </div>
 
-          {/* Leave Applications Table */}
-          <div>
-            <h2 className="text-[#5c606a] text-2xl font-medium mb-6">
-              Last Applied
-            </h2>
-            <div className="border-b border-black/20">
-              <div className="grid grid-cols-6 gap-2 mb-3">
-                {["From Date", "To Date", "No. of Days", "Leave Type", "Reason", "Status"].map(
-                  (header) => (
-                    <div
-                      key={header}
-                      className="bg-neutral-100 px-6 py-[22px] rounded-lg text-[#5c606a] text-2xl font-medium"
-                    >
-                      {header}
-                    </div>
-                  )
-                )}
-              </div>
-
-              {loading ? (
-                <div className="text-center py-8">Loading...</div>
-              ) : (
-                filteredLeaves.map((leave, index) => (
-                  <div
-                    key={leave.id || index}
-                    className="grid grid-cols-6 gap-2 border-b border-black/20 py-4"
-                  >
-                    <div className="px-4 text-2xl font-light">{formatDate(leave.fromDate)}</div>
-                    <div className="px-4 text-2xl font-light">{formatDate(leave.toDate)}</div>
-                    <div className="px-4 text-2xl font-light">{calculateDays(leave.fromDate, leave.toDate)}</div>
-                    <div className="px-4 text-2xl font-light">{leave.leaveType}</div>
-                    <div className="px-4 text-2xl font-light">{leave.reason}</div>
-                    <div className="px-4">
-                      <span
-                        className={`px-3 py-1 rounded-lg border ${getStatusStyle(
-                          leave.acceptRejectFlag
-                        )} text-2xl font-light`}
-                      >
-                        {getStatusText(leave.acceptRejectFlag)}
-                      </span>
-                    </div>
-                  </div>
-                ))
-              )}
           {/* Leave History */}
           <div className="bg-gray-50 p-[1.25vw] rounded-[0.417vw] shadow-sm">
             <h3 className="text-[0.938vw] font-semibold text-gray-800 mb-[0.833vw]">Leave History</h3>
@@ -292,10 +186,10 @@ const LeaveManagementDashboard = () => {
               </table>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
 };
 
-export default LeaveManagementDashboard;
+export default MyLeaves;
