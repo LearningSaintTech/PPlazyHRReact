@@ -488,8 +488,8 @@ export const updateReimbursementStatus = async (reimbursementId, status, userRol
 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/api/reimbursements/update-status?ticketId=${reimbursementId}&status=${status}`, // Send as query parameters
-      method: "POST",
+      url: `${API_BASE_URL}/api/reimbursements/update-status?reimbursementId=${reimbursementId}&status=${status}&userRole=${userRole}`, // Correct query params
+      method: "POST",  // POST method
     });
 
     // Handle the success response
@@ -501,6 +501,7 @@ export const updateReimbursementStatus = async (reimbursementId, status, userRol
     throw error;
   }
 };
+
 
 
 export const showCharts = async () => {
