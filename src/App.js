@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import UserHome from './user/pages/UserHome';
 import UserProfile from './user/pages/UserProfile';
-import UserAttendance from './user/pages/UserAttendance'; 
+import UserAttendance from './user/pages/UserAttendance';
 import TicketQuery from './user/pages/TicketQuery';
 import Reimbursement from './user/pages/Reimbursement';
 import Leave from './user/pages/ApplyLeave';
@@ -28,44 +28,213 @@ import TaskGraph from './admin/pages/TaskGraph';
 import AdminPerformance from './admin/pages/AdminPerformance';
 import Dummy from './user/pages/Dummy';
 import AdminSalarySlips from './admin/pages/AdminSalarySlips';
+import ProtectedRoute from './commonComponent/ProtectedRoute';
 
 function App() {
     return (
-            <Routes>
-                {/* Define the routes */}
-                <Route path="/" element={<Login />} />
-                <Route path="/create-account" element={<SignUp />} />
-                <Route path="/SignupForm" element={<SignupForm/>}/>
-                <Route path="/user/home" element={<UserHome />} />
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/attendance" element={<UserAttendance />} />
-                <Route path="/ticket/query" element={<TicketQuery />} /> 
-                <Route path="/ticket/reimbursement" element={<Reimbursement />} />
-                <Route path="/leave/apply" element={<Leave />} />
-                <Route path="/leave/my-leaves" element={<Wow />} />
-                <Route path="/payroll" element={<Payroll />} />
-                <Route path="/setting/changepassword" element={<ChangePassword />} />
-                <Route path="/task-management" element={<UserTaskManagement />} />
-                <Route path="/dummy" element={<Dummy />} />
+        <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/create-account" element={<SignUp />} />
+            <Route path="/SignupForm" element={<SignupForm />} />
 
+            <Route
+                path="/user/home"
+                element={
+                    <ProtectedRoute>
+                        <UserHome />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/profile"
+                element={
+                    <ProtectedRoute>
+                        <UserProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/attendance"
+                element={
+                    <ProtectedRoute>
+                        <UserAttendance />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/ticket/query"
+                element={
+                    <ProtectedRoute>
+                        <TicketQuery />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/ticket/reimbursement"
+                element={
+                    <ProtectedRoute>
+                        <Reimbursement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/leave/apply"
+                element={
+                    <ProtectedRoute>
+                        <Leave />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/leave/my-leaves"
+                element={
+                    <ProtectedRoute>
+                        <Wow />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/payroll"
+                element={
+                    <ProtectedRoute>
+                        <Payroll />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/setting/changepassword"
+                element={
+                    <ProtectedRoute>
+                        <ChangePassword />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/task-management"
+                element={
+                    <ProtectedRoute>
+                        <UserTaskManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/dummy"
+                element={
+                    <ProtectedRoute>
+                        <Dummy />
+                    </ProtectedRoute>
+                }
+            />
 
-
-                <Route path="/admin/home" element={<AdminHome />} />
-                <Route path="/admin/employees" element={<Employee />} />
-                <Route path="/admin/attendance" element={<AdminAttendance />} />
-                <Route path="/admin/task-management" element={<AdminTaskManagement />} />
-                <Route path="/admin/tickets/query" element={<AdminTicketQuery />} />
-                <Route path="/admin/tickets/reimbursement" element={<AdminReimbursement />} />
-                <Route path="/admin/leaves/apply" element={<Adminleaves />} />
-                <Route path="/admin/management" element={<AdminManagement />} />
-                <Route path="/admin/create-event" element={<AdminCreateEvents />} />
-                <Route path="/admin/payroll" element={<AdminPayroll />} />
-                <Route path="/admin/payroll/salary-slip" element={<AdminSalarySlips />} />
-
-                <Route path="/admin/graphs" element={<TaskGraph />} />
-                <Route path="/admin/performance-tracking" element={<AdminPerformance />} />
-            </Routes>
+            {/* Admin Routes */}
+            <Route
+                path="/admin/home"
+                element={
+                    <ProtectedRoute>
+                        <AdminHome />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/employees"
+                element={
+                    <ProtectedRoute>
+                        <Employee />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/attendance"
+                element={
+                    <ProtectedRoute>
+                        <AdminAttendance />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/task-management"
+                element={
+                    <ProtectedRoute>
+                        <AdminTaskManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/tickets/query"
+                element={
+                    <ProtectedRoute>
+                        <AdminTicketQuery />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/tickets/reimbursement"
+                element={
+                    <ProtectedRoute>
+                        <AdminReimbursement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/leaves/apply"
+                element={
+                    <ProtectedRoute>
+                        <Adminleaves />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/management"
+                element={
+                    <ProtectedRoute>
+                        <AdminManagement />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/create-event"
+                element={
+                    <ProtectedRoute>
+                        <AdminCreateEvents />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/payroll"
+                element={
+                    <ProtectedRoute>
+                        <AdminPayroll />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/payroll/salary-slip"
+                element={
+                    <ProtectedRoute>
+                        <AdminSalarySlips />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/graphs"
+                element={
+                    <ProtectedRoute>
+                        <TaskGraph />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/admin/performance-tracking"
+                element={
+                    <ProtectedRoute>
+                        <AdminPerformance />
+                    </ProtectedRoute>
+                }
+            />
+        </Routes>
     );
 }
 
 export default App;
+
+
