@@ -209,7 +209,7 @@ export async function createReimbursement(reimbursementData) {
 
   try {
     const response = await request({
-      url: `http://192.168.0.125:8080/api/reimbursements/create`,
+      url: `http://192.168.0.132:8080/api/reimbursements/create`,
       ...options,
     });
 
@@ -255,7 +255,7 @@ export async function createTicket(ticketData) {
 
   try {
     const response = await request({
-      url: `http://192.168.0.125:8080/api/tickets/create`,
+      url: `http://192.168.0.132:8080/api/tickets/create`,
       ...options,
     });
 
@@ -278,7 +278,7 @@ export const applyLeaveAPI = (leaveDetails) => {
 
   const requestBody = JSON.stringify(leaveDetails);
 
-  return fetch(`http://192.168.0.125:8080/api/leaves/apply-leave`, {
+  return fetch(`http://192.168.0.132:8080/api/leaves/apply-leave`, {
     method: "POST",
     headers: headers,
     body: requestBody,
@@ -306,7 +306,7 @@ export async function getLeaves(userId) {
   console.log("Fetching leaves for user:", userId);
 
   return request({
-    url: `http://192.168.0.125:8080/api/leaves/my-leaves/${userId}`,
+    url: `http://192.168.0.132:8080/api/leaves/my-leaves/${userId}`,
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
@@ -325,7 +325,7 @@ export async function getLeaves(userId) {
 export const clockInAPI = async (userId) => {
   try {
     const response = await request({
-      url: `http://192.168.0.125:8080/api/clockings/clock-in/${userId}`,
+      url: `http://192.168.0.132:8080/api/clockings/clock-in/${userId}`,
       method: "POST",
     });
     return response;
@@ -338,7 +338,7 @@ export const clockInAPI = async (userId) => {
 export const clockOutAPI = async (clockingId) => {
   try {
     const response = await request({
-      url: `http://192.168.0.125:8080/api/clockings/clock-out/${clockingId}`,
+      url: `http://192.168.0.132:8080/api/clockings/clock-out/${clockingId}`,
       method: "POST",
     });
     return response;
@@ -499,6 +499,44 @@ export const fetchPieData = async () => {
   try {
     const response = await request({
       url: `${API_BASE_URL}/user/tasks/statusCounts`, // Send as query parameters
+      method: "GET",
+    });
+
+    // Handle the success response
+    console.log("chart  updated successfully:", response);
+    return response;
+  } catch (error) {
+    // Handle error response
+    console.error("Error updating ticket status:", error);
+    throw error;
+  }
+};
+
+export const fetchBarData = async (userId) => {
+  console.log("inside fetchBarData");
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/user/tasks/performance/${userId}`, 
+      method: "GET",
+    });
+
+    // Handle the success response
+    console.log("chart  updated successfully:", response);
+    return response;
+  } catch (error) {
+    // Handle error response
+    console.error("Error updating ticket status:", error);
+    throw error;
+  }
+};
+
+export const fetchDoughnutData = async (userId) => {
+  console.log("inside fetchDoughnutData");
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/user/tasks/statusCounts/${userId}`, 
       method: "GET",
     });
 

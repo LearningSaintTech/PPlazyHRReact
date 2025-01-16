@@ -38,6 +38,9 @@ const Dashboard = () => {
         period: "AM"
     });
 
+    // Calendar state
+    const [currentDate, setCurrentDate] = useState(new Date());
+
     // Update current time
     useEffect(() => {
         const interval = setInterval(() => {
@@ -143,6 +146,57 @@ const Dashboard = () => {
             .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
 
+    // Calendar navigation functions
+    const nextMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    };
+
+    const prevMonth = () => {
+        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    };
+
+    // Calendar helper functions
+    const getDaysInMonth = (date) => {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    };
+
+    const getFirstDayOfMonth = (date) => {
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        return firstDay === 0 ? 6 : firstDay - 1; // Adjust for Monday start
+    };
+
+    // Generate calendar days
+    const generateCalendarDays = () => {
+        const daysInMonth = getDaysInMonth(currentDate);
+        const firstDay = getFirstDayOfMonth(currentDate);
+        const days = [];
+
+        // Add empty cells for days before the first day of the month
+        for (let i = 0; i < firstDay; i++) {
+            days.push("");
+        }
+
+        // Add the days of the month
+        for (let i = 1; i <= daysInMonth; i++) {
+            days.push(i);
+        }
+
+        return days;
+    };
+
+    // Format month and year
+    const formatMonthYear = (date) => {
+        return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    };
+
+    // Check if a date is today
+    const isToday = (day) => {
+        const today = new Date();
+        return day === today.getDate() &&
+            currentDate.getMonth() === today.getMonth() &&
+            currentDate.getFullYear() === today.getFullYear();
+    };
+
     const dashboardData = {
         name: "Aditya",
         absenceData: {
@@ -155,13 +209,13 @@ const Dashboard = () => {
             year: "2024"
         }
     };
-
     return (
         <div className="flex h-screen bg-white">
             <UserSidebar />
             <div className="flex-1 pl-[16vw]">
                 <UserHeader />
                 <div className="w-full min-h-screen bg-white p-[1.25vw]">
+                    {/* Header Section */}
                     <div className="flex justify-between items-center mb-[1.667vw]">
                         <div>
                             <span className="text-gray-600 text-[1.25vw] font-medium">Welcome back, </span>
@@ -175,9 +229,11 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-[1.25vw]">
+                    {/* Action Cards Section */}
+                    <div className="grid grid-cols-3 gap-[1.25vw] ">
+                        {/* Clock In Card */}
                         <div
-                            className={`flex items-center bg-indigo-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer`}
+                            className="flex items-center bg-indigo-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer"
                             onClick={() => handleClockIn(false)}
                         >
                             <div>
@@ -187,8 +243,9 @@ const Dashboard = () => {
                             <div className="w-[1.667vw] h-[1.667vw] rotate-90 bg-transparent" />
                         </div>
 
+                        {/* Clock Out Card */}
                         <div
-                            className={`flex items-center bg-green-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer`}
+                            className="flex items-center bg-green-600 text-white rounded-[0.833vw] p-[1.25vw] justify-between h-[5vw] cursor-pointer"
                             onClick={() => handleClockOut(false)}
                         >
                             <div>
@@ -198,7 +255,7 @@ const Dashboard = () => {
                             <div className="w-[1.667vw] h-[1.667vw] -rotate-90 bg-transparent" />
                         </div>
 
-
+                        {/* Working Hours Card */}
                         <div className="bg-gray-100 rounded-[0.833vw] flex flex-col items-center justify-center h-[5vw]">
                             <div className="bg-white shadow-sm border rounded-[0.417vw] px-[0.833vw] py-[0.417vw] mb-[0.417vw]">
                                 <h3 className="text-gray-600 text-[0.938vw] font-medium">Working Hours</h3>
@@ -206,6 +263,7 @@ const Dashboard = () => {
                             <p className="text-black text-[1.875vw] font-medium">{formatTime(timer)}</p>
                         </div>
 
+                        {/* Absence Card */}
                         <div className="flex items-center bg-red-600 text-white rounded-[0.833vw] p-[1.25vw] mb-[1.25vw] justify-between h-[5vw]">
                             <div>
                                 <h3 className="text-[1.25vw] font-medium">Total Absent</h3>
@@ -217,9 +275,10 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-
+                    {/* Events and Calendar Section */}
                     <div className="grid grid-cols-2 gap-[1.25vw]">
-                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[26.042vw]">
+                        {/* Events Panel */}
+                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[27.042vw]">
                             <div className="h-[2.5vw] px-[0.833vw] py-[0.625vw] bg-white rounded-[0.417vw] shadow-sm border mb-[0.833vw]">
                                 <div className="text-gray-600 text-[0.938vw] font-medium">Events</div>
                             </div>
@@ -232,23 +291,34 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[26.042vw]">
+                        {/* Calendar Panel */}
+                        <div className="bg-gray-100 rounded-[0.833vw] p-[0.833vw] h-[27.042vw]">
                             <div className="h-[2.5vw] px-[0.833vw] py-[0.625vw] bg-white rounded-[0.417vw] shadow-sm border mb-[0.833vw]">
                                 <div className="text-gray-600 text-[0.938vw] font-medium">Calendar</div>
                             </div>
                             <div className="bg-white rounded-[0.417vw] p-[1.25vw]">
+                                {/* Calendar Header */}
                                 <div className="flex justify-between items-center mb-[1.25vw]">
-                                    <div className="text-black text-[1.25vw] font-bold">{`${dashboardData.calendar.month} ${dashboardData.calendar.year}`}</div>
+                                    <div className="text-black text-[1.25vw] font-bold">
+                                        {formatMonthYear(currentDate)}
+                                    </div>
                                     <div className="flex gap-[0.417vw]">
-                                        <button className="p-[0.417vw] hover:bg-gray-100 rounded-full">
+                                        <button
+                                            onClick={prevMonth}
+                                            className="p-[0.417vw] hover:bg-gray-100 rounded-full"
+                                        >
                                             <div className="w-[0.833vw] h-[0.833vw] bg-gray-400 rounded-full" />
                                         </button>
-                                        <button className="p-[0.417vw] hover:bg-gray-100 rounded-full transform rotate-180">
+                                        <button
+                                            onClick={nextMonth}
+                                            className="p-[0.417vw] hover:bg-gray-100 rounded-full transform rotate-180"
+                                        >
                                             <div className="w-[0.833vw] h-[0.833vw] bg-gray-400 rounded-full" />
                                         </button>
                                     </div>
                                 </div>
 
+                                {/* Calendar Days Header */}
                                 <div className="grid grid-cols-7 gap-[0.833vw] mb-[0.833vw]">
                                     {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((day) => (
                                         <div key={day} className="text-center text-black text-[0.729vw] font-medium">
@@ -257,16 +327,19 @@ const Dashboard = () => {
                                     ))}
                                 </div>
 
-                                <div className="grid grid-cols-7 gap-[0.417vw]">
-                                    {Array.from({ length: 31 }, (_, i) => (i + 1).toString()).map((date) => (
+                                {/* Calendar Days Grid */}
+                                <div className="grid grid-cols-7">
+                                    {generateCalendarDays().map((day, index) => (
                                         <div
-                                            key={date}
-                                            className={`h-10 flex justify-center items-center ${date === ''
-                                                ? 'bg-indigo-600 text-white rounded-[0.417vw]'
-                                                : 'hover:bg-gray-50 rounded-[0.417vw]'
-                                                }`}
+                                            key={index}
+                                            className={`h-[2.8vw] flex justify-center border border-[#d4d3df] items-center ${isToday(day)
+                                                    ? 'bg-indigo-600 text-white'
+                                                    : day
+                                                        ? 'hover:bg-gray-50'
+                                                        : ''
+                                                } `}
                                         >
-                                            <span className="text-sm">{date}</span>
+                                            <span className="text-[0.729vw]">{day}</span>
                                         </div>
                                     ))}
                                 </div>
