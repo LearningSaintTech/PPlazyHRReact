@@ -44,6 +44,7 @@ const Login = () => {
             localStorage.setItem(USER_DATA, JSON.stringify(userData));
             dispatch(setUser(userData));
 
+
             if (userData.roles.some(role => role.name === 'ADMIN')) {
                 navigate('/admin/home');
             } else if (userData.roles.some(role => role.name === 'USER')) {

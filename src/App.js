@@ -26,9 +26,8 @@ import SignupForm from './authcomponent/SignupForm';
 import AdminPayroll from './admin/pages/AdminPayroll';
 import TaskGraph from './admin/pages/TaskGraph';
 import AdminPerformance from './admin/pages/AdminPerformance';
-import Dummy from './user/pages/Dummy';
 import AdminSalarySlips from './admin/pages/AdminSalarySlips';
-import ProtectedRoute from './commonComponent/ProtectedRoute';
+import ProtectedRoute from './commonComponent/RoleProtectedRoute';
 
 function App() {
     return (
@@ -37,200 +36,37 @@ function App() {
             <Route path="/create-account" element={<SignUp />} />
             <Route path="/SignupForm" element={<SignupForm />} />
 
-            <Route
-                path="/user/home"
-                element={
-                    <ProtectedRoute>
-                        <UserHome />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/profile"
-                element={
-                    <ProtectedRoute>
-                        <UserProfile />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/attendance"
-                element={
-                    <ProtectedRoute>
-                        <UserAttendance />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/ticket/query"
-                element={
-                    <ProtectedRoute>
-                        <TicketQuery />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/ticket/reimbursement"
-                element={
-                    <ProtectedRoute>
-                        <Reimbursement />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/leave/apply"
-                element={
-                    <ProtectedRoute>
-                        <Leave />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/leave/my-leaves"
-                element={
-                    <ProtectedRoute>
-                        <Wow />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/payroll"
-                element={
-                    <ProtectedRoute>
-                        <Payroll />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/setting/changepassword"
-                element={
-                    <ProtectedRoute>
-                        <ChangePassword />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/task-management"
-                element={
-                    <ProtectedRoute>
-                        <UserTaskManagement />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/dummy"
-                element={
-                    <ProtectedRoute>
-                        <Dummy />
-                    </ProtectedRoute>
-                }
-            />
 
-            {/* Admin Routes */}
-            <Route
-                path="/admin/home"
-                element={
-                    <ProtectedRoute>
-                        <AdminHome />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/employees"
-                element={
-                    <ProtectedRoute>
-                        <Employee />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/attendance"
-                element={
-                    <ProtectedRoute>
-                        <AdminAttendance />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/task-management"
-                element={
-                    <ProtectedRoute>
-                        <AdminTaskManagement />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/tickets/query"
-                element={
-                    <ProtectedRoute>
-                        <AdminTicketQuery />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/tickets/reimbursement"
-                element={
-                    <ProtectedRoute>
-                        <AdminReimbursement />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/leaves/apply"
-                element={
-                    <ProtectedRoute>
-                        <Adminleaves />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/management"
-                element={
-                    <ProtectedRoute>
-                        <AdminManagement />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/create-event"
-                element={
-                    <ProtectedRoute>
-                        <AdminCreateEvents />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/payroll"
-                element={
-                    <ProtectedRoute>
-                        <AdminPayroll />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/payroll/salary-slip"
-                element={
-                    <ProtectedRoute>
-                        <AdminSalarySlips />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/graphs"
-                element={
-                    <ProtectedRoute>
-                        <TaskGraph />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/admin/performance-tracking"
-                element={
-                    <ProtectedRoute>
-                        <AdminPerformance />
-                    </ProtectedRoute>
-                }
-            />
+
+            <Route path="/user/home" element={<ProtectedRoute allowedRoles={['USER']}><UserHome /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute allowedRoles={['USER']}><UserProfile /></ProtectedRoute>} />
+            <Route path="/attendance" element={<ProtectedRoute allowedRoles={['USER']}><UserAttendance /></ProtectedRoute>} />
+            <Route path="/ticket/query" element={<ProtectedRoute allowedRoles={['USER']}><TicketQuery /></ProtectedRoute>} />
+            <Route path="/ticket/reimbursement" element={<ProtectedRoute allowedRoles={['USER']}><Reimbursement /></ProtectedRoute>} />
+            <Route path="/leave/apply" element={<ProtectedRoute allowedRoles={['USER']}><Leave /></ProtectedRoute>} />
+            <Route path="/leave/my-leaves" element={<ProtectedRoute allowedRoles={['USER']}><Wow /></ProtectedRoute>} />
+            <Route path="/payroll" element={<ProtectedRoute allowedRoles={['USER']}><Payroll /></ProtectedRoute>} />
+            <Route path="/setting/changepassword" element={<ProtectedRoute allowedRoles={['USER']}><ChangePassword /></ProtectedRoute>} />
+            <Route path="/task-management" element={<ProtectedRoute allowedRoles={['USER']}><UserTaskManagement /></ProtectedRoute>} />
+
+
+
+
+
+            <Route path="/admin/home" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminHome /></ProtectedRoute>} />
+            <Route path="/admin/employees" element={<ProtectedRoute allowedRoles={['ADMIN']}><Employee /></ProtectedRoute>} />
+            <Route path="/admin/attendance" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminAttendance /></ProtectedRoute>} />
+            <Route path="/admin/task-management" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminTaskManagement /></ProtectedRoute>} />
+            <Route path="/admin/tickets/query" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminTicketQuery /></ProtectedRoute>} />
+            <Route path="/admin/tickets/reimbursement" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminReimbursement /></ProtectedRoute>} />
+            <Route path="/admin/leaves/apply" element={<ProtectedRoute allowedRoles={['ADMIN']}><Adminleaves /></ProtectedRoute>} />
+            <Route path="/admin/management" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminManagement /></ProtectedRoute>} />
+            <Route path="/admin/create-event" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminCreateEvents /></ProtectedRoute>} />
+            <Route path="/admin/payroll" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminPayroll /></ProtectedRoute>} />
+            <Route path="/admin/payroll/salary-slip" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminSalarySlips /></ProtectedRoute>} />
+            <Route path="/admin/graphs" element={<ProtectedRoute allowedRoles={['ADMIN']}><TaskGraph /></ProtectedRoute>} />
+            <Route path="/admin/performance-tracking" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminPerformance /></ProtectedRoute>} />
+
         </Routes>
     );
 }

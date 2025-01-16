@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     token: null,
     user:  null,
+    role: null, 
+
 };
 
 const authSlice = createSlice({
@@ -12,12 +14,16 @@ const authSlice = createSlice({
         setToken(state, action) {
             state.token = action.payload;
             console.log("inside the set token", state.token);
-            // localStorage.setItem("ACCESS_TOKEN", JSON.stringify(action.payload));
         },
         setUser(state, action) {
             state.user = action.payload;
+            console.log("action.payload",action.payload.roles[0].name)
+            state.role = action.payload.roles[0].name; 
+
             console.log("inside the set user", state.user);
-            // localStorage.setItem("USER_DATA", JSON.stringify(action.payload));
+            console.log("inside the set role", state.role);
+
+
         },
         logout(state) {
             state.token = null;
