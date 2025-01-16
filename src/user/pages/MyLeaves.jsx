@@ -89,14 +89,24 @@ const LeaveManagementDashboard = () => {
       leave.fromDate?.includes(searchTerm) ||
       leave.toDate?.includes(searchTerm);
 
+      leave.leaveType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      leave.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      leave.fromDate.includes(searchTerm) ||
+      leave.toDate.includes(searchTerm);
+
     const matchesAction =
       action === "" ||
       (action === "pending" && leave.acceptRejectFlag === null) ||
       (action === "accepted" && leave.acceptRejectFlag === true) ||
       (action === "rejected" && leave.acceptRejectFlag === false);
+      action === "" || // If no action is selected, include all
+      (action === "accepted" && leave.acceptRejectFlag === true) ||
+      (action === "rejected" && leave.acceptRejectFlag === false) ||
+      (action === "pending" && leave.acceptRejectFlag == null); // Handle pending status
 
     return matchesSearch && matchesAction;
   });
+
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
@@ -163,6 +173,32 @@ const LeaveManagementDashboard = () => {
                 <Download className="w-5 h-5" />
                 <span>Export CSV</span>
               </button>
+          {/* Date */}
+          <div className="flex gap-[0.833vw] mb-[1.667vw]">
+            <div className="relative flex-1">
+              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search by Name, ID, status..."
+                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)} // Handle search term change
+              />
+            </div>
+            <select
+              className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+              value={action}
+              onChange={(e) => setAction(e.target.value)}
+            >
+              <option value="">Action</option>
+              <option value="pending">Pending</option>
+              <option value="accepted">Accepted</option>
+              <option value="rejected">Rejected</option>
+            </select>
+
+            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
+              <Calendar size={20} className="text-gray-400" />
+              <span>13 Jan, 2024</span>
             </div>
           </div>
 
@@ -210,6 +246,50 @@ const LeaveManagementDashboard = () => {
                   </div>
                 ))
               )}
+          {/* Leave History */}
+          <div className="bg-gray-50 p-[1.25vw] rounded-[0.417vw] shadow-sm">
+            <h3 className="text-[0.938vw] font-semibold text-gray-800 mb-[0.833vw]">Leave History</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full table-auto">
+                <thead>
+                  <tr className="bg-gray-100 text-gray-500 text-left">
+                    <th className="px-[0.833vw] py-[0.417vw]">From Date</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">To Date</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">No. of Days</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Leave Type</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Reason</th>
+                    <th className="px-[0.833vw] py-[0.417vw]">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* Map over the filtered leaveHistory state to display data */}
+                  {filteredLeaves.map((leave, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.fromDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{formatDate(leave.toDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{calculateDays(leave.fromDate, leave.toDate)}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{leave.leaveType}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">{leave.reason}</td>
+                      <td className="px-[0.833vw] py-[0.417vw]">
+                        {leave.acceptRejectFlag === null ? (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5efe6] rounded-[0.417vw] border border-[#ffae00] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#ffae00] text-2xl  font-normal leading-normal">Pending</div>
+                          </div>
+                        ) : leave.acceptRejectFlag ? (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw]  py-[0.208vw] bg-[#e6f5ee] rounded-[0.417vw] border border-[#069855] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#069855] text-2xl  font-normal  leading-normal">Accepted</div>
+                          </div>
+                        ) : (
+                          <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5e6e6] rounded-[0.417vw] border border-[#d62525] justify-start items-center gap-[0.521vw] inline-flex">
+                            <div className="text-[#d62525] text-2xl font-normal leading-normal">Rejected</div>
+                          </div>
+                        )}
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

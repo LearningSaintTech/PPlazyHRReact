@@ -71,18 +71,29 @@ const ApplyLeave = () => {
 
     const handleStatusChange = async (index, status) => {
         const updatedLeaves = [...leaveHistory];
-        updatedLeaves[index].acceptRejectFlag = status;
+        let newStatus;
+
+        if (status === 'accepted') {
+            newStatus = true;
+        } else if (status === 'rejected') {
+            newStatus = false;
+        } else {
+            newStatus = null;
+        }
+
+        updatedLeaves[index].acceptRejectFlag = newStatus;
         setLeaveHistory(updatedLeaves);
 
         try {
             // Call the API to update the status
             const leaveId = updatedLeaves[index].id; // Ensure 'id' exists in your leave data
-            const response = await updateLeaveStatus(leaveId, status);
+            const response = await updateLeaveStatus(leaveId, newStatus);
             console.log("Leave status updated:", response);
         } catch (error) {
             console.error("Error updating leave status:", error);
         }
     };
+
 
     const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -183,13 +194,20 @@ const ApplyLeave = () => {
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">
                                                 <select
                                                     className="px-[0.625vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none"
-                                                    value={leave.acceptRejectFlag === true ? 'accepted' : leave.acceptRejectFlag === false ? 'rejected' : 'pending'}
-                                                    onChange={(e) => handleStatusChange(index, e.target.value === 'accepted' ? true : e.target.value === 'rejected' ? false : null)}
+                                                    value={
+                                                        leave.acceptRejectFlag === true
+                                                            ? 'accepted'
+                                                            : leave.acceptRejectFlag === false
+                                                                ? 'rejected'
+                                                                : 'pending'
+                                                    }
+                                                    onChange={(e) => handleStatusChange(index, e.target.value)}
                                                 >
                                                     <option value="pending">Pending</option>
                                                     <option value="accepted">Accepted</option>
                                                     <option value="rejected">Rejected</option>
                                                 </select>
+
                                             </td>
                                         </tr>
                                     ))}

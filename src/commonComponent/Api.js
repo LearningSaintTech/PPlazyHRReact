@@ -209,7 +209,7 @@ export async function createReimbursement(reimbursementData) {
 
   try {
     const response = await request({
-      url: `http://192.168.0.132:8080/api/reimbursements/create`,
+      url: `${API_BASE_URL}/api/reimbursements/create`,
       ...options,
     });
 
@@ -255,7 +255,7 @@ export async function createTicket(ticketData) {
 
   try {
     const response = await request({
-      url: `http://192.168.0.132:8080/api/tickets/create`,
+      url: `${API_BASE_URL}/api/tickets/create`,
       ...options,
     });
 
@@ -278,7 +278,7 @@ export const applyLeaveAPI = (leaveDetails) => {
 
   const requestBody = JSON.stringify(leaveDetails);
 
-  return fetch(`http://192.168.0.132:8080/api/leaves/apply-leave`, {
+  return fetch(`${API_BASE_URL}/api/leaves/apply-leave`, {
     method: "POST",
     headers: headers,
     body: requestBody,
@@ -306,7 +306,7 @@ export async function getLeaves(userId) {
   console.log("Fetching leaves for user:", userId);
 
   return request({
-    url: `http://192.168.0.132:8080/api/leaves/my-leaves/${userId}`,
+    url: `${API_BASE_URL}/api/leaves/my-leaves/${userId}`,
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
@@ -325,7 +325,7 @@ export async function getLeaves(userId) {
 export const clockInAPI = async (userId) => {
   try {
     const response = await request({
-      url: `http://192.168.0.132:8080/api/clockings/clock-in/${userId}`,
+      url: `${API_BASE_URL}/api/clockings/clock-in/${userId}`,
       method: "POST",
     });
     return response;
@@ -338,7 +338,7 @@ export const clockInAPI = async (userId) => {
 export const clockOutAPI = async (clockingId) => {
   try {
     const response = await request({
-      url: `http://192.168.0.132:8080/api/clockings/clock-out/${clockingId}`,
+      url: `${API_BASE_URL}/api/clockings/clock-out/${clockingId}`,
       method: "POST",
     });
     return response;
@@ -474,6 +474,34 @@ export const updateTicketStatus = async (ticketId, status) => {
     throw error;
   }
 };
+
+export const updateReimbursementStatus = async (reimbursementId, status, userRole) => {
+  console.log("Reimbursement ID: ", reimbursementId);
+  console.log("Status: ", status);
+  console.log("User Role: ", userRole);
+
+  // Check if the user role is admin
+  if (userRole !== "admin") {
+    console.error("Unauthorized action. Only admins can update the reimbursement status.");
+    throw new Error("Unauthorized: Only admins can update the reimbursement status.");
+  }
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/api/reimbursements/update-status?ticketId=${reimbursementId}&status=${status}`, // Send as query parameters
+      method: "POST",
+    });
+
+    // Handle the success response
+    console.log("Reimbursement status updated successfully:", response);
+    return response;
+  } catch (error) {
+    // Handle error response
+    console.error("Error updating reimbursement status:", error);
+    throw error;
+  }
+};
+
 
 export const showCharts = async () => {
   console.log("inside fetchPieData");
@@ -633,7 +661,7 @@ export async function createTask(task) {
     try {
         // Make the request to the server
         const response = await request({
-            url: `http://localhost:8080/user/tasks/create`,
+            url: `${API_BASE_URL}/user/tasks/create`,
             ...options, // Spread the options to include method, body, and headers
         });
 
@@ -693,7 +721,7 @@ export const updateTaskStatus = async (taskId, status) => {
   try {
       // Make the request to the server
       const response = await request({
-          url: `http://localhost:8080/user/tasks/update/${taskId}`,
+          url: `${API_BASE_URL}/user/tasks/update/${taskId}`,
           ...options, // Spread the options to include method, body, and headers
       });
 
