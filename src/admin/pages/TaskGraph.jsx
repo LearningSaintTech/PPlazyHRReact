@@ -32,8 +32,6 @@ const TaskGraph = () => {
                 if (!response) {
                     throw new Error("Failed to fetch bar chart data");
                 }
-                console.log("response",response)
-                console.log("data",response)
                 const labels = response.map(
                     (task) => `${task.completedAtDate} - ${task.taskName}`
                 );
@@ -61,8 +59,8 @@ const TaskGraph = () => {
                             borderWidth: 1,
                         },
                     ],
-                });            })
-           
+                });
+            })
             .catch((err) => {
                 console.error("Error fetching bar chart data:", err);
                 setError(err.message);
@@ -81,16 +79,15 @@ const TaskGraph = () => {
                             label: "Task Status",
                             data: [response.COMPLETED, response.IN_PROGRESS, response.PENDING],
                             backgroundColor: [
-                                "rgba(75, 192, 192, 0.7)", // Completed: Green
-                                "rgba(255, 206, 86, 0.7)", // In-Progress: Yellow
-                                "rgba(255, 99, 132, 0.7)", // Pending: Red
+                                "rgba(75, 192, 192, 0.7)",
+                                "rgba(255, 206, 86, 0.7)",
+                                "rgba(255, 99, 132, 0.7)",
                             ],
                             borderWidth: 1,
                         },
                     ],
                 });
             })
-           
             .catch((err) => {
                 console.error("Error fetching doughnut chart data:", err);
                 setError(err.message);
@@ -98,31 +95,48 @@ const TaskGraph = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
-            <h1 className="text-3xl font-bold text-center mb-8">Dashboard Charts</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white shadow-lg rounded-lg p-4">
-                    <h2 className="text-xl font-semibold text-gray-700 mb-4">Bar Chart</h2>
+        <div className="bg-gray-100 p-[0.833vw]">
+            <h1 className="text-[1.042vw] font-bold text-center mb-[0.833vw]">Dashboard Charts</h1>
+            <div className="grid grid-rows-2 gap-[0.833vw] max-w-[46.667vw] mx-auto">
+                <div className="bg-white shadow-lg rounded-[0.417vw] p-[0.833vw]">
+                    <h2 className="text-[0.729vw] font-semibold text-gray-700 mb-[0.417vw]">Bar Chart</h2>
                     {error ? (
                         <p className="text-red-500">{error}</p>
                     ) : barData ? (
-                        <div className="chart-container">
-                            <Bar data={barData} />
+                        <div className="h-[10vw]">
+                            <Bar
+                                data={barData}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        }
+                                    }
+                                }}
+                            />
                         </div>
                     ) : (
                         <p>Loading...</p>
                     )}
                 </div>
 
-                <div className="bg-white shadow-lg rounded-lg p-4">
-                    <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                <div className="bg-white shadow-lg rounded-[0.417vw] p-[0.833vw]">
+                    <h2 className="text-[0.729vw] font-semibold text-gray-700 mb-[0.417vw]">
                         Doughnut Chart
                     </h2>
                     {error ? (
                         <p className="text-red-500">{error}</p>
                     ) : doughnutData ? (
-                        <div className="chart-container">
-                            <Doughnut data={doughnutData} />
+                        <div className="h-[10vw]">
+                            <Doughnut
+                                data={doughnutData}
+                                options={{
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }}
+                            />
                         </div>
                     ) : (
                         <p>Loading...</p>
