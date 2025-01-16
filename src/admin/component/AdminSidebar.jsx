@@ -15,6 +15,7 @@ const AdminSideBar = () => {
     const [showTicketOptions, setShowTicketOptions] = useState(false);
     const [showLeaveOptions, setShowLeaveOptions] = useState(false);
     const [showSettingOptions, setShowSettingOptions] = useState(false);
+    const [showPayrollOptions, setShowPayrollOptions] = useState(false);
     const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -105,13 +106,38 @@ const AdminSideBar = () => {
                     <span className="text-[1.042vw]">Task Management</span>
                 </Link>
 
-                <Link
-                    to="/admin/payroll"
-                    className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/payroll')}`}
-                >
-                    <FaMoneyCheckAlt className="mr-[0.625vw]" />
-                    <span className="text-[1.042vw]">Payroll</span>
-                </Link>
+                <div>
+                    <button
+                        className={`w-full flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/payroll')}`}
+                        onClick={() => setShowPayrollOptions(!showPayrollOptions)}
+                    >
+                        <FaMoneyCheckAlt className="mr-[0.625vw]" />
+                        <span className="text-[1.042vw]">Payroll</span>
+                        <div className="ml-auto">
+                            {showPayrollOptions ? (
+                                <FaChevronUp className="w-[1.042vw] h-[1.042vw]" />
+                            ) : (
+                                <FaChevronDown className="w-[1.042vw] h-[1.042vw]" />
+                            )}
+                        </div>
+                    </button>
+                    {showPayrollOptions && (
+                        <div className="ml-[1.667vw] space-y-2">
+                            <Link
+                                to="/admin/payroll"
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/payroll/information')}`}
+                            >
+                                <span className="text-[1.042vw]">Payroll Information</span>
+                            </Link>
+                            <Link
+                                to="/admin/payroll/salary-slip"
+                                className={`flex items-center p-[0.417vw] rounded-[0.313vw] ${getActiveClass('/admin/payroll/salary-slip')}`}
+                            >
+                                <span className="text-[1.042vw]">Salary Slip</span>
+                            </Link>
+                        </div>
+                    )}
+                </div>
 
                 <Link
                     to="/admin/management"

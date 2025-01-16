@@ -27,6 +27,7 @@ import AdminPayroll from './admin/pages/AdminPayroll';
 import TaskGraph from './admin/pages/TaskGraph';
 import AdminPerformance from './admin/pages/AdminPerformance';
 import Dummy from './user/pages/Dummy';
+import AdminSalarySlips from './admin/pages/AdminSalarySlips';
 
 function App() {
     return (
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/admin/management" element={<AdminManagement />} />
                 <Route path="/admin/create-event" element={<AdminCreateEvents />} />
                 <Route path="/admin/payroll" element={<AdminPayroll />} />
+                <Route path="/admin/payroll/salary-slip" element={<AdminSalarySlips />} />
 
                 <Route path="/admin/graphs" element={<TaskGraph />} />
                 <Route path="/admin/performance-tracking" element={<AdminPerformance />} />
