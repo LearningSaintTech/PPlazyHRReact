@@ -609,7 +609,7 @@ export async function createTask(task) {
   try {
     // Make the request to the server
     const response = await request({
-      url: `http://localhost:8080/user/tasks/create`,
+      url: `${API_BASE_URL}/user/tasks/create`,
       ...options, // Spread the options to include method, body, and headers
     });
 
