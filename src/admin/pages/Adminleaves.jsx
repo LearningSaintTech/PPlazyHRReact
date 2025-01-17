@@ -48,7 +48,7 @@ const ApplyLeave = () => {
     useEffect(() => {
         getAllLeaves()
             .then(response => {
-                console.log("response", response)
+                //console.log("response", response)
                 setLeaveHistory(response);
             })
             .catch(error => {
@@ -58,7 +58,7 @@ const ApplyLeave = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
+        //console.log('Form submitted:', formData);
     };
 
     const handleInputChange = (e) => {
@@ -88,7 +88,7 @@ const ApplyLeave = () => {
             // Call the API to update the status
             const leaveId = updatedLeaves[index].id; // Ensure 'id' exists in your leave data
             const response = await updateLeaveStatus(leaveId, newStatus);
-            console.log("Leave status updated:", response);
+            //console.log("Leave status updated:", response);
 
             setCurrentPage(1);
         } catch (error) {

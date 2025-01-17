@@ -3,6 +3,7 @@ import { Calendar, Download, Search } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { getLeaves } from "../../commonComponent/Api"; // Import your getLeaves function
+import { useSelector } from "react-redux";
 
 const MyLeaves = () => {
   const [currentDateTime, setCurrentDateTime] = useState({
@@ -10,12 +11,14 @@ const MyLeaves = () => {
     time: "",
     date: "",
   });
+    const user = useSelector((state) => state.auth.user);
   const [leaveHistory, setLeaveHistory] = useState([]); // State to store leave history
   const [searchTerm, setSearchTerm] = useState(""); // State to store search term
   const [action, setAction] = useState(""); // State to store selected action (Pending, Accepted, etc.)
 
-  const userId = "2"; // Replace this with actual user ID logic
-
+  const userData = localStorage.getItem('userData');
+  const parsedUserData = JSON.parse(userData);
+  const userId = parsedUserData.id; 
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
@@ -100,7 +103,7 @@ const MyLeaves = () => {
           <div className="flex justify-between items-center mb-[0.833vw]">
             <p className="text-gray-600 text-[0.938vw]">
               Welcome back,{" "}
-              <span className="text-blue-500 font-semibold">Aditya</span>
+              <span className="text-blue-500 font-semibold">{user.name}</span>
             </p>
             <p className="text-blue-500 font-medium">
               {currentDateTime.day}, {currentDateTime.time}

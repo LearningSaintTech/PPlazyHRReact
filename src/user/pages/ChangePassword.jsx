@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // For show/hide password icons
 import { X } from "lucide-react"; // For close button icon
+import { useSelector } from "react-redux";
 
 const ChangePassword = () => {
     const [showOldPassword, setShowOldPassword] = useState(false);

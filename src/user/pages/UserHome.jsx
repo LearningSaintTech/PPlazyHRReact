@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { clockInAPI, clockOutAPI } from "../../commonComponent/Api";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
+import { useSelector } from "react-redux";
 
 const CustomClock = () => {
     const [time, setTime] = useState("");
@@ -19,6 +20,7 @@ const CustomClock = () => {
 
 const Dashboard = () => {
     // State initialization with localStorage
+    
     const [isClockedIn, setIsClockedIn] = useState(() =>
         JSON.parse(localStorage.getItem("isClockedIn")) || false
     );
@@ -209,7 +211,10 @@ const Dashboard = () => {
             year: "2024"
         }
     };
+    const user = useSelector((state) => state.auth.user); // Adjust path if necessary
+    console.log("user",user)
     return (
+        
         <div className="flex h-screen bg-white">
             <UserSidebar />
             <div className="flex-1 pl-[16vw]">
@@ -219,7 +224,7 @@ const Dashboard = () => {
                     <div className="flex justify-between items-center mb-[1.667vw]">
                         <div>
                             <span className="text-gray-600 text-[1.25vw] font-medium">Welcome back, </span>
-                            <span className="text-indigo-600 text-[1.25vw] font-medium">{dashboardData.name}</span>
+                            <span className="text-indigo-600 text-[1.25vw] font-medium">{user.name}</span>
                         </div>
                         <div className="flex items-center gap-[0.208vw]">
                             <span className="text-indigo-600 text-[1.25vw] font-medium">{currentTime.day}</span>

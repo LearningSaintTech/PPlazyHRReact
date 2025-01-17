@@ -48,7 +48,7 @@ const AdminCreateEvents = () => {
             try {
                 const events = await getAllEvents();
                 setEventHistory(events);
-                console.log("events", eventHistory);
+                //console.log("events", eventHistory);
             } catch (error) {
                 console.error("Error fetching events:", error);
             }

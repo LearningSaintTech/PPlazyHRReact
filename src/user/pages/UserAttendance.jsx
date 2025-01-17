@@ -5,6 +5,7 @@ import { Search, Calendar, Download } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Make sure to import the styles
 import { getAttendanceById } from "../../commonComponent/Api"; // Assuming the API call is in the api.js file
+import { useSelector } from "react-redux";
 
 const UserAttendance = () => {
     const [attendanceData, setAttendanceData] = useState([]);
@@ -18,12 +19,12 @@ const UserAttendance = () => {
     const [statusFilter, setStatusFilter] = useState("");
     const [actionFilter, setActionFilter] = useState("");
     const [selectedDate, setSelectedDate] = useState(null); // New state for selected date
-
+  const user = useSelector((state) => state.auth.user);
     useEffect(() => {
         // Fetch attendance data from the API
         const fetchAttendanceData = async () => {
             try {
-                const userInfo = localStorage.getItem("USER_DATA");
+                const userInfo = localStorage.getItem("userData");
                 const parsedUserInfo = JSON.parse(userInfo);
                 const response = await getAttendanceById(parsedUserInfo.id); // Replace with actual user ID
                 setAttendanceData(response); // Assuming API returns data in response.data
@@ -183,7 +184,7 @@ const UserAttendance = () => {
                 <div className="p-[1.25vw] bg-white rounded-[0.417vw] shadow mt-[1.25vw]">
                     <div className="flex justify-between items-center mb-[0.625vw]">
                         <p className="text-gray-600 text-[0.938vw]">
-                            Welcome back, <span className="text-blue-500 font-semibold">Aditya</span>
+                            Welcome back, <span className="text-blue-500 font-semibold">{user.name}</span>
                         </p>
                         <p className="text-blue-500 font-medium">
                             {currentDateTime.day}, {currentDateTime.time}

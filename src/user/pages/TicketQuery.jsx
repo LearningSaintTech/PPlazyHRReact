@@ -4,6 +4,7 @@ import { Search, Calendar, Download } from "lucide-react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { getTickets } from "../../commonComponent/Api";
+import { useSelector } from "react-redux";
 
 const TicketQuery = () => {
     const [tickets, setTickets] = useState([]);
@@ -17,7 +18,7 @@ const TicketQuery = () => {
     const [statusFilter, setStatusFilter] = useState("");
     const [ticketDescription, setTicketDescription] = useState("");
     const [selectedDate, setSelectedDate] = useState(""); // New state for selected date
-    
+      const user = useSelector((state) => state.auth.user);
     const getStatusStyles = (status) => {
         switch (status) {
             case 'Open':
@@ -63,20 +64,26 @@ const TicketQuery = () => {
     });
 
     useEffect(() => {
-        const userId = 1; // Assuming the user ID is 1, replace with actual user ID
+        const userData = localStorage.getItem('userData');
+        const parsedUserData = JSON.parse(userData);
+        const userId = parsedUserData.id;  
         getTickets(userId).then((data) => setTickets(data)).catch((error) => console.error("Error fetching tickets:", error));
     }, []);
     
     const handleCreateTicket = () => {
+        const userData = localStorage.getItem('userData');
+        const parsedUserData = JSON.parse(userData);
+        const userId = parsedUserData.id; 
         const newTicket = {
+           
             title: ticketTitle,
             description: ticketDescription,
-            userId: 1, // Replace with the actual user ID
+            userId: userId, // Replace with the actual user ID
         };
 
         createTicket(newTicket)
             .then((response) => {
-                console.log("Ticket created successfully:", response);
+                //console.log("Ticket created successfully:", response);
                 setTickets((prevTickets) => [...prevTickets, response]);
                 setTicketTitle(""); 
                 setTicketDescription(""); 
@@ -127,7 +134,7 @@ const TicketQuery = () => {
                 <section className="bg-white p-[1.667vw] rounded-[0.417vw] shadow relative mt-[1.667vw]">
                     <div className="flex justify-between items-center mb-[0.833vw]">
                         <p className="text-gray-600 text-[0.938vw]">
-                            Welcome back, <span className="text-blue-500 font-semibold">Aditya</span>
+                            Welcome back, <span className="text-blue-500 font-semibold">{user.name}</span>
                         </p>
                         <p className="text-blue-500 font-medium">
                             {currentDateTime.day}, {currentDateTime.time}

@@ -19,7 +19,7 @@ const AdminPayroll = () => {
       setLoading(true);
       try {
         const response = await getAllPayroll(); 
-        console.log("response",response);
+        //console.log("response",response);
         setPayrollData(response); 
       } catch (error) {
         console.error('Error fetching payroll data:', error);
@@ -45,11 +45,11 @@ const AdminPayroll = () => {
 
     setLoading(true);
     try {
-      console.log("currentPayroll.id", currentPayroll.id);
-      console.log("currentPayroll", currentPayroll);
+      //console.log("currentPayroll.id", currentPayroll.id);
+      //console.log("currentPayroll", currentPayroll);
 
       const response = await updatePayroll(currentPayroll.id, currentPayroll);
-      console.log('Payroll updated successfully:', response);
+      //console.log('Payroll updated successfully:', response);
 
       setPayrollData((prevData) =>
         prevData.map((payroll) =>

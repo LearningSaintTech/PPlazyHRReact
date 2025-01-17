@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { Camera } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UserProfile = () => {
     const [activeTab, setActiveTab] = useState("personal");

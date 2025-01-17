@@ -155,7 +155,6 @@ const AdminSideBar = () => {
                     <span className="text-[1.042vw]">Performance Tracking</span>
                 </Link>
 
-                {/* Removed Apply Leave and My Leaves options */}
                 <Link
                     to="/admin/leaves/apply"
                     className={`flex items-center p-[0.625vw] rounded-[0.313vw] ${getActiveClass('/admin/leaves/apply')}`}

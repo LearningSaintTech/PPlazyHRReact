@@ -2,21 +2,17 @@ import { API_BASE_URL, ACCESS_TOKEN } from "./Constant";
 import request from "./ApiConnector";
 
 export function getCurrentUser() {
-  console.log("inside the getCurrentUser");
-
+ 
   if (!localStorage.getItem(ACCESS_TOKEN)) {
     return Promise.reject("No access token set.");
   }
-  console.log("inside the getCurrentUser");
-  return request({
+   return request({
     url: API_BASE_URL + "/api/users/user/me",
     method: "GET",
   });
 }
 export const verifyOtp = async (email, otp) => {
-  console.log("email,otp", email);
-  console.log("email,otp", otp);
-
+ 
   const response = await fetch(
     `${API_BASE_URL}/auth/verify-otp?email=${email}&otp=${otp}`,
     {
@@ -34,7 +30,7 @@ export const verifyOtp = async (email, otp) => {
   return response.json();
 };
 export function getPrivateMessage() {
-  console.log("getPrivateMessage");
+  //console.log("getPrivateMessage");
   return request({
     url: API_BASE_URL + "/prii",
     method: "GET",
@@ -49,12 +45,12 @@ export function login(loginRequest) {
   });
 }
 
-export function getUserProfile() {
-  return request({
-    url: API_BASE_URL + "/api/user-profile/24",
-    method: "GET",
-  });
-}
+// export function getUserProfile() {
+//   return request({
+//     url: API_BASE_URL + "/api/user-profile/24",
+//     method: "GET",
+//   });
+// }
 export function signup(signupRequest) {
   return request({
     url: API_BASE_URL + "/auth/signup",
@@ -71,7 +67,6 @@ export function signupForm(signupRequestForm) {
     return; // Optionally handle the error
   }
 
-  console.log(parsedUserData); // You can log the parsed object to inspect its contents
 
   // Use template literals to correctly insert the userId from parsedUserData
   return request({
@@ -91,7 +86,6 @@ export function getAllUsers() {
 }
 
 export function getAllRoles() {
-  console.log("getAllRoles");
   return request({
     url: API_BASE_URL + "/admin/getAllRoles",
     method: "GET",
@@ -103,7 +97,6 @@ export function updateUserRoleAndStatus(userId, newRoles, newStatus) {
   if (newRoles !== null) body.roles = newRoles; // newRoles should be an array
   if (newStatus !== null) body.status = newStatus;
 
-  console.log("body inside updateUserRoleAndStatus", body);
 
   const headers = new Headers({
     "Content-Type": "application/json",
@@ -143,7 +136,6 @@ export function updateUserRoleAndStatus(userId, newRoles, newStatus) {
 }
 
 export function getAllEmployee() {
-  console.log("getAllEmployee");
   return request({
     url: API_BASE_URL + "/employee/all",
     method: "GET",
@@ -153,14 +145,15 @@ export function getAllEmployee() {
 export function updateEmployee(employeeId, employeeDetail) {
   try {
     // Replace the fetch call with the request API connector
-    console.log("updateEmployee", employeeId);
+    console.log("employeeId",employeeId)
+    console.log("employeeId",employeeDetail)
+
     const response = request({
       url: `${API_BASE_URL}/employee/update/${employeeId}`,
       method: "PUT",
       body: JSON.stringify(employeeDetail), // Convert data to JSON
     });
 
-    console.log("Employee updated successfully");
     return response;
   } catch (error) {
     console.error("Failed to update employee:", error);
@@ -231,7 +224,7 @@ export function getTickets(userId) {
 }
 
 export async function createTicket(ticketData) {
-  console.log("createTicket", ticketData);
+  //console.log("createTicket", ticketData);
   const formData = new FormData();
 
   formData.append("title", ticketData.title);
@@ -284,7 +277,6 @@ export const applyLeaveAPI = (leaveDetails) => {
     body: requestBody,
   })
     .then((response) => {
-      console.log("response", response);
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {
         return response.json();
@@ -293,7 +285,6 @@ export const applyLeaveAPI = (leaveDetails) => {
       }
     })
     .then((data) => {
-      console.log(data);
       return data;
     })
     .catch((error) => {
@@ -303,7 +294,6 @@ export const applyLeaveAPI = (leaveDetails) => {
 };
 
 export async function getLeaves(userId) {
-  console.log("Fetching leaves for user:", userId);
 
   return request({
     url: `${API_BASE_URL}/api/leaves/my-leaves/${userId}`,
@@ -313,7 +303,6 @@ export async function getLeaves(userId) {
     },
   })
     .then((response) => {
-      console.log("Leaves fetched successfully:", response);
       return response;
     })
     .catch((error) => {
@@ -446,8 +435,8 @@ export async function updateClockingStatus(id, status) {
 }
 
 export const updateTicketStatus = async (ticketId, status) => {
-  console.log("ticketId ", ticketId);
-  console.log("status ", status);
+  //console.log("ticketId ", ticketId);
+  //console.log("status ", status);
 
   try {
     const response = await request({
@@ -456,7 +445,7 @@ export const updateTicketStatus = async (ticketId, status) => {
     });
 
     // Handle the success response
-    console.log("Ticket status updated successfully:", response);
+    //console.log("Ticket status updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -466,9 +455,9 @@ export const updateTicketStatus = async (ticketId, status) => {
 };
 
 export const updateReimbursementStatus = async (reimbursementId, status, userRole) => {
-  console.log("Reimbursement ID: ", reimbursementId);
-  console.log("Status: ", status);
-  console.log("User Role: ", userRole);
+  //console.log("Reimbursement ID: ", reimbursementId);
+  //console.log("Status: ", status);
+  //console.log("User Role: ", userRole);
 
   // Check if the user role is admin
   if (userRole !== "admin") {
@@ -483,7 +472,7 @@ export const updateReimbursementStatus = async (reimbursementId, status, userRol
     });
 
     // Handle the success response
-    console.log("Reimbursement status updated successfully:", response);
+    //console.log("Reimbursement status updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -495,7 +484,7 @@ export const updateReimbursementStatus = async (reimbursementId, status, userRol
 
 
 export const showCharts = async () => {
-  console.log("inside fetchPieData");
+  //console.log("inside fetchPieData");
 
   try {
     const response = await request({
@@ -504,7 +493,7 @@ export const showCharts = async () => {
     });
 
     // Handle the success response
-    console.log("chart  updated successfully:", response);
+    //console.log("chart  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -513,7 +502,7 @@ export const showCharts = async () => {
   }
 };
 export const fetchPieData = async () => {
-  console.log("inside fetchPieData");
+  //console.log("inside fetchPieData");
 
   try {
     const response = await request({
@@ -522,7 +511,7 @@ export const fetchPieData = async () => {
     });
 
     // Handle the success response
-    console.log("chart  updated successfully:", response);
+    //console.log("chart  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -532,7 +521,7 @@ export const fetchPieData = async () => {
 };
 
 export const fetchBarData = async (userId) => {
-  console.log("inside fetchBarData");
+  //console.log("inside fetchBarData");
 
   try {
     const response = await request({
@@ -541,7 +530,7 @@ export const fetchBarData = async (userId) => {
     });
 
     // Handle the success response
-    console.log("chart  updated successfully:", response);
+    //console.log("chart  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -551,7 +540,7 @@ export const fetchBarData = async (userId) => {
 };
 
 export const fetchDoughnutData = async (userId) => {
-  console.log("inside fetchDoughnutData");
+  //console.log("inside fetchDoughnutData");
 
   try {
     const response = await request({
@@ -560,7 +549,7 @@ export const fetchDoughnutData = async (userId) => {
     });
 
     // Handle the success response
-    console.log("chart  updated successfully:", response);
+    //console.log("chart  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -574,7 +563,7 @@ export const fetchDoughnutData = async (userId) => {
 
 
 export async function createTask(task) {
-  console.log("inside createTask", task.taskName);
+  //console.log("inside createTask", task.taskName);
 
   // Function to format the date as yyyy-MM-dd'T'HH:mm:ss
   const formatDate = (date) => {
@@ -608,7 +597,7 @@ export async function createTask(task) {
   }
 
   // Log the FormData for debugging purposes
-  console.log("formData", formData);
+  //console.log("formData", formData);
 
   // Define the request options
   const options = {
@@ -633,7 +622,7 @@ export async function createTask(task) {
   }
 }
 export const getAllTask = async () => {
-  console.log("inside getAllTask");
+  //console.log("inside getAllTask");
 
   try {
 
@@ -643,7 +632,7 @@ export const getAllTask = async () => {
     });
 
     // Handle the success response
-    console.log("task  updated successfully:", response);
+    //console.log("task  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -654,11 +643,11 @@ export const getAllTask = async () => {
 
 
 export const updateTaskStatus = async (taskId, status) => {
-  console.log("Updating task status...", status);
-  console.log("Updating task status... taskId", taskId);
+  //console.log("Updating task status...", status);
+  //console.log("Updating task status... taskId", taskId);
   const formData = new FormData();
   formData.append("status", status); // Task name
-  console.log("form data", formData)
+  //console.log("form data", formData)
 
   // Set up request headers
   const headers = new Headers();
@@ -668,7 +657,7 @@ export const updateTaskStatus = async (taskId, status) => {
   }
 
   // Log the FormData for debugging purposes
-  console.log("formData", formData);
+  //console.log("formData", formData);
 
   // Define the request options
   const options = {
@@ -680,7 +669,7 @@ export const updateTaskStatus = async (taskId, status) => {
   try {
     // Make the request to the server
     const response = await request({
-      url: `http://localhost:8080/user/tasks/update/${taskId}`,
+      url: `${API_BASE_URL}/user/tasks/update/${taskId}`,
       ...options, // Spread the options to include method, body, and headers
     });
 
@@ -695,8 +684,8 @@ export const updateTaskStatus = async (taskId, status) => {
 
 
 export async function updateLeaveStatus(id, action) {
-  console.log("id", id);
-  console.log("action", action);
+  //console.log("id", id);
+  //console.log("action", action);
 
   // Map the boolean action to 'accept' or 'reject'
   const status = action === true ? "accept" : action === false ? "reject" : "pending";
@@ -733,7 +722,7 @@ export const updateEvent = async (id, eventData) => {
 }
 
 export const getAllSalarySlips = async () => {
-  console.log("inside getAllSalarySlips");
+  //console.log("inside getAllSalarySlips");
 
   try {
 
@@ -743,7 +732,7 @@ export const getAllSalarySlips = async () => {
     });
 
     // Handle the success response
-    console.log("Salry Slip  updated successfully:", response);
+    //console.log("Salry Slip  updated successfully:", response);
     return response;
   } catch (error) {
     // Handle error response
@@ -753,12 +742,12 @@ export const getAllSalarySlips = async () => {
 };
 
 export const calculateSalarySlips = async (startDate, endDate) => {
-  console.log("Inside calculateSalarySlips");
+  //console.log("Inside calculateSalarySlips");
   const formData = new FormData();
   formData.append("startDate", startDate); // Task name
   formData.append("endDate", endDate); // Task name
 
-  console.log("endDate", endDate)
+  //console.log("endDate", endDate)
   const headers = new Headers();
   const accessToken = localStorage.getItem(ACCESS_TOKEN);
   if (accessToken) {
@@ -793,7 +782,7 @@ export function getSalarySlipByID() {
     return; // Optionally handle the error
   }
 
-  console.log(parsedUserData); // You can log the parsed object to inspect its contents
+  //console.log(parsedUserData); // You can log the parsed object to inspect its contents
 
   return request({
     // url: API_BASE_URL + "/admin/getAllUsers",
@@ -802,3 +791,23 @@ export function getSalarySlipByID() {
     method: "GET",
   });
 }
+
+export function getEmployeeProfile() {
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
+
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
+
+  console.log(parsedUserData.id); // You can log the parsed object to inspect its contents
+
+  return request({
+    // url: API_BASE_URL + "/admin/getAllUsers",
+    url: `${API_BASE_URL}/employee/${parsedUserData.id}`,
+
+    method: "GET",
+  });
+}
+

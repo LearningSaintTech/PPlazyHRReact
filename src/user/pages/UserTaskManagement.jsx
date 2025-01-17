@@ -11,6 +11,7 @@ import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { getAllTask } from "../../commonComponent/Api";
 import { updateTaskStatus } from "../../commonComponent/Api"; // Adjust the path based on your project structure
+import { useSelector } from "react-redux";
 
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -76,7 +77,7 @@ const TaskDashboard = () => {
 
       // Call the API to update the status
       await updateTaskStatus(taskId, newStatus);
-      console.log(`Task ${taskId} status updated to ${newStatus}`);
+      //console.log(`Task ${taskId} status updated to ${newStatus}`);
     } catch (error) {
       console.error(`Error updating task ${taskId} status:`, error);
     }

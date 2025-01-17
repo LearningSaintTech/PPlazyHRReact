@@ -22,9 +22,9 @@ const AdminEmployeeDashboard = () => {
       try {
         const data = await getAllEmployee(); // Fetch employee data
         setEmployeeData(data); // Set the fetched data into state
-        console.log("employee", data)
+        //console.log.log("employee", data)
       } catch (error) {
-        console.error('Error fetching employee data:', error);
+        //console.log.error('Error fetching employee data:', error);
       }
     };
     fetchEmployeeData();
@@ -116,13 +116,13 @@ const AdminEmployeeDashboard = () => {
   };
 
   const handleSave = () => {
-    console.log('Updated Employee Data:', selectedEmployee);
+    //console.log.log('Updated Employee Data:', selectedEmployee);
     updateEmployee(selectedEmployee.employeeId, selectedEmployee)
       .then(response => {
-        console.log("Employee updated successfully:", response);
+        //console.log.log("Employee updated successfully:", response);
       })
       .catch(error => {
-        console.error("Failed to update employee:", error);
+        //console.log.error("Failed to update employee:", error);
       });
     setShowPopup(false);
 

@@ -13,15 +13,15 @@ const authSlice = createSlice({
     reducers: {
         setToken(state, action) {
             state.token = action.payload;
-            console.log("inside the set token", state.token);
+            //console.log("inside the set token", state.token);
         },
         setUser(state, action) {
             state.user = action.payload;
-            console.log("action.payload",action.payload.roles[0].name)
+            //console.log("action.payload",action.payload.roles[0].name)
             state.role = action.payload.roles[0].name; 
 
-            console.log("inside the set user", state.user);
-            console.log("inside the set role", state.role);
+            //console.log("inside the set user", state.user);
+            //console.log("inside the set role", state.role);
 
 
         },
@@ -32,13 +32,13 @@ const authSlice = createSlice({
             localStorage.removeItem("userData");
             localStorage.removeItem("ACCESS_TOKEN");
             localStorage.removeItem("USER_DATA");
-            console.log("state.token ",state.token )
-            console.log("state.user ", state.user )
-            console.log("ACCESS_TOKEN ",localStorage.getItem("ACCESS_TOKEN") )
-            console.log("accessToken ",localStorage.getItem("accessToken") )
+            //console.log("state.token ",state.token )
+            //console.log("state.user ", state.user )
+            //console.log("ACCESS_TOKEN ",localStorage.getItem("ACCESS_TOKEN") )
+            //console.log("accessToken ",localStorage.getItem("accessToken") )
 
-            console.log("USER_DATA ",localStorage.getItem("USER_DATA") )
-            console.log("USER_DATA ",localStorage.getItem("userData") )
+            //console.log("USER_DATA ",localStorage.getItem("USER_DATA") )
+            //console.log("USER_DATA ",localStorage.getItem("userData") )
 
 
         },

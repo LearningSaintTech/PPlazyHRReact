@@ -3,9 +3,12 @@ import { Calendar } from 'lucide-react';
 import UserSideBar from '../components/UserSideBar';
 import UserHeader from '../components/UserHeader';
 import { applyLeaveAPI } from '../../commonComponent/Api';
+import { useSelector } from "react-redux";
 
 const LeaveApplicationForm = () => {
   // State for current date and time
+  const user = useSelector((state) => state.auth.user); // Adjust path if necessary
+  console.log("user",user)
   const [currentDateTime, setCurrentDateTime] = useState({
     day: "",
     time: "",
@@ -96,7 +99,7 @@ const LeaveApplicationForm = () => {
             <div className="flex justify-between items-center mb-[1.25vw]">
               <div className="text-[0.938vw] font-medium">
                 <span className="text-[#5c606a]">Welcome back,</span>{' '}
-                <span className="text-[#534feb]">Aditya</span>
+                <span className="text-[#534feb]">{user.name}</span>
               </div>
               <div className="flex items-center gap-[0.208vw] text-[0.938vw] font-medium">
                 <span className="text-[#848892]">{currentDateTime.day},</span>

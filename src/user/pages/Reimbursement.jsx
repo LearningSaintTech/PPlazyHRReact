@@ -3,6 +3,7 @@ import { Search, Calendar, Download } from 'lucide-react';
 import { getReimbursements, createReimbursement } from '../../commonComponent/Api';
 import UserSideBar from '../components/UserSideBar';
 import UserHeader from '../components/UserHeader';
+import { useSelector } from "react-redux";
 
 const ReimbursementForm = () => {
     // States from old design
@@ -16,7 +17,7 @@ const ReimbursementForm = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('Electronics');
-
+  const user = useSelector((state) => state.auth.user);
     // Fetch reimbursements on component mount
     const fetchReimbursements = async () => {
         setLoading(true);
@@ -51,12 +52,14 @@ const ReimbursementForm = () => {
             alert('Please select a file to upload.');
             return;
         }
-
+        const userData = localStorage.getItem('userData');
+        const parsedUserData = JSON.parse(userData);
+        const userId = parsedUserData.id;   
         const reimbursementData = {
             category,
             description,
             file: selectedFile,
-            userId: 1, // Replace with dynamic value if needed
+            userId: userId, // Replace with dynamic value if needed
         };
 
         try {
@@ -117,7 +120,7 @@ const ReimbursementForm = () => {
                         <div className="flex justify-between items-center mb-[3.333vw]">
                             <div>
                                 <span className="text-[#5c606a] text-[1.25vw] font-medium">Welcome back, </span>
-                                <span className="text-[#534feb] text-[1.25vw] font-medium">Aditya</span>
+                                <span className="text-[#534feb] text-[1.25vw] font-medium">{user.name}</span>
                             </div>
                             <div className="flex items-center gap-[0.208vw]">
                                 <div className="text-[#848892] text-[1.25vw] font-medium">

@@ -9,8 +9,7 @@ const RoleProtectedRoute = ({ children, allowedRoles }) => {
   if (!token) {
     return <Navigate to="/" replace />;
   }
-console.log("role",role)
-console.log("allowedRoles",allowedRoles)
+
 
   if (!allowedRoles.includes(role)) {
     return <Navigate to="/unauthorized" replace />;

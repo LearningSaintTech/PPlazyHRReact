@@ -17,7 +17,7 @@ const AdminPerformance = () => {
             try {
                 const data = await getAllEmployee();
                 setEmployeeData(data);
-                console.log("employee", data);
+                //console.log("employee", data);
             } catch (error) {
                 console.error('Error fetching employee data:', error);
             }

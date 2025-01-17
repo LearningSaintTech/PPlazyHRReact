@@ -90,7 +90,7 @@ const AdminTicketQuery = () => {
             setLoading(true);
             try {
                 const data = await getAllTicket();
-                console.log("data", data)
+                ////console.log("data", data)
                 setTickets(data);
             } catch (error) {
                 setError("Failed to load tickets");

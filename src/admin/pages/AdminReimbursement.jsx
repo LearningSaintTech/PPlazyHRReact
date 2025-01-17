@@ -49,7 +49,7 @@ const AdminReimbursement = () => {
         const fetchReimbursements = async () => {
             try {
                 const response = await getReimbursements(); // Call the API
-                console.log("response", response);
+                //console.log("response", response);
                 setReimbursements(response); // Assuming API returns data in 'data' field
             } catch (error) {
                 console.error("Error fetching reimbursements:", error);
@@ -104,7 +104,7 @@ const AdminReimbursement = () => {
     const currentItems = filteredTickets.slice(indexOfFirstItem, indexOfLastItem);
 
     const handleStatusChange = async (reimbursementId, newStatus) => {
-        console.log(">>>>>>>>>>>>>>>",reimbursementId)
+        //console.log(">>>>>>>>>>>>>>>",reimbursementId)
         try {
             await updateReimbursementStatus(reimbursementId, newStatus, "admin"); // Assuming the userRole is always 'admin' for this example
             setReimbursements(prevState =>

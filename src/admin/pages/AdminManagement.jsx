@@ -19,9 +19,9 @@ const AdminManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            console.log("fetchUsers");
+            //console.log("fetchUsers");
             const response = await getAllUsers();
-            console.log("response", response);
+            //console.log("response", response);
             if (Array.isArray(response)) {
                 setUsers(response);
             } else {
@@ -84,9 +84,9 @@ const AdminManagement = () => {
             )
         );
 
-        console.log("userId", userId);
-        console.log("newRoles", newRoles);
-        console.log("newStatus", newStatus);
+        //console.log("userId", userId);
+        //console.log("newRoles", newRoles);
+        //console.log("newStatus", newStatus);
 
         // Convert newRoles to an array (since backend expects a list of roles)
         const roles = [newRoles];  // Wrap newRoles in an array to match the backend format
@@ -94,7 +94,7 @@ const AdminManagement = () => {
         // Call the backend API to update the user role and status
         updateUserRoleAndStatus(userId, roles, newStatus)
             .then(updatedUser => {
-                console.log("User updated:", updatedUser);
+                //console.log("User updated:", updatedUser);
             })
             .catch(err => {
                 console.error("Error updating user:", err);

@@ -91,8 +91,8 @@ const AdminSalarySlips = () => {
 
     const handleGenerateSalarySlips = async () => {
         if (startDate && endDate) {
-            console.log("startDate", startDate);
-            console.log("endDate", endDate);
+            //console.log("startDate", startDate);
+            //console.log("endDate", endDate);
     
             setLoading(true);
             try {

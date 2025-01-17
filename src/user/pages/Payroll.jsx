@@ -4,6 +4,7 @@ import UserHeader from "../components/UserHeader";
 import { Download, X, Search, Calendar } from "lucide-react";
 import { getSalarySlipByID } from "../../commonComponent/Api";
 import { jsPDF } from "jspdf";
+import { useSelector } from "react-redux";
 
 const Payroll = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,7 @@ const Payroll = () => {
     const [salaryMonth, setSalaryMonth] = useState(""); // Only store the month for search
     const [showModal, setShowModal] = useState(false);
     const [selectedSlip, setSelectedSlip] = useState(null);
-
+  const user = useSelector((state) => state.auth.user);
     useEffect(() => {
         const fetchSalarySlips = async () => {
             try {
@@ -99,7 +100,7 @@ const Payroll = () => {
                     <div className="flex justify-between items-center mb-[0.833vw]">
                         <p className="text-gray-600 text-[0.938vw]">
                             Welcome back,{" "}
-                            <span className="text-blue-500 font-semibold">Aditya</span>
+                            <span className="text-blue-500 font-semibold">{user.name}</span>
                         </p>
                     </div>
 
