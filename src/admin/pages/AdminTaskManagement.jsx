@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Plus, CheckCircle, Clock, AlertCircle, FileText, User } from 'lucide-react';
 import { PiNotePencilThin } from "react-icons/pi";
 import { TbGraph } from "react-icons/tb";
@@ -6,38 +6,35 @@ import AdminSidebar from '../component/AdminSidebar';
 import AdminHeader from '../component/AdminHeader';
 import TaskForm from './TaskForm';
 import TaskPerformance from './TaskPerformance'; // TaskPerformance import here
+import { getAllTaskEmployee } from "../../commonComponent/Api";
 
 const TaskManagement = () => {
     const [isTaskFormVisible, setIsTaskFormVisible] = useState(false);
     const [isTaskPerformanceVisible, setIsTaskPerformanceVisible] = useState(false); // New state for Task Performance popup
+    const [employeeTaskData, setEmployeeTaskData] = useState([]);
 
-    const tasks = [
-        { id: 1, title: 'Task 1', assignee: 'Aditya Raj', status: 'Not Started' },
-        { id: 2, title: 'Task 2', assignee: 'Aditya Raj', status: 'In progress' },
-        { id: 3, title: 'Task 3', assignee: 'Aditya Raj', status: 'Done' },
-        { id: 4, title: 'Task 4', assignee: 'Aditya Raj', status: 'Not Started' },
-        { id: 5, title: 'Task 5', assignee: 'Aditya Raj', status: 'In progress' },
-        { id: 6, title: 'Task 6', assignee: 'Aditya Raj', status: 'Done' },
-        { id: 7, title: 'Task 7', assignee: 'Aditya Raj', status: 'Not Started' },
-        { id: 8, title: 'Task 8', assignee: 'Aditya Raj', status: 'In progress' },
-        { id: 9, title: 'Task 9', assignee: 'Aditya Raj', status: 'Done' },
-    ];
+    useEffect(() => {
+        const fetchEmployeeTaskData = async () => {
+            try {
+                const data = await getAllTaskEmployee(); // Fetch employee data
+                setEmployeeTaskData(data); // Set employee data to state
+            } catch (error) {
+                console.error('Error fetching employee data:', error);
+            }
+        };
+        fetchEmployeeTaskData();
+    }, []);
 
-    const toggleTaskForm = () => {
-        setIsTaskFormVisible(!isTaskFormVisible);
-    };
+    // Filter tasks by status
+    const pendingTasks = employeeTaskData.filter(item => item.task.status === 'PENDING');
+    const inProgressTasks = employeeTaskData.filter(item => item.task.status === 'IN PROGRESS');
+    const completedTasks = employeeTaskData.filter(item => item.task.status === 'COMPLETED');
 
-    const toggleTaskPerformance = () => {
-        setIsTaskPerformanceVisible(!isTaskPerformanceVisible);
-    };
+    const toggleTaskForm = () => setIsTaskFormVisible(!isTaskFormVisible);
+    const toggleTaskPerformance = () => setIsTaskPerformanceVisible(!isTaskPerformanceVisible);
 
-    const handleCloseTaskForm = () => {
-        setIsTaskFormVisible(false);
-    };
-
-    const handleCloseTaskPerformance = () => {
-        setIsTaskPerformanceVisible(false); // Close Task Performance popup
-    };
+    const handleCloseTaskForm = () => setIsTaskFormVisible(false);
+    const handleCloseTaskPerformance = () => setIsTaskPerformanceVisible(false); // Close Task Performance popup
 
     const TaskCard = ({ title, assignee, status }) => {
         const getStatusStyles = () => {
@@ -62,7 +59,7 @@ const TaskManagement = () => {
                             <span className="text-[#5c606a] text-[1.042vw]">{title}</span>
                         </div>
                         <button className="flex items-center justify-center">
-                            <PiNotePencilThin className="w-[1.458vw] h-[1.458vw] text-black"/>
+                            <PiNotePencilThin className="w-[1.458vw] h-[1.458vw] text-black" />
                         </button>
                     </div>
                     <div className="flex items-center gap-[0.417vw] bg-white rounded-[0.313vw] border border-[#5c606a] p-[0.625vw]">
@@ -70,20 +67,13 @@ const TaskManagement = () => {
                         <span className="text-[#5c606a] text-[1.042vw]">{assignee}</span>
                     </div>
                     <div className={`flex items-center gap-[0.417vw] bg-white rounded-[0.313vw] p-[0.625vw] border ${getStatusStyles()}`}>
-                        <div
-                            className={`w-[0.625vw] h-[0.625vw] rounded-full ${status === 'Not Started' ? 'bg-[#ffae00]' : status === 'In progress' ? 'bg-[#534feb]' : 'bg-[#069855]'}`}
-                        />
+                        <div className={`w-[0.625vw] h-[0.625vw] rounded-full ${status === 'Not Started' ? 'bg-[#ffae00]' : status === 'In progress' ? 'bg-[#534feb]' : 'bg-[#069855]'}`} />
                         <span className="text-[1.042vw]">{status}</span>
                     </div>
                 </div>
             </div>
         );
     };
-
-
-    const pendingTasks = tasks.filter(task => task.status === 'Not Started');
-    const inProgressTasks = tasks.filter(task => task.status === 'In progress');
-    const completedTasks = tasks.filter(task => task.status === 'Done');
 
     return (
         <div className="relative flex h-screen">
@@ -179,7 +169,7 @@ const TaskManagement = () => {
                 </div>
 
                 {/* Status Headers */}
-            <div className="flex gap-[1.25vw] mb-[1.667vw]">
+                <div className="flex gap-[1.25vw] mb-[1.667vw]">
                     <div className="flex-1 px-[1.25vw] py-[0.833vw] rounded-[0.833vw] border border-[#ffae00]">
                         <span className="text-[#ffae00] text-[1.25vw]">Pending</span>
                     </div>
@@ -194,38 +184,40 @@ const TaskManagement = () => {
                 {/* Task Cards */}
                 <div className="flex gap-[1.25vw]">
                     <div className="flex-1 flex flex-col gap-8">
-                        {pendingTasks.map(task => (
+                        {pendingTasks.map((item) => (
                             <TaskCard
-                                key={task.id}
-                                title={task.title}
-                                assignee={task.assignee}
-                                status={task.status}
+                                key={item.task.id}
+                                title={item.task.name}
+                                assignee={item.employeeName}
+                                status={item.task.status}
                             />
                         ))}
                     </div>
                     <div className="flex-1 flex flex-col gap-8">
-                        {inProgressTasks.map(task => (
+                        {inProgressTasks.map((item) => (
                             <TaskCard
-                                key={task.id}
-                                title={task.title}
-                                assignee={task.assignee}
-                                status={task.status}
+                                key={item.task.id}
+                                title={item.task.name}
+                                assignee={item.employeeName}
+                                status={item.task.status}
                             />
                         ))}
                     </div>
                     <div className="flex-1 flex flex-col gap-8">
-                        {completedTasks.map(task => (
+                        {completedTasks.map((item) => (
                             <TaskCard
-                                key={task.id}
-                                title={task.title}
-                                assignee={task.assignee}
-                                status={task.status}
+                                key={item.task.id}
+                                title={item.task.name}
+                                assignee={item.employeeName}
+                                status={item.task.status}
                             />
                         ))}
                     </div>
                 </div>
             </div>
 
+            {/* Task Form */}
+            {isTaskFormVisible && <TaskForm onClose={handleCloseTaskForm} />}
             {/* Task Performance Popup */}
             <div
                 className={`fixed top-0 right-0 w-[400px] shadow-lg transform transition-transform duration-700 z-20 ${isTaskPerformanceVisible ? 'translate-x-0' : 'translate-x-full'

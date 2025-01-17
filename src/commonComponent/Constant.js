@@ -1,4 +1,5 @@
-export const API_BASE_URL = 'https://api.pplazyhr.com';
+// export const API_BASE_URL = 'https://api.pplazyhr.com'; 
+export const API_BASE_URL = 'http://192.168.0.135:8080'; 
 export const ACCESS_TOKEN = 'accessToken';
 export const USER_DATA = "userData";
 export const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect';
