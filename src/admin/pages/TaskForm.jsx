@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, CheckCircle, User, Flag } from 'lucide-react';
-import { createTask } from "../../commonComponent/Api";
+import { createTask, getAllUsers } from "../../commonComponent/Api";
 
 const TaskForm = () => {
     const [status, setStatus] = useState('');
@@ -8,14 +8,30 @@ const TaskForm = () => {
     const [assignee, setAssignee] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [messages, setTaskDescription] = useState('');
-    const [taskName, setTaskName] = useState('');  // Ensure this is set
+    const [taskName, setTaskName] = useState('');
+    const [employeeData, setEmployeeData] = useState([]);
 
-    const [file, setFile] = useState(null);
+    // Fetch employee data on component mount
+    useEffect(() => {
+        const fetchEmployeeData = async () => {
+            try {
+                const data = await getAllUsers(); // Fetch user data
+                console.log("Fetched data:", data);
+                setEmployeeData(data); // Set user data to state
+            } catch (error) {
+                console.error('Error fetching employee data:', error);
+            }
+        };
+        fetchEmployeeData();
+    }, []);
 
+    useEffect(() => {
+        console.log("Updated employeeData:", employeeData); // Log updated state
+    }, [employeeData]);
     const handleSave = async (e) => {
         e.preventDefault();
 
-        // Make sure all fields are filled
+        // Validate fields
         if (!taskName || !priority || !assignee || !dueDate || !messages) {
             alert('Please fill in all fields!');
             return;
@@ -50,10 +66,6 @@ const TaskForm = () => {
                 <div className="flex flex-col gap-[0.417vw]">
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
                         <CheckCircle className="w-[1.25vw] h-[1.25vw] text-[#848892]" />
-                        <span className="text-[1.042vw] text-[#848892]">Status</span>
-                    </div>
-                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
-                        <CheckCircle className="w-[1.25vw] h-[1.25vw] text-[#848892]" />
                         <span className="text-[1.042vw] text-[#848892]">Task Name</span>
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw]">
@@ -71,14 +83,12 @@ const TaskForm = () => {
                 </div>
 
                 <div className="flex flex-col gap-[0.625vw] flex-1 mt-[0.417vw]">
-                    <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[1vw] border border-black/20 rounded">
-                    </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
                         <input
                             type="text"
                             placeholder="Task Name"
-                            value={taskName} // Make sure value is controlled by state
-                            onChange={(e) => setTaskName(e.target.value)} // Update state on change
+                            value={taskName}
+                            onChange={(e) => setTaskName(e.target.value)}
                             className="w-full text-[0.833vw] font-light text-black bg-transparent placeholder:text-black/40 outline-none"
                             required
                         />
@@ -97,14 +107,20 @@ const TaskForm = () => {
                         </select>
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
-                        <input
-                            type="text"
-                            placeholder="Assignee"
-                            value={assignee}
-                            onChange={(e) => setAssignee(e.target.value)}
-                            className="w-full text-[0.833vw] font-light text-black bg-transparent placeholder:text-black/40 outline-none"
-                            required
-                        />
+                    <select
+  className="w-full text-[0.833vw] font-light text-blue bg-transparent outline-none"
+  value={assignee}
+  onChange={(e) => setAssignee(parseInt(e.target.value))} // Ensure the value is parsed as an integer
+  required
+>
+  <option value="">Select Assignee</option>
+  {employeeData.map((employee) => (
+    <option key={employee.id} value={employee.id}> {/* Use `employee.id` instead of `employee.Id` */}
+      {employee.name}
+    </option>
+  ))}
+</select>
+
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
                         <input
@@ -122,8 +138,7 @@ const TaskForm = () => {
             <div className="mb-[2.5vw]">
                 <h2 className="text-[1.25vw] font-medium text-[#5c606a] mb-[0.833vw]">About this task</h2>
                 <div className="p-[1.25vw] border border-black/20 rounded-[0.625vw] shadow-[4px_4px_40px_-5px_rgba(0,0,0,0.05)]">
-                    <input
-                        type="text"
+                    <textarea
                         placeholder="Task Description here"
                         value={messages}
                         onChange={(e) => setTaskDescription(e.target.value)}

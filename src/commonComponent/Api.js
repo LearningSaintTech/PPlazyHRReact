@@ -2,17 +2,15 @@ import { API_BASE_URL, ACCESS_TOKEN } from "./Constant";
 import request from "./ApiConnector";
 
 export function getCurrentUser() {
- 
   if (!localStorage.getItem(ACCESS_TOKEN)) {
     return Promise.reject("No access token set.");
   }
-   return request({
+  return request({
     url: API_BASE_URL + "/api/users/user/me",
     method: "GET",
   });
 }
 export const verifyOtp = async (email, otp) => {
- 
   const response = await fetch(
     `${API_BASE_URL}/auth/verify-otp?email=${email}&otp=${otp}`,
     {
@@ -67,7 +65,6 @@ export function signupForm(signupRequestForm) {
     return; // Optionally handle the error
   }
 
-
   // Use template literals to correctly insert the userId from parsedUserData
   return request({
     url: `${API_BASE_URL}/employee/add?userId=${parsedUserData.id}`, // Correctly inserting userId
@@ -96,7 +93,6 @@ export function updateUserRoleAndStatus(userId, newRoles, newStatus) {
   const body = {};
   if (newRoles !== null) body.roles = newRoles; // newRoles should be an array
   if (newStatus !== null) body.status = newStatus;
-
 
   const headers = new Headers({
     "Content-Type": "application/json",
@@ -145,8 +141,8 @@ export function getAllEmployee() {
 export function updateEmployee(employeeId, employeeDetail) {
   try {
     // Replace the fetch call with the request API connector
-    console.log("employeeId",employeeId)
-    console.log("employeeId",employeeDetail)
+    console.log("employeeId", employeeId);
+    console.log("employeeId", employeeDetail);
 
     const response = request({
       url: `${API_BASE_URL}/employee/update/${employeeId}`,
@@ -294,7 +290,6 @@ export const applyLeaveAPI = (leaveDetails) => {
 };
 
 export async function getLeaves(userId) {
-
   return request({
     url: `${API_BASE_URL}/api/leaves/my-leaves/${userId}`,
     method: "GET",
@@ -337,7 +332,6 @@ export const clockOutAPI = async (clockingId) => {
   }
 };
 
-
 export function getAllEvents() {
   return request({
     url: `${API_BASE_URL}/api/events`,
@@ -359,14 +353,12 @@ export function createEvent(eventData) {
   });
 }
 
-
 export function deleteEvent(id) {
   return request({
     url: `${API_BASE_URL}/api/events/${id}`,
     method: "DELETE",
   });
 }
-
 
 export function getEventById(id) {
   return request({
@@ -454,21 +446,29 @@ export const updateTicketStatus = async (ticketId, status) => {
   }
 };
 
-export const updateReimbursementStatus = async (reimbursementId, status, userRole) => {
+export const updateReimbursementStatus = async (
+  reimbursementId,
+  status,
+  userRole
+) => {
   //console.log("Reimbursement ID: ", reimbursementId);
   //console.log("Status: ", status);
   //console.log("User Role: ", userRole);
 
   // Check if the user role is admin
   if (userRole !== "admin") {
-    console.error("Unauthorized action. Only admins can update the reimbursement status.");
-    throw new Error("Unauthorized: Only admins can update the reimbursement status.");
+    console.error(
+      "Unauthorized action. Only admins can update the reimbursement status."
+    );
+    throw new Error(
+      "Unauthorized: Only admins can update the reimbursement status."
+    );
   }
 
   try {
     const response = await request({
       url: `${API_BASE_URL}/api/reimbursements/update-status?reimbursementId=${reimbursementId}&status=${status}&userRole=${userRole}`, // Correct query params
-      method: "POST",  // POST method
+      method: "POST", // POST method
     });
 
     // Handle the success response
@@ -480,8 +480,6 @@ export const updateReimbursementStatus = async (reimbursementId, status, userRol
     throw error;
   }
 };
-
-
 
 export const showCharts = async () => {
   //console.log("inside fetchPieData");
@@ -525,7 +523,7 @@ export const fetchBarData = async (userId) => {
 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/performance/${userId}`, 
+      url: `${API_BASE_URL}/user/tasks/performance/${userId}`,
       method: "GET",
     });
 
@@ -544,7 +542,7 @@ export const fetchDoughnutData = async (userId) => {
 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/statusCounts/${userId}`, 
+      url: `${API_BASE_URL}/user/tasks/statusCounts/${userId}`,
       method: "GET",
     });
 
@@ -558,10 +556,6 @@ export const fetchDoughnutData = async (userId) => {
   }
 };
 
-
-
-
-
 export async function createTask(task) {
   //console.log("inside createTask", task.taskName);
 
@@ -569,11 +563,11 @@ export async function createTask(task) {
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so we add 1
-    const day = String(d.getDate()).padStart(2, '0');
-    const hours = String(d.getHours()).padStart(2, '0');
-    const minutes = String(d.getMinutes()).padStart(2, '0');
-    const seconds = String(d.getSeconds()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed, so we add 1
+    const day = String(d.getDate()).padStart(2, "0");
+    const hours = String(d.getHours()).padStart(2, "0");
+    const minutes = String(d.getMinutes()).padStart(2, "0");
+    const seconds = String(d.getSeconds()).padStart(2, "0");
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
@@ -621,13 +615,13 @@ export async function createTask(task) {
     throw error; // Rethrow the error to handle it elsewhere
   }
 }
-export const getAllTask = async () => {
+export const getAllTask = async (userId) => {
   //console.log("inside getAllTask");
 
   try {
 
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/user/2`, // Send as query parameters
+      url: `${API_BASE_URL}/user/tasks/user/${userId}`, // Send as query parameters
       method: "GET",
     });
 
@@ -641,6 +635,13 @@ export const getAllTask = async () => {
   }
 };
 
+export function getAllTaskEmployee() {
+  console.log("getAllTaskwith Employee");
+  return request({
+    url: API_BASE_URL + "/user/tasks/all-with-employee",
+    method: "GET",
+  });
+}
 
 export const updateTaskStatus = async (taskId, status) => {
   //console.log("Updating task status...", status);
@@ -680,15 +681,15 @@ export const updateTaskStatus = async (taskId, status) => {
     console.error("Error creating task:", error);
     throw error; // Rethrow the error to handle it elsewhere
   }
-}
-
+};
 
 export async function updateLeaveStatus(id, action) {
   //console.log("id", id);
   //console.log("action", action);
 
   // Map the boolean action to 'accept' or 'reject'
-  const status = action === true ? "accept" : action === false ? "reject" : "pending";
+  const status =
+    action === true ? "accept" : action === false ? "reject" : "pending";
 
   const url = new URL(`${API_BASE_URL}/api/leaves/manage/${status}/${id}`);
   url.searchParams.append("status", status);
@@ -707,25 +708,24 @@ export async function updateLeaveStatus(id, action) {
 }
 export const updateEvent = async (id, eventData) => {
   const options = {
-    url: `${API_BASE_URL}/api/events/${id}`,  // The URL to the PUT endpoint with the event ID
-    method: 'PUT',             // HTTP method is PUT for updating
-    body: JSON.stringify(eventData),  // The event data to update in the request body
+    url: `${API_BASE_URL}/api/events/${id}`, // The URL to the PUT endpoint with the event ID
+    method: "PUT", // HTTP method is PUT for updating
+    body: JSON.stringify(eventData), // The event data to update in the request body
   };
 
   try {
-    const updatedEvent = await request(options);  // Call the request function
-    return updatedEvent;  // Return the updated event
+    const updatedEvent = await request(options); // Call the request function
+    return updatedEvent; // Return the updated event
   } catch (error) {
-    console.error("Error updating event:", error);  // Handle error
+    console.error("Error updating event:", error); // Handle error
     throw error;
   }
-}
+};
 
 export const getAllSalarySlips = async () => {
   //console.log("inside getAllSalarySlips");
 
   try {
-
     const response = await request({
       url: `${API_BASE_URL}/api/salary_slips`, // Send as query parameters
       method: "GET",
@@ -761,17 +761,16 @@ export const calculateSalarySlips = async (startDate, endDate) => {
 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/api/salary_slips/calculate`, 
+      url: `${API_BASE_URL}/api/salary_slips/calculate`,
       ...options,
     });
 
     return response;
   } catch (error) {
     console.error("Error creating task:", error);
-    throw error; 
+    throw error;
   }
 };
-
 
 export function getSalarySlipByID() {
   const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
@@ -810,4 +809,3 @@ export function getEmployeeProfile() {
     method: "GET",
   });
 }
-
