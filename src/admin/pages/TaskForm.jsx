@@ -107,19 +107,19 @@ const TaskForm = () => {
                         </select>
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">
-                    <select
-  className="w-full text-[0.833vw] font-light text-blue bg-transparent outline-none"
-  value={assignee}
-  onChange={(e) => setAssignee(parseInt(e.target.value))} // Ensure the value is parsed as an integer
-  required
->
-  <option value="">Select Assignee</option>
-  {employeeData.map((employee) => (
-    <option key={employee.id} value={employee.id}> {/* Use `employee.id` instead of `employee.Id` */}
-      {employee.name}
-    </option>
-  ))}
-</select>
+                        <select
+                            className="w-full text-[0.833vw] font-light text-blue bg-transparent outline-none"
+                            value={assignee}
+                            onChange={(e) => setAssignee(parseInt(e.target.value))} // Ensure the value is parsed as an integer
+                            required
+                        >
+                            <option value="">Select Assignee</option>
+                            {employeeData.map((employee) => (
+                                <option key={employee.id} value={employee.id}> {/* Use `employee.id` instead of `employee.Id` */}
+                                    {employee.name}
+                                </option>
+                            ))}
+                        </select>
 
                     </div>
                     <div className="flex items-center gap-[0.625vw] px-[0.625vw] py-[0.417vw] border border-black/20 rounded">

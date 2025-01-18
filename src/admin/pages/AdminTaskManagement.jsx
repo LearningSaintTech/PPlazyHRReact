@@ -27,7 +27,7 @@ const TaskManagement = () => {
 
     // Filter tasks by status
     const pendingTasks = employeeTaskData.filter(item => item.task.status === 'PENDING');
-    const inProgressTasks = employeeTaskData.filter(item => item.task.status === 'IN PROGRESS');
+    const inProgressTasks = employeeTaskData.filter(item => item.task.status === 'IN_PROGRESS');
     const completedTasks = employeeTaskData.filter(item => item.task.status === 'COMPLETED');
 
     const toggleTaskForm = () => setIsTaskFormVisible(!isTaskFormVisible);
@@ -195,12 +195,12 @@ const TaskManagement = () => {
                     </div>
                     <div className="flex-1 flex flex-col gap-8">
                         {inProgressTasks.map((item) => (
-                            <TaskCard
-                                key={item.task.id}
-                                title={item.task.name}
-                                assignee={item.employeeName}
-                                status={item.task.status}
-                            />
+                           <TaskCard
+                           key={item.task.id}
+                           title={item.task.name}
+                           assignee={item.employeeName}
+                           status={item.task.status}
+                       />
                         ))}
                     </div>
                     <div className="flex-1 flex flex-col gap-8">

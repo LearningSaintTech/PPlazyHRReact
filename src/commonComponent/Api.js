@@ -615,13 +615,19 @@ export async function createTask(task) {
     throw error; // Rethrow the error to handle it elsewhere
   }
 }
-export const getAllTask = async (userId) => {
+export const getAllTask = async () => {
   //console.log("inside getAllTask");
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
 
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
   try {
 
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/user/${userId}`, // Send as query parameters
+      url: `${API_BASE_URL}/user/tasks/user/${parsedUserData.id}`, // Send as query parameters
       method: "GET",
     });
 
@@ -635,13 +641,13 @@ export const getAllTask = async (userId) => {
   }
 };
 
-export function getAllTaskEmployee() {
-  console.log("getAllTaskwith Employee");
-  return request({
-    url: API_BASE_URL + "/user/tasks/all-with-employee",
-    method: "GET",
-  });
-}
+// export function getAllTaskEmployee() {
+//   console.log("getAllTaskwith Employee");
+//   return request({
+//     url: API_BASE_URL + "/user/tasks/all-with-employee",
+//     method: "GET",
+//   });
+// }
 
 export const updateTaskStatus = async (taskId, status) => {
   //console.log("Updating task status...", status);
@@ -806,6 +812,14 @@ export function getEmployeeProfile() {
     // url: API_BASE_URL + "/admin/getAllUsers",
     url: `${API_BASE_URL}/employee/${parsedUserData.id}`,
 
+    method: "GET",
+  });
+}
+
+export function getAllTaskEmployee() {
+  console.log("getAllTaskwith Employee");
+  return request({
+    url: `${API_BASE_URL}/user/tasks/all-with-employee`,
     method: "GET",
   });
 }
