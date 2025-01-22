@@ -141,8 +141,8 @@ export function getAllEmployee() {
 export function updateEmployee(employeeId, employeeDetail) {
   try {
     // Replace the fetch call with the request API connector
-    console.log("employeeId", employeeId);
-    console.log("employeeId", employeeDetail);
+    // console.log("employeeId", employeeId);
+    // console.log("employeeId", employeeDetail);
 
     const response = request({
       url: `${API_BASE_URL}/employee/update/${employeeId}`,
@@ -374,7 +374,7 @@ export function getAttendanceById(id) {
   });
 }
 
-export function getAllAttendance() {
+export async function getAllAttendance() {
   return request({
     url: `${API_BASE_URL}/api/clockings/all`,
     method: "GET",
@@ -518,12 +518,12 @@ export const fetchPieData = async () => {
   }
 };
 
-export const fetchBarData = async (userId) => {
-  //console.log("inside fetchBarData");
+export const fetchBarData = async (employeeId) => {
+  console.log("inside fetchBarData",employeeId);
 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/performance/${userId}`,
+      url: `${API_BASE_URL}/user/tasks/performance/${employeeId.employeeId}`,
       method: "GET",
     });
 
@@ -537,12 +537,12 @@ export const fetchBarData = async (userId) => {
   }
 };
 
-export const fetchDoughnutData = async (userId) => {
-  //console.log("inside fetchDoughnutData");
-
+export const fetchDoughnutData = async (employeeId) => {
+  // console.log("inside fetchDoughnutData",employeeId);
+ 
   try {
     const response = await request({
-      url: `${API_BASE_URL}/user/tasks/statusCounts/${userId}`,
+      url: `${API_BASE_URL}/user/tasks/statusCounts/${employeeId.employeeId}`,
       method: "GET",
     });
 
@@ -806,7 +806,7 @@ export function getEmployeeProfile() {
     return; // Optionally handle the error
   }
 
-  console.log(parsedUserData.id); // You can log the parsed object to inspect its contents
+  // console.log(parsedUserData.id); // You can log the parsed object to inspect its contents
 
   return request({
     // url: API_BASE_URL + "/admin/getAllUsers",

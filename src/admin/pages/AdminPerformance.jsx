@@ -136,7 +136,7 @@ const AdminPerformance = () => {
                             </button>
                         </div>
                         <div className="p-[0.833vw]">
-                            <TaskGraph employeeId={selectedEmployee.empId} />
+                            <TaskGraph employeeId={selectedEmployee.employeeId} />
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,8 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AddTenant from '../src/superAdmin/AddTenant';
+import AllTenant from '../src/superAdmin/AllTenant';
+
 
 // Lazy-loaded components
 const UserHome = React.lazy(() => import('./user/pages/UserHome'));
@@ -29,7 +32,6 @@ const TaskGraph = React.lazy(() => import('./admin/pages/TaskGraph'));
 const AdminPerformance = React.lazy(() => import('./admin/pages/AdminPerformance'));
 const AdminSalarySlips = React.lazy(() => import('./admin/pages/AdminSalarySlips'));
 const ProtectedRoute = React.lazy(() => import('./commonComponent/RoleProtectedRoute'));
-
 function App() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
@@ -64,6 +66,11 @@ function App() {
                 <Route path="/admin/payroll/salary-slip" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminSalarySlips /></ProtectedRoute>} />
                 <Route path="/admin/graphs" element={<ProtectedRoute allowedRoles={['ADMIN']}><TaskGraph /></ProtectedRoute>} />
                 <Route path="/admin/performance-tracking" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminPerformance /></ProtectedRoute>} />
+
+                <Route path="/addTenant" element={<ProtectedRoute allowedRoles={['SUPER_ADMIN']}><AddTenant /></ProtectedRoute>} />
+                <Route path="/allTenant" element={<ProtectedRoute allowedRoles={['SUPER_ADMIN']}><AllTenant /></ProtectedRoute>} />
+
+                
             </Routes>
         </Suspense>
     );

@@ -25,7 +25,7 @@ const SignUp = () => {
         // Handle signup logic here
         try {
             const response = await signup(formData);
-            console.log("You're successfully registered. Please verify your email!", response);
+            // console.log("You're successfully registered. Please verify your email!", response);
 
             // Set token in localStorage and Redux store
             localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
@@ -41,7 +41,7 @@ const SignUp = () => {
         } catch (error) {
             console.log((error && error.message) || 'Oops! Something went wrong. Please try again!');
         }
-        console.log('Form submitted:', formData);
+        // console.log('Form submitted:', formData);
     };
 
     const handleInputChange = (e) => {

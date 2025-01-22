@@ -212,7 +212,7 @@ const Dashboard = () => {
         }
     };
     const user = useSelector((state) => state.auth.user); // Adjust path if necessary
-    console.log("user",user)
+    // console.log("user",user)
     return (
         
         <div className="flex h-screen bg-white">

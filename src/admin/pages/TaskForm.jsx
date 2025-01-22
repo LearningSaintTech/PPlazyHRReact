@@ -16,7 +16,7 @@ const TaskForm = () => {
         const fetchEmployeeData = async () => {
             try {
                 const data = await getAllUsers(); // Fetch user data
-                console.log("Fetched data:", data);
+                // console.log("Fetched data:", data);
                 setEmployeeData(data); // Set user data to state
             } catch (error) {
                 console.error('Error fetching employee data:', error);
@@ -26,7 +26,7 @@ const TaskForm = () => {
     }, []);
 
     useEffect(() => {
-        console.log("Updated employeeData:", employeeData); // Log updated state
+        // console.log("Updated employeeData:", employeeData); // Log updated state
     }, [employeeData]);
     const handleSave = async (e) => {
         e.preventDefault();
@@ -46,9 +46,9 @@ const TaskForm = () => {
         };
 
         try {
-            console.log("taskData", taskData);
+            // console.log("taskData", taskData);
             const response = await createTask(taskData);
-            console.log('Task Created:', response);
+            // console.log('Task Created:', response);
             alert('Task successfully created!');
         } catch (error) {
             console.error('Error creating task:', error);

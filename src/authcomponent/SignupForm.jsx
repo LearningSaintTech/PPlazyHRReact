@@ -40,13 +40,13 @@ const SignupForm = () => {
     
     try {
         // Assuming formData is structured correctly, adjust if needed
-        console.log("Form Data:", formData);
+        // console.log("Form Data:", formData);
 
         // Call the signup API (or any other API you're using)
         const response = await signupForm(formData);  // Send the form data for signup
 
         if (response) {
-            console.log('Success:', response);
+            // console.log('Success:', response);
             navigate("/");
             // Handle successful signup (e.g., navigate to another page, show a message, etc.)
         }

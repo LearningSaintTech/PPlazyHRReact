@@ -20,14 +20,15 @@ ChartJS.register(
     Legend
 );
 
-const TaskGraph = () => {
+const TaskGraph = (employeeId) => {
     const [barData, setBarData] = useState(null);
     const [doughnutData, setDoughnutData] = useState(null);
     const [error, setError] = useState(null);
-
+console.log("employeeId",employeeId)
     useEffect(() => {
         // Fetch data for the Bar Chart
-        fetchBarData(2)
+
+        fetchBarData(employeeId)
             .then((response) => {
                 if (!response) {
                     throw new Error("Failed to fetch bar chart data");
@@ -67,7 +68,7 @@ const TaskGraph = () => {
             });
 
         // Fetch data for the Doughnut Chart
-        fetchDoughnutData(2)
+        fetchDoughnutData(employeeId)
             .then((response) => {
                 if (!response) {
                     throw new Error("Failed to fetch doughnut chart data");

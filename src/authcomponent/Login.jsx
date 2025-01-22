@@ -28,7 +28,7 @@ const Login = () => {
         setErrorMessage(''); // Clear previous error messages
         try {
             const response = await login(formData);
-            console.log("response", response);
+            // console.log("response", response);
             if (response.status === "failure") {
                 if (response.reason === "User is inactive. Please contact support.") {
                     setErrorMessage(response.reason);

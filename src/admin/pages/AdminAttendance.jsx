@@ -10,19 +10,28 @@ const AdminAttendance = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
 
+  const [loading, setLoading] = useState(true); // Loading state
+
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
+        setLoading(true); 
         const response = await getAllAttendance();
-        //console.log("response", response);
+        console.log("response", response);
         setAttendanceData(response);
+        console.log("setattendance ",attendanceData)
       } catch (error) {
         console.error("Error fetching attendance data:", error);
+      } finally {
+        setLoading(false); 
       }
     };
 
     fetchAttendanceData();
   }, []);
+  useEffect(() => {
+    console.log("Attendance state updated:", attendanceData);
+  }, [attendanceData]);
 
   const formatStatus = (status) => {
     switch (status.toUpperCase()) {
@@ -141,6 +150,12 @@ const AdminAttendance = () => {
           </h2>
 
           {/* Search and Filters */}
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <p className="text-gray-500">Loading attendance data...</p>
+            </div>
+          ) : (
+            <>
           <div className="flex gap-[0.833vw] mb-[1.667vw]">
             <div className="relative flex-1">
               <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
@@ -264,6 +279,8 @@ const AdminAttendance = () => {
               </tbody>
             </table>
           </div>
+          </>
+          )}
         </div>
       </div>
     </div>

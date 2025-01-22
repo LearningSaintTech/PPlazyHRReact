@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 const LeaveApplicationForm = () => {
   // State for current date and time
   const user = useSelector((state) => state.auth.user); // Adjust path if necessary
-  console.log("user",user)
+  // console.log("user",user)
   const [currentDateTime, setCurrentDateTime] = useState({
     day: "",
     time: "",

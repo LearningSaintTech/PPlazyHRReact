@@ -63,7 +63,7 @@ const UserProfile = () => {
         try {
             const data = await getEmployeeProfile();
             setProfileData(data);
-            console.log("profile", profileData)
+            // console.log("profile", profileData)
         } catch (error) {
             console.error('Error fetching reimbursements:', error);
         } finally {
@@ -91,7 +91,7 @@ const UserProfile = () => {
     const handleSave = async () => {
         try {
             const response = await updateEmployee(profileData.employeeId, profileData); // Call the update API
-            console.log("Employee updated successfully:", response);
+            // console.log("Employee updated successfully:", response);
             alert("Profile updated successfully!");
         } catch (error) {
             console.error("Error updating employee profile:", error);
