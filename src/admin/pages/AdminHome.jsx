@@ -212,7 +212,7 @@ const AdminPage = () => {
               {stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
-                  <Card key={index} className={`${stat.color} border-none transition-all duration-300 `}>
+                  <Card key={index} className={`${stat.color} border-2 transition-all duration-300 `}>
                     <CardContent className="p-[1.25vw] flex items-center gap-[0.833vw]">
                       <div className="p-[0.625vw] bg-white rounded-[0.417vw] shadow-sm">
                         <Icon className="w-[1.25vw] h-[1.25vw]" />
@@ -233,7 +233,7 @@ const AdminPage = () => {
                   <CardTitle className="text-gray-700">Employee Attendance Ratio</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="w-full h-[20.833vw] flex justify-center items-center">
+                  <div className="w-full mt-14 h-[21.833vw] flex justify-center items-center">
                     <PieChart width={500} height={600}>
                       <Pie
                         activeIndex={activeIndex}
@@ -270,17 +270,17 @@ const AdminPage = () => {
                 <CardHeader className="border-b border-gray-100">
                   <CardTitle className="text-gray-700">Employee Calendar</CardTitle>
                 </CardHeader>
-                <CardContent className="p-[1.25vw]">
+                <CardContent className="p-[1.05vw]">
                   <div className="w-full">
-                    <div className="flex justify-between items-center mb-[1.25vw]">
-                      <div className="flex items-center gap-[0.833vw]">
+                    <div className="flex justify-between items-center mb-[0.45vw]">
+                      <div className="flex items-center gap-[0.633vw]">
                         <h2 className="text-[0.938vw] font-semibold text-gray-700">
                           {format(currentDate, "MMMM")}
                         </h2>
                         <select
                           value={currentDate.getFullYear()}
                           onChange={handleYearChange}
-                          className="p-[0.417vw] border rounded-[0.417vw] text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="p-[0.217vw] border rounded-[0.417vw] text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           {years.map((year) => (
                             <option key={year} value={year}>
@@ -317,7 +317,7 @@ const AdminPage = () => {
                           ))}
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody className="text-[0.850vw]">
                         {Array.from({ length: 6 }).map((_, weekIndex) => (
                           <tr key={weekIndex}>
                             {generateCalendarDays().slice(weekIndex * 7, (weekIndex + 1) * 7)}

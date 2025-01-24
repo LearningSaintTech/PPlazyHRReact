@@ -116,17 +116,27 @@ const AdminEmployeeDashboard = () => {
   };
 
   const handleSave = () => {
-    //console.log.log('Updated Employee Data:', selectedEmployee);
     updateEmployee(selectedEmployee.employeeId, selectedEmployee)
       .then(response => {
-        //console.log.log("Employee updated successfully:", response);
+        console.log("Employee updated successfully:", response);
+        
+        // Update the employeeData with the new selectedEmployee
+        setEmployeeData(prevData =>
+          prevData.map(employee =>
+            employee.employeeId === selectedEmployee.employeeId
+              ? selectedEmployee // Replace the updated employee
+              : employee // Keep other employees unchanged
+          )
+        );
+
       })
       .catch(error => {
-        //console.log.error("Failed to update employee:", error);
+        console.error("Failed to update employee:", error);
       });
+      
     setShowPopup(false);
-
   };
+  
 
   // Add new function for field grouping
   const renderFormGroup = (label, name, value, type = "text", disabled = false) => (
@@ -158,12 +168,12 @@ const AdminEmployeeDashboard = () => {
 
           {/* Search & Filters */}
           <div className="flex gap-[0.833vw] mb-[1.667vw]">
-            <div className="relative flex-1">
-              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
+            <div className="relative left-[0.433vw]  flex-1 ">
+              <Search className="absolute left-[0.233vw] top-[0.759vw] text-gray-400 " size={28} />
               <input
                 type="text"
                 placeholder="Search by Name, ID, status..."
-                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                className="w-full  pl-[3vw] pr-[1.433vw] py-[0.917vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                 onChange={handleSearchChange}
                 value={searchTerm}
 

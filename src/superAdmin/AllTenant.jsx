@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import request from '../commonComponent/ApiConnector'; // Importing the request utility
-
+import { API_BASE_URL } from '../commonComponent/Constant';
 const AllTenant = () => {
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +10,7 @@ const AllTenant = () => {
     const fetchTenants = async () => {
       try {
         const response = await request({
-          url: 'https://api.pplazyhr.com/api/tenants/all',
+          url: `${API_BASE_URL}/api/tenants/all`,
           method: 'GET',
         });
 
