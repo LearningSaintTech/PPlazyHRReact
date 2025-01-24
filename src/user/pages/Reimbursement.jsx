@@ -11,6 +11,8 @@ const ReimbursementForm = () => {
     const [loading, setLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(""); // New state for selected date
+    const [statusFilter, setStatusFilter] = useState("");
 
     // States from new design
     const [searchQuery, setSearchQuery] = useState('');
@@ -19,11 +21,14 @@ const ReimbursementForm = () => {
     const [category, setCategory] = useState('Electronics');
   const user = useSelector((state) => state.auth.user);
     // Fetch reimbursements on component mount
+    const [filteredReimbursements, setFilteredReimbursements] = useState([]);
+
     const fetchReimbursements = async () => {
         setLoading(true);
         try {
             const data = await getReimbursements();
             setReimbursements(data);
+            setFilteredReimbursements(data); 
         } catch (error) {
             console.error('Error fetching reimbursements:', error);
         } finally {
@@ -34,6 +39,28 @@ const ReimbursementForm = () => {
     useEffect(() => {
         fetchReimbursements();
     }, []);
+    useEffect(() => {
+        // Filter the reimbursements based on the search query, status, and selected date
+        const filteredData = reimbursements.filter((item) => {
+            const searchLower = searchQuery.toLowerCase();
+            const matchesSearchQuery =
+                item.category.toLowerCase().includes(searchLower) ||
+                item.description.toLowerCase().includes(searchLower) ||
+                item.status.toLowerCase().includes(searchLower);
+
+            const matchesStatus = statusFilter
+                ? item.status.toLowerCase() === statusFilter.toLowerCase()
+                : true;
+
+            const matchesDate = selectedDate
+                ? new Date(item.createdAt).toLocaleDateString() === new Date(selectedDate).toLocaleDateString()
+                : true;
+
+            return matchesSearchQuery && matchesStatus && matchesDate;
+        });
+        setFilteredReimbursements(filteredData);
+    }, [searchQuery, statusFilter, selectedDate, reimbursements]);  // Re-filter when any of these change
+
 
     const formatDate = (date) => {
         const d = new Date(date);
@@ -94,7 +121,7 @@ const ReimbursementForm = () => {
         switch (status) {
             case 'Open':
                 return 'bg-[#e6f5ee] border-[#069855] text-[#069855]';
-            case 'Close':
+            case 'Closed':
                 return 'bg-[#f5e6e6] border-[#d62525] text-[#d62525]';
             case 'Pending':
                 return 'bg-[#f5efe6] border-[#ffae00] text-[#ffae00]';
@@ -148,13 +175,23 @@ const ReimbursementForm = () => {
                                     />
                                 </div>
                             </div>
-                            <button className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20 shadow-sm">
-                                Date
-                            </button>
-                            <button className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20 shadow-sm flex items-center gap-[0.625vw]">
-                                <Calendar className="w-5 h-5" />
-                                {new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}
-                            </button>
+                            <select
+                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                        >
+                            <option value="">Action</option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                        {/* Date Picker */}
+                        <input
+                            type="date"
+                            className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
                             <button className="px-[1.25vw] py-[0.833vw] rounded-[0.625vw] border border-black/20 shadow-sm flex items-center gap-[0.625vw]">
                                 Export CSV
                                 <Download className="w-5 h-5" />
@@ -228,10 +265,10 @@ const ReimbursementForm = () => {
                                         </div>
                                     ))}
                                 </div>
-                                {reimbursements.length === 0 ? (
+                                {filteredReimbursements.length === 0 ? (
                                     <div className="text-center py-[0.833vw]">No records found.</div>
                                 ) : (
-                                    reimbursements.map((item, index) => (
+                                    filteredReimbursements.map((item, index) => (
                                         <div key={index} className="grid grid-cols-5 gap-[0.417vw] border-b border-black/20 mb-0">
                                             <div className="px-[1.25vw] py-[1.146vw]  text-black text-[1.25vw] font-light">
                                                 {formatDate(item.createdAt)}

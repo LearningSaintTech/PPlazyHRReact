@@ -456,7 +456,7 @@ export const updateReimbursementStatus = async (
   //console.log("User Role: ", userRole);
 
   // Check if the user role is admin
-  if (userRole !== "admin") {
+  if (userRole !== "ADMIN") {
     console.error(
       "Unauthorized action. Only admins can update the reimbursement status."
     );

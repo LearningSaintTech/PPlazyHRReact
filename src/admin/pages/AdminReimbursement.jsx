@@ -18,7 +18,14 @@ const AdminReimbursement = () => {
         time: "00:00:00",
         period: "AM"
     });
-
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return d.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+    };
     // State for modal and image preview
     const [modalOpen, setModalOpen] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
@@ -73,7 +80,7 @@ const AdminReimbursement = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const getStatusColor = (status) => {
+    const getStatusStyle = (status) => {
         switch (status.toLowerCase()) {
             case "open":
                 return "bg-green-100 text-green-800";
@@ -85,6 +92,7 @@ const AdminReimbursement = () => {
                 return "bg-gray-100 text-gray-800";
         }
     };
+
 
     // Filter and search functionality
     const filteredTickets = reimbursements.filter(ticket => {
@@ -106,7 +114,7 @@ const AdminReimbursement = () => {
     const handleStatusChange = async (reimbursementId, newStatus) => {
         //console.log(">>>>>>>>>>>>>>>",reimbursementId)
         try {
-            await updateReimbursementStatus(reimbursementId, newStatus, "admin"); // Assuming the userRole is always 'admin' for this example
+            await updateReimbursementStatus(reimbursementId, newStatus, "ADMIN"); // Assuming the userRole is always 'admin' for this example
             setReimbursements(prevState =>
                 prevState.map(ticket =>
                     ticket.id === reimbursementId ? { ...ticket, status: newStatus } : ticket
@@ -157,9 +165,9 @@ const AdminReimbursement = () => {
                                 onChange={(e) => setStatusFilter(e.target.value)}
                             >
                                 <option value="">Action</option>
-                                <option value="open">Open</option>
-                                <option value="closed">Closed</option>
-                                <option value="pending">Pending</option>
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                                <option value="Pending">Pending</option>
                             </select>
                             <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
                                 <Calendar size={20} className="text-gray-400" />
@@ -208,23 +216,24 @@ const AdminReimbursement = () => {
                                 <tbody>
                                     {currentItems.map((ticket, index) => (
                                         <tr key={index} className="border-t hover:bg-gray-50">
-                                            <td className="px-[0.833vw] py-[0.625vw]">{ticket.createdAt}</td>
+                                            <td className="px-[0.833vw] py-[0.625vw]">{formatDate(ticket.createdAt)}</td>
                                             <td className="px-[0.833vw] py-[0.625vw]">{ticket.category}</td>
                                             <td className="px-[0.833vw] py-[0.625vw]">{ticket.description}</td>
-                                            <td className="px-[0.833vw] py-[0.625vw]">
-                                                <span className={`inline-flex px-[0.417vw] py-[0.208vw] text-[0.625vw] font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
+                                            <div className="px-[1.25vw] py-[1.146vw]  text-black text-[1.25vw] font-light">
+                                                <div className={`px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border inline-block ${getStatusStyle(ticket.status)}`}>
                                                     {ticket.status}
-                                                </span>
-                                            </td>
+                                                </div>
+                                            </div>
+
                                             <td>
                                                 <select
                                                     value={ticket.status}
                                                     onChange={(e) => handleStatusChange(ticket.id, e.target.value)}
                                                     className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                                 >
-                                                    <option value="open">Open</option>
-                                                    <option value="closed">Closed</option>
-                                                    <option value="pending">Pending</option>
+                                                    <option value="Open">Open</option>
+                                                    <option value="Closed">Closed</option>
+                                                    <option value="Pending">Pending</option>
                                                 </select>
                                             </td>
 

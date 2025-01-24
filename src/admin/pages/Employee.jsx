@@ -119,6 +119,7 @@ const AdminEmployeeDashboard = () => {
     //console.log.log('Updated Employee Data:', selectedEmployee);
     updateEmployee(selectedEmployee.employeeId, selectedEmployee)
       .then(response => {
+        employeeData=null;
         //console.log.log("Employee updated successfully:", response);
       })
       .catch(error => {
