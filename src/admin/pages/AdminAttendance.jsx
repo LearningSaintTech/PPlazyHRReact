@@ -15,15 +15,15 @@ const AdminAttendance = () => {
   useEffect(() => {
     const fetchAttendanceData = async () => {
       try {
-        setLoading(true); 
+        setLoading(true);
         const response = await getAllAttendance();
         console.log("response", response);
         setAttendanceData(response);
-        console.log("setattendance ",attendanceData)
+        console.log("setattendance ", attendanceData)
       } catch (error) {
         console.error("Error fetching attendance data:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -77,14 +77,17 @@ const AdminAttendance = () => {
   const filteredAttendanceData = attendanceData.filter((data) => {
     const dateMatch = selectedDate ? formatDate(data.date) === selectedDate : true;
     const statusMatch = selectedStatus ? formatStatus(data.status).toLowerCase() === selectedStatus.toLowerCase() : true;
-    return (
-      dateMatch &&
-      statusMatch &&
-      (data.id.toString().includes(searchTerm) ||
-        data.employeeDetail.empId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        formatStatus(data.status).toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    const searchTermMatch = searchTerm
+      ? data.id.toString().includes(searchTerm) || // Match ID
+        data.employeeDetail.empId?.toLowerCase().includes(searchTerm.toLowerCase()) || // Match Employee ID
+        data.employeeDetail.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) || // Match First Name
+        data.employeeDetail.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) || // Match Last Name
+        formatStatus(data.status)?.toLowerCase().includes(searchTerm.toLowerCase()) // Match Status
+      : true;
+  
+    return dateMatch && statusMatch && searchTermMatch;
   });
+  
 
   const exportToCSV = () => {
     const csvRows = [];
@@ -156,130 +159,142 @@ const AdminAttendance = () => {
             </div>
           ) : (
             <>
-          <div className="flex gap-[0.833vw] mb-[1.667vw]">
-            <div className="relative flex-1">
-              <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search by Name, ID, status..."
-                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-              <Calendar size={20} className="text-gray-400" />
-              <input
-                type="date"
-                className="w-full border px-4 py-2 rounded-lg"
-                value={selectedDate}
-                onChange={handleDateChange}
-              />
-            </div>
-            <select
-              className="px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
-              value={selectedStatus}
-              onChange={handleStatusChange}
-            >
-              <option value="">Filter by Status</option>
-              <option value="present">Present</option>
-              <option value="absent">Absent</option>
-              <option value="half-day">Half-Day</option>
-            </select>
-            <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-              <Calendar size={20} className="text-gray-400" />
-              <span>13 Jan, 2024</span>
-            </div>
-            <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50" onClick={exportToCSV}>
-              <Download size={20} />
-              Export CSV
-            </button>
-          </div>
+              <div className="flex gap-[0.833vw] mb-[1.667vw]">
+                {/* <!-- Search Box --> */}
+                <div className="relative flex-1">
+                  <Search className="absolute left-[0.625vw] top-[0.625vw] text-gray-400" size={20} />
+                  <input
+                    type="text"
+                    placeholder="Search by Name, ID, status..."
+                    className="w-full h-[2.5vw] pl-[3vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </div>
 
-          {/* Attendance Table */}
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Serial</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Date</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">User ID</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Employee</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Department</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock In</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Working Time</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Status</th>
-                  <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Location</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredAttendanceData.length > 0 ? (
-                  filteredAttendanceData.map((data, index) => (
-                    <tr key={data.id} className="hover:bg-gray-50">
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{index + 1}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatDate(data.date)}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.id}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.firstName}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.department}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockInDate)}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>
-                      <td className="p-2 border-b rounded">
-                        <div className="flex items-center gap-2">
-                          <div
-                            className={`h-8 px-3 py-1 inline-flex items-center justify-start gap-2.5 rounded-lg border
-      ${data.status.toUpperCase() === 'A'
-                                ? 'bg-red-50 border-red-600 text-red-600 text-[0.938vw]'
-                                : data.status.toUpperCase() === 'H'
-                                  ? 'bg-yellow-50 border-yellow-600 text-yellow-600 text-[0.938vw]'
-                                  : data.status.toUpperCase() === 'P'
-                                    ? 'bg-green-50 border-green-600 text-green-600 text-[0.938vw]'
-                                    : 'bg-gray-50 border-gray-600 text-gray-600'
-                              }`}
-                          >
-                            <div className="text-lg font-light font-sans leading-normal">
-                              {formatStatus(data.status)}
-                            </div>
-                          </div>
+                {/* <!-- Date Picker --> */}
+                <div className="flex items-center gap-[0.417vw] w-[12vw] h-[2.5vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
+                  <Calendar size={20} className="text-gray-400" />
+                  <input
+                    type="date"
+                    className="w-full border-none outline-none"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  />
+                </div>
 
-                          {/* Dropdown for changing status */}
-                          <select
-                            value={data.status}
-                            onChange={(e) => handleStatusChangeA(data.id, e.target.value)}
-                            className="h-8 px-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
-                          >
-                            <option value="A">Absent</option>
-                            <option value="H">Half Day</option>
-                            <option value="P">Present</option>
-                            <option value="N">Not Available</option>
-                          </select>
-                        </div>
+                {/* <!-- Dropdown Filter --> */}
+                <select
+                  className="w-[12vw] h-[2.5vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                  value={selectedStatus}
+                  onChange={handleStatusChange}
+                >
+                  <option value="">Filter by Status</option>
+                  <option value="present">Present</option>
+                  <option value="absent">Absent</option>
+                  <option value="half-day">Half-Day</option>
+                </select>
 
-                      </td>
-                      <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">
-                        <div className="relative group">
-                          <Info size={20} className="text-gray-500 cursor-pointer" />
-                          <div
-                            className="absolute hidden group-hover:block  left-8 bg-white border p-2 rounded shadow-lg text-sm w-max">
-                            <p><strong>Clock In:</strong> {data.clockInAddress || 'N/A'}</p>
-                            <p><strong>Clock Out:</strong> {data.clockOutAddress || 'N/A'}</p>
-                          </div>
-                        </div>
-                      </td>
+                {/* <!-- Display Date --> */}
+                <div className="flex items-center gap-[0.417vw] w-[12vw] h-[2.5vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
+                  <Calendar size={20} className="text-gray-400" />
+                  <span>13 Jan, 2024</span>
+                </div>
+
+                {/* <!-- Export CSV Button --> */}
+                <button
+                  className="flex items-center gap-[0.417vw] w-[12vw] h-[2.5vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50"
+                  onClick={exportToCSV}
+                >
+                  <Download size={20} />
+                  Export CSV
+                </button>
+              </div>
+
+              {/* Attendance Table */}
+              <div className="overflow-x-auto">
+                <table className="table-auto w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Serial</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Date</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">User ID</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Employee</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Department</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock In</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Clock Out</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Working Time</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Status</th>
+                      <th className="p-[0.833vw] border-b font-medium text-[0.938vw] text-gray-600">Location</th>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="p-4 text-center text-gray-500">
-                      No attendance data available.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          </>
+                  </thead>
+                  <tbody>
+                    {filteredAttendanceData.length > 0 ? (
+                      filteredAttendanceData.map((data, index) => (
+                        <tr key={data.id} className="hover:bg-gray-50">
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{index + 1}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatDate(data.date)}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.id}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.firstName}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.employeeDetail.department}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockInDate)}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{formatTime(data.clockOutDate)}</td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">{data.workingTime}</td>
+                          <td className="p-2 border-b rounded">
+                            <div className="flex items-center gap-2">
+                              <div
+                                className={`h-8 px-3 py-1 inline-flex items-center justify-start gap-2.5 rounded-lg border
+      ${data.status.toUpperCase() === 'A'
+                                    ? 'bg-red-50 border-red-600 text-red-600 text-[0.938vw]'
+                                    : data.status.toUpperCase() === 'H'
+                                      ? 'bg-yellow-50 border-yellow-600 text-yellow-600 text-[0.938vw]'
+                                      : data.status.toUpperCase() === 'P'
+                                        ? 'bg-green-50 border-green-600 text-green-600 text-[0.938vw]'
+                                        : 'bg-gray-50 border-gray-600 text-gray-600'
+                                  }`}
+                              >
+                                <div className="text-lg font-light font-sans leading-normal">
+                                  {formatStatus(data.status)}
+                                </div>
+                              </div>
+
+                              {/* Dropdown for changing status */}
+                              <select
+                                value={data.status}
+                                onChange={(e) => handleStatusChangeA(data.id, e.target.value)}
+                                className="h-8 px-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="A">Absent</option>
+                                <option value="H">Half Day</option>
+                                <option value="P">Present</option>
+                                <option value="N">Not Available</option>
+                              </select>
+                            </div>
+
+                          </td>
+                          <td className="p-[0.833vw] border-b text-[0.938vw] text-gray-700">
+                            <div className="relative group">
+                              <Info size={20} className="text-gray-500 cursor-pointer" />
+                              <div
+                                className="absolute hidden group-hover:block  left-8 bg-white border p-2 rounded shadow-lg text-sm w-max">
+                                <p><strong>Clock In:</strong> {data.clockInAddress || 'N/A'}</p>
+                                <p><strong>Clock Out:</strong> {data.clockOutAddress || 'N/A'}</p>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="p-4 text-center text-gray-500">
+                          No attendance data available.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </div>

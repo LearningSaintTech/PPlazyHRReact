@@ -104,22 +104,16 @@ const AdminTicketQuery = () => {
     }, []);
 
     // Get status color
-    const getStatusColor = (status) => {
-        switch (status.toLowerCase()) {
-            case "open":
-                return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
-              case "Open":
-                return "bg-[#e6f5ee] text-[#069855] border-[#069855]";
-              case "Pending":
-                return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
-              case "pending":
-                return "bg-[#f5f2e6] text-[#ffae00] border-[#ffae00]";
-              case "close":
-                return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
-              case "Close":
-                return "bg-[#f5e6e7] text-[#d62525] border-[#d62525]";
-              default:
-                return "bg-gray-100 text-gray-600 border-gray-400";
+    const getStatusStyles = (status) => {
+        switch (status) {
+            case 'Open':
+                return 'bg-[#e6f5ee] border-[#069855] text-[#069855]';
+            case 'Close':
+                return 'bg-[#f5e6e6] border-[#d62525] text-[#d62525]';
+            case 'Pending':
+                return 'bg-[#f5efe6] border-[#ffae00] text-[#ffae00]';
+            default:
+                return '';
         }
     };
 
@@ -198,18 +192,17 @@ const AdminTicketQuery = () => {
                             >
                                 <option value="">Action</option>
                                 <option value="open">Open</option>
-                                <option value="closed">Closed</option>
+                                <option value="close">Closed</option>
                                 <option value="pending">Pending</option>
                             </select>
                             <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                                <Calendar size={20} className="text-gray-400" />
-                                <input
-                                    type="date"
-                                    className="w-full border px-4 py-2 rounded-lg"
-                                    value={selectedDate}
-                                    onChange={handleDateChange}
-                                />
-                            </div>
+                                                            <input
+                                                                type="date"
+                                                                className=""
+                                                                value={selectedDate}
+                                                                onChange={handleDateChange}
+                                                            />
+                                                        </div>
                             <button
                                 className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50"
                                 onClick={exportToCSV}
@@ -262,9 +255,7 @@ const AdminTicketQuery = () => {
                                             <td className="px-[0.833vw] py-[0.625vw]">{formatDate(ticket.createdAt)}</td>
                                             <td className="px-[0.833vw] py-[0.625vw]">
                                                 <span
-                                                    className={`inline-flex px-[0.417vw] py-[0.208vw] text-[0.625vw] font-semibold rounded-full ${getStatusColor(
-                                                        ticket.status
-                                                    )}`}
+                                                    className={`w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border flex items-center ${getStatusStyles(ticket.status)}`}
                                                 >
                                                     {ticket.status}
                                                 </span>

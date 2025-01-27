@@ -18,11 +18,10 @@ const ApplyLeave = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
-    const [selectedDate, setSelectedDate] = useState(null); // For calendar date
+    const [selectedDate, setSelectedDate] = useState('');
 
     const [leaveHistory, setLeaveHistory] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    //const itemsPerPage = 5;
 
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "Sunday",
@@ -48,18 +47,12 @@ const ApplyLeave = () => {
     useEffect(() => {
         getAllLeaves()
             .then(response => {
-                //console.log("response", response)
                 setLeaveHistory(response);
             })
             .catch(error => {
                 console.error("Error fetching leave history:", error);
             });
     }, []);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        //console.log('Form submitted:', formData);
-    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -85,42 +78,60 @@ const ApplyLeave = () => {
         setLeaveHistory(updatedLeaves);
 
         try {
-            // Call the API to update the status
             const leaveId = updatedLeaves[index].id; // Ensure 'id' exists in your leave data
-            const response = await updateLeaveStatus(leaveId, newStatus);
-            //console.log("Leave status updated:", response);
-
+            await updateLeaveStatus(leaveId, newStatus);
             setCurrentPage(1);
         } catch (error) {
             console.error("Error updating leave status:", error);
         }
     };
 
-
-   // const totalPages = Math.ceil(leaveHistory.length / itemsPerPage);
-    //const indexOfLastItem = currentPage * itemsPerPage;
-    //const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-
-    const currentItems = leaveHistory
-        // .filter(leave => {
-        //     // Search by username and selected date
-        //     const matchesSearchTerm = leave.username.toLowerCase().includes(searchTerm.toLowerCase());
-        //     const matchesDate = selectedDate ? format(new Date(leave.fromDate), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') : true;
-        //     return matchesSearchTerm && matchesDate;
-        // })
-        // .slice(indexOfFirstItem, indexOfLastItem);
-
-    const formatDate = (date) => format(new Date(date), 'dd/MM/yyyy');
-
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // This will return date in YYYY-MM-DD format
+    };
     const getStatusStyle = (status) => {
         if (status === true) {
-            return 'bg-green-100 text-green-800'; // Accepted
+            return 'bg-green-100 text-green-800';
         } else if (status === false) {
-            return 'bg-red-100 text-red-800'; // Rejected
+            return 'bg-red-100 text-red-800';
         }
-        return 'bg-yellow-100 text-yellow-800'; // Pending
+        return 'bg-yellow-100 text-yellow-800';
     };
 
+    // Apply search and date filters
+    // const filteredLeaves = leaveHistory.filter((leave) => {
+    //     const matchesSearch = leave.username.toLowerCase().includes(searchTerm.toLowerCase());
+    //     const matchesDate = selectedDate
+    //         ? new Date(leave.fromDate).toDateString() === selectedDate.toDateString()
+    //         : true;
+
+    //     return matchesSearch && matchesDate;
+    // });
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
+    const filteredLeaves = leaveHistory.filter((ticket) => {
+        const dateMatch = selectedDate ? formatDate(ticket.fromDate) === selectedDate : true;
+
+
+
+        const matchesSearch =
+            searchTerm === "" ||
+            Object.values(ticket).some((value) =>
+                value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        const matchesStatus =
+            statusFilter === "" ||
+            ticket.status.toLowerCase() === statusFilter.toLowerCase();
+                console.log("selectedDate",selectedDate);
+                console.log("formatDate(ticket.createdAt)",formatDate(ticket.fromDate));
+                console.log("dateMatch",dateMatch);
+
+
+        return matchesSearch && matchesStatus && dateMatch;
+    });
     return (
         <div className="flex bg-gray-100 min-h-screen">
             <AdminSideBar />
@@ -154,15 +165,13 @@ const ApplyLeave = () => {
                             />
                         </div>
                         <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                            <Calendar size={20} className="text-gray-400" />
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={(date) => setSelectedDate(date)}
-                                dateFormat="dd/MM/yyyy"
-                                className="w-full p-2 border rounded-[0.417vw]"
-                                placeholderText="Select Date"
-                            />
-                        </div>
+                                                            <input
+                                                                type="date"
+                                                                className=""
+                                                                value={selectedDate}
+                                                                onChange={handleDateChange}
+                                                            />
+                                                        </div>
                         <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                             <Download size={20} />
                             Export CSV
@@ -185,7 +194,7 @@ const ApplyLeave = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentItems.map((leave, index) => (
+                                    {filteredLeaves.map((leave, index) => (
                                         <tr key={index} className="border-t">
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{leave.username}</td>
                                             <td className="px-[0.833vw] py-[0.625vw] text-[1.042vw]">{formatDate(leave.fromDate)}</td>
@@ -209,35 +218,18 @@ const ApplyLeave = () => {
                                                     <option value="accepted">Accepted</option>
                                                     <option value="rejected">Rejected</option>
                                                 </select>
-
                                             </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
-                        {/* <div className="mt-[0.833vw] flex justify-center items-center gap-[0.833vw]">
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                                className="px-[0.833vw] py-[0.417vw] bg-gray-200 rounded-[0.417vw]"
-                            >
-                                <ChevronLeft size={20} />
-                            </button>
-                            <span className="text-gray-600">{currentPage} of {totalPages}</span>
-                            <button
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                                className="px-[0.833vw] py-[0.417vw] bg-gray-200 rounded-[0.417vw]"
-                            >
-                                <ChevronRight size={20} />
-                            </button>
-                        </div> */}
                     </div>
                 </div>
             </div>
         </div>
     );
 };
+
 
 export default ApplyLeave;

@@ -81,15 +81,31 @@ const UserAttendance = () => {
         // Apply date filter
         if (selectedDate) {
             filtered = filtered.filter((item) => {
-                const itemDate = new Date(item.date).toLocaleDateString();
-                const selectedDateStr = selectedDate.toLocaleDateString();
-                return itemDate === selectedDateStr; // Check if the dates match
+
+                const dateMatch = selectedDate ? formatDate(item.date) === selectedDate : true;
+
+                // const itemDate = new Date(item.date).toLocaleDateString();
+                // const selectedDateStr = selectedDate.toLocaleDateString();
+                // console.log("item.date",item.date);
+                // console.log("formatDate(item.date)",formatDate(item.date));
+                // console.log("dateMatch",dateMatch);
+                // console.log("selectedDate",selectedDate);
+
+
+
+
+
+               return dateMatch; // Check if the dates match
             });
         }
 
         setFilteredData(filtered);
     };
-
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // This will return date in YYYY-MM-DD format
+    };
     // Handle input changes
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
@@ -104,7 +120,8 @@ const UserAttendance = () => {
     };
 
     const handleDateChange = (date) => {
-        setSelectedDate(date); // Update selected date
+        // console.log("date",date.target.value)
+        setSelectedDate(date.target.value); // Update selected date
     };
 
     useEffect(() => {
@@ -214,14 +231,12 @@ const UserAttendance = () => {
                             <option value="H">Half Day</option>
                         </select>
                         <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                            <Calendar size={20} className="text-gray-400" />
-                            <DatePicker
-                                selected={selectedDate}
-                                onChange={handleDateChange}
-                                dateFormat="dd MMM, yyyy"
-                                placeholderText="Select Date"
-                                className="border rounded-[0.417vw] p-[0.417vw]"
-                            />
+                                                            <input
+                                                                type="date"
+                                                                className=""
+                                                                value={selectedDate}
+                                                                onChange={handleDateChange}
+                                                            />
                         </div>
                         <button
                             onClick={exportToCSV} // Trigger CSV export
@@ -247,11 +262,7 @@ const UserAttendance = () => {
                             <tbody>
                                 {filteredData.map((item, index) => {
                                     // Convert and format dates
-                                    const formattedDate = new Date(item.date).toLocaleDateString(undefined, {
-                                        year: "numeric",
-                                        month: "long",
-                                        day: "numeric",
-                                    });
+                                
                                     const formattedClockIn = new Date(item.clockInDate).toLocaleTimeString([], {
                                         hour: "2-digit",
                                         minute: "2-digit",
@@ -265,7 +276,7 @@ const UserAttendance = () => {
 
                                     return (
                                         <tr key={index} className="border-t hover:bg-gray-50 transition">
-                                            <td className="p-[0.625vw] border-r">{formattedDate}</td>
+                                            <td className="p-[0.625vw] border-r">{formatDate(item.date)}</td>
                                             <td className="p-[0.625vw] border-r">{formattedClockIn}</td>
                                             <td className="p-[0.625vw] border-r">{formattedClockOut}</td>
                                             <td className="p-[0.625vw] border-r">

@@ -22,7 +22,7 @@ const AddTenant = () => {
 
     try {
       const response = await request({
-        url: 'https://api.pplazyhr.com/api/tenants/add', // Replace with your API endpoint
+        url: 'http://localhost:8080/api/tenants/add', // Replace with your API endpoint
         method: 'POST',
         body: JSON.stringify(formData),
       });

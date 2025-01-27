@@ -170,15 +170,15 @@ const MyLeaves = () => {
                       <td className="px-[0.833vw] py-[0.417vw]">
                         {leave.acceptRejectFlag === null ? (
                           <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5efe6] rounded-[0.417vw] border border-[#ffae00] justify-start items-center gap-[0.521vw] inline-flex">
-                            <div className="text-[#ffae00] text-2xl  font-normal leading-normal">Pending</div>
+                            <div className="text-[#ffae00] text-lg  font-normal leading-normal">Pending</div>
                           </div>
                         ) : leave.acceptRejectFlag ? (
                           <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw]  py-[0.208vw] bg-[#e6f5ee] rounded-[0.417vw] border border-[#069855] justify-start items-center gap-[0.521vw] inline-flex">
-                            <div className="text-[#069855] text-2xl  font-normal  leading-normal">Accepted</div>
+                            <div className="text-[#069855] text-lg  font-normal  leading-normal">Accepted</div>
                           </div>
                         ) : (
                           <div className="w-[7.188vw] h-[1.875vw] px-[0.625vw] py-[0.208vw] bg-[#f5e6e6] rounded-[0.417vw] border border-[#d62525] justify-start items-center gap-[0.521vw] inline-flex">
-                            <div className="text-[#d62525] text-2xl font-normal leading-normal">Rejected</div>
+                            <div className="text-[#d62525] text-lg font-normal leading-normal">Rejected</div>
                           </div>
                         )}
                       </td>

@@ -6,6 +6,8 @@ import {
   FileText,
   Check,
   ChevronDown,
+  Info,
+
 } from "lucide-react";
 import UserSidebar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
@@ -15,6 +17,7 @@ import { useSelector } from "react-redux";
 
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([]);
+  const [selectedDescription, setSelectedDescription] = useState(null); // State for modal
 
   // Fetch tasks when the component is mounted
   useEffect(() => {
@@ -160,9 +163,18 @@ const TaskDashboard = () => {
                     day: "numeric",
                   })}
                 </div>
-                <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
-                  {task.messages}
+                <div className="px-[0.833vw] py-[0.833vw] flex items-center gap-[0.417vw]">
+                  <span className="truncate text-[1.25vw] font-light">{task.messages}</span>
+                  <button
+                    onClick={() => setSelectedDescription(task.messages)}
+                    className="w-[1.25vw] h-[1.25vw] flex items-center justify-center bg-gray-200 rounded-full hover:bg-gray-300"
+                  >
+                    <Info className="w-[0.833vw] h-[0.833vw] text-gray-600" />
+                  </button>
                 </div>
+                {/* <div className="px-[0.833vw] py-[0.833vw] text-[1.25vw] font-light">
+                  {task.messages}
+                </div> */}
                 <div className="px-[0.833vw] py-[0.833vw] relative">
                   <select
                     className={`w-full px-[0.625vw] py-[0.208vw] rounded-[0.417vw] border ${getStatusStyle(
@@ -194,8 +206,21 @@ const TaskDashboard = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+      {selectedDescription && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-[2vw] rounded-lg w-[50vw] max-h-[70vh] overflow-auto">
+            <h3 className="text-lg font-medium mb-4">Full Description</h3>
+            <p className="text-gray-800 text-[1vw]">{selectedDescription}</p>
+            <button
+              onClick={() => setSelectedDescription(null)}
+              className="mt-4 px-4 py-2 bg-[#534feb] text-white rounded-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>  );
 };
 
 export default TaskDashboard;

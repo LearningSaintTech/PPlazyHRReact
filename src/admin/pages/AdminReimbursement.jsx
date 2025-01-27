@@ -11,20 +11,20 @@ const AdminReimbursement = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
-
+    const [selectedDate, setSelectedDate] = useState('');
+    const handleDateChange = (event) => {
+        setSelectedDate(event.target.value);
+    };
     // State for current date and time
     const [currentDateTime, setCurrentDateTime] = useState({
         day: "Sunday",
         time: "00:00:00",
         period: "AM"
     });
-    const formatDate = (date) => {
-        const d = new Date(date);
-        return d.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // This will return date in YYYY-MM-DD format
     };
     // State for modal and image preview
     const [modalOpen, setModalOpen] = useState(false);
@@ -96,13 +96,19 @@ const AdminReimbursement = () => {
 
     // Filter and search functionality
     const filteredTickets = reimbursements.filter(ticket => {
+        const dateMatch = selectedDate ? formatDate(ticket.createdAt) === selectedDate : true;
+
         const matchesSearch = searchTerm === "" ||
             Object.values(ticket).some(value =>
                 value.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
         const matchesStatus = statusFilter === "" ||
             ticket.status.toLowerCase() === statusFilter.toLowerCase();
-        return matchesSearch && matchesStatus;
+            // console.log("selectedDate",selectedDate);
+            // console.log("dateMatch",dateMatch);
+
+
+        return matchesSearch && matchesStatus && dateMatch;
     });
 
     // Pagination calculations
@@ -170,9 +176,13 @@ const AdminReimbursement = () => {
                                 <option value="Pending">Pending</option>
                             </select>
                             <div className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] border rounded-[0.417vw]">
-                                <Calendar size={20} className="text-gray-400" />
-                                <span>13 Jan, 2024</span>
-                            </div>
+                                                            <input
+                                                                type="date"
+                                                                className=""
+                                                                value={selectedDate}
+                                                                onChange={handleDateChange}
+                                                            />
+                                                        </div>
                             <button className="flex items-center gap-[0.417vw] px-[0.833vw] py-[0.417vw] text-gray-600 border rounded-[0.417vw] hover:bg-gray-50">
                                 <Download size={20} />
                                 Export CSV

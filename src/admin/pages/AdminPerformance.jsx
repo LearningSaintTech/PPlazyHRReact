@@ -57,15 +57,17 @@ const AdminPerformance = () => {
                         <h1 className="text-[1.25vw] font-medium text-black">User Performance</h1>
 
                         <div className="flex gap-[1.25vw] items-center">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-[0.833vw] top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                                <input
-                                    type="text"
-                                    placeholder="Search by Date, Time, Status..."
-                                    className="w-full h-[2.917vw] pl-[2.5vw] pr-[0.833vw] rounded-[0.625vw] border border-black/20 shadow-sm"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
+                            <div className="relative flex-1 gap-[0.2333vw]">
+                                
+                                    <Search className="absolute left-[0.833vw] top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                                    <input
+                                        type="text"
+                                        placeholder="   Search by Date, Time, Status..."
+                                        className="w-full h-[2.917vw] pl-[3vw] pr-[0.833vw] rounded-[0.625vw] border border-black/20 shadow-sm"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                
                             </div>
 
                             <button className="h-[2.917vw] px-[1.25vw] rounded-[0.625vw] border border-black/20 shadow-sm flex items-center gap-[0.417vw]">
