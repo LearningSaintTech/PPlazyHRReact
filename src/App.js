@@ -4,7 +4,6 @@ import AddTenant from '../src/superAdmin/AddTenant';
 import AllTenant from '../src/superAdmin/AllTenant';
 
 
-// Lazy-loaded components
 const UserHome = React.lazy(() => import('./user/pages/UserHome'));
 const UserProfile = React.lazy(() => import('./user/pages/UserProfile'));
 const UserAttendance = React.lazy(() => import('./user/pages/UserAttendance'));

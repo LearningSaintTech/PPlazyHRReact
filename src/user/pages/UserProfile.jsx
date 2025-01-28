@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { Camera } from "lucide-react";
-import { getEmployeeProfile,updateEmployee } from "../../commonComponent/Api"; // Adjust the path to match your project structure
+import { getEmployeeProfile,updateEmployee,getImageData } from "../../commonComponent/Api"; // Adjust the path to match your project structure
 import { useSelector } from "react-redux";
 
 const FormField = ({ label, id, type = "text", value, onChange, placeholder, disabled, className, children }) => (
@@ -38,6 +38,7 @@ const UserProfile = () => {
     const [profileData, setProfileData] = useState(null); // State to store the API response
     const [loading, setLoading] = useState(true); // State to manage loading state
     const [error, setError] = useState(null); // State to manage errors
+    const [imageData,setImageData] = useState(null);
   const user = useSelector((state) => state.auth.user);
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -73,6 +74,24 @@ const UserProfile = () => {
 
     useEffect(() => {
         fetchData();
+    }, []);
+
+    const fetchImageData = async () => {
+        setLoading(true);
+        try {
+            const data = await getImageData();
+            setImageData(data);
+            console.log(data);
+            // console.log("profile", profileData)
+        } catch (error) {
+            console.error('Error fetching reimbursements:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchImageData();
     }, []);
 
 
@@ -120,7 +139,7 @@ const UserProfile = () => {
                             <div className="flex items-center gap-[3.333vw] mb-[2.083vw]">
                                 <div className="relative">
                                     <div className="w-[10vw] h-[10vw] rounded-full bg-indigo-50 overflow-hidden border-4 border-white ring-1 ring-gray-100">
-                                        <img src="/api/placeholder/192/192" alt="Profile" className="w-full h-full object-cover" />
+                                        <img src={imageData} alt="Profile" className="w-full h-full object-cover" />
                                     </div>
                                     <button className="absolute bottom-0 right-0 p-[0.625vw] bg-indigo-600 text-white rounded-full shadow-lg">
                                         <Camera className="w-[1.25vw] h-[1.25vw]" />

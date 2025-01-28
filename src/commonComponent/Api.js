@@ -823,3 +823,18 @@ export function getAllTaskEmployee() {
     method: "GET",
   });
 }
+export function getImageData() {
+  console.log("getAllTaskwith Employee");
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
+
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
+
+  return request({
+    url: `${API_BASE_URL}/employee/${parsedUserData.id}/image`,
+    method: "GET",
+  });
+}
