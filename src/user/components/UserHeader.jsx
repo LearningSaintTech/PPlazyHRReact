@@ -22,7 +22,7 @@ const Header = ({ title, avatarSrc, showNotification = true, showChevron = true 
                 )}
                 {avatarSrc && (
                     <img
-                        src={avatarSrc}
+                        src='krishna.jpg'
                         alt="User Avatar"
                         className="w-10 h-10 rounded-full"
                     />

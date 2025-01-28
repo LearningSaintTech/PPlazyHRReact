@@ -159,7 +159,7 @@ const ApplyLeave = () => {
                             <input
                                 type="text"
                                 placeholder="Search by Username ..."
-                                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                                className="w-full pl-[2.483vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
