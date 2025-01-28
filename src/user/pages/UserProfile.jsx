@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserSideBar from "../components/UserSideBar";
 import UserHeader from "../components/UserHeader";
 import { Camera } from "lucide-react";
-import { getEmployeeProfile,updateEmployee,getImageData } from "../../commonComponent/Api"; // Adjust the path to match your project structure
+import { getEmployeeProfile, updateEmployee, getImageData, addImageData } from "../../commonComponent/Api"; // Adjust the path to match your project structure
 import { useSelector } from "react-redux";
 
 const FormField = ({ label, id, type = "text", value, onChange, placeholder, disabled, className, children }) => (
@@ -23,8 +23,11 @@ const FormField = ({ label, id, type = "text", value, onChange, placeholder, dis
 );
 
 const UserProfile = () => {
+
+    const [image, setImage] = useState(null);
     const [formData, setFormData] = useState({
         // Personal Details
+
         firstName: "", surname: "", pincode: "", city: "", state: "", email: "",
         phone: "", dob: "", gender: "", bloodGroup: "", address: "",
         // Employment Details
@@ -38,8 +41,8 @@ const UserProfile = () => {
     const [profileData, setProfileData] = useState(null); // State to store the API response
     const [loading, setLoading] = useState(true); // State to manage loading state
     const [error, setError] = useState(null); // State to manage errors
-    const [imageData,setImageData] = useState(null);
-  const user = useSelector((state) => state.auth.user);
+    const [imageData, setImageData] = useState(null);
+    const user = useSelector((state) => state.auth.user);
     // useEffect(() => {
     //     const fetchData = async () => {
     //       try {
@@ -64,7 +67,7 @@ const UserProfile = () => {
         try {
             const data = await getEmployeeProfile();
             setProfileData(data);
-            // console.log("profile", profileData)
+            console.log("profile", profileData)
         } catch (error) {
             console.error('Error fetching reimbursements:', error);
         } finally {
@@ -81,7 +84,7 @@ const UserProfile = () => {
         try {
             const data = await getImageData();
             setImageData(data);
-            console.log(data);
+            // console.log(data);
             // console.log("profile", profileData)
         } catch (error) {
             console.error('Error fetching reimbursements:', error);
@@ -102,14 +105,37 @@ const UserProfile = () => {
 
     const handleFileChange = (e) => {
         const { id, files } = e.target;
+        // console.log("Files are ", files[0]);
         if (files[0]) {
             setProfileData(prev => ({ ...prev, [id]: files[0].name }));
+
         }
     };
+    // useEffect(() => {
+    //     const fetchImage = () => {
+    //       getImage()
+    //         .then((blob) => {
+    //             const imageUrl = URL.createObjectURL(blob);
+    //                 setImage(imageUrl);
+    //         })
+    //         .catch((error) => {
+    //           console.error("Error fetching profile image:", error);
+    //           setImage("/api/placeholder/192/192"); // Fallback to placeholder
+    //         });
+    //     };
 
+    //     fetchImage();
+    //   }, []);
+
+
+    //   console.log("image",image);
     const handleSave = async () => {
         try {
+            console.log("Profile data ", profileData);
             const response = await updateEmployee(profileData.employeeId, profileData); // Call the update API
+
+            // const resp2 = await uploadImages(image);
+
             // console.log("Employee updated successfully:", response);
             alert("Profile updated successfully!");
         } catch (error) {
@@ -117,6 +143,17 @@ const UserProfile = () => {
             alert("Failed to update profile. Please try again.");
         }
     };
+    const handleImageChange = async (e) => {
+        console.log("inside handleImageChange")
+        const file = e.target.files[0];
+        if (file) {
+            // Assuming addImageData is an async function
+
+            await addImageData(file); // Wait for the image data to be added before continuing
+            fetchImageData();
+        }
+    };
+
 
     return (
         <div className="flex min-h-screen bg-gray-50">
@@ -141,15 +178,26 @@ const UserProfile = () => {
                                     <div className="w-[10vw] h-[10vw] rounded-full bg-indigo-50 overflow-hidden border-4 border-white ring-1 ring-gray-100">
                                         <img src={imageData} alt="Profile" className="w-full h-full object-cover" />
                                     </div>
-                                    <button className="absolute bottom-0 right-0 p-[0.625vw] bg-indigo-600 text-white rounded-full shadow-lg">
+                                    <button
+                                        className="absolute bottom-0 right-0 p-[0.625vw] bg-indigo-600 text-white rounded-full shadow-lg"
+                                        onClick={() => document.getElementById("fileInput").click()}
+                                    >
                                         <Camera className="w-[1.25vw] h-[1.25vw]" />
                                     </button>
+                                    <input
+                                        id="fileInput"
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleImageChange} // Corrected this line to use onChange
+                                    />
                                 </div>
+
                                 <div>
                                     <h3 className="text-[1.25vw] font-semibold text-gray-800"> {profileData.firstName} {profileData.surname}</h3>
                                     <p className="text-[1.1vw] text-gray-500">{profileData.designation}</p>
                                     <p className="text-gray-500 text-[0.9vw] mt-[0.417vw]">
-                                        Employee ID: <span className="text-indigo-600 text-[0.9vw]">{profileData.empId}</span>
+                                        Employee ID: <span className="text-indigo-600 text-[0.9vw]">{profileData.employeeId}</span>
                                     </p>
                                 </div>
                             </div>
@@ -180,7 +228,7 @@ const UserProfile = () => {
                                             </select>
                                         </FormField>
                                         <FormField label="Blood Group" id="bloodGroup" value={profileData.bloodGroup} onChange={handleInputChange} />
-                                        <FormField label="Email" id="email" type="email" value={profileData.email} onChange={handleInputChange} />
+                                        <FormField disabled={true} label="Email" id="email" type="email" value={profileData.email} onChange={handleInputChange} />
                                         <FormField
                                             label="Address"
                                             id="address"
@@ -245,7 +293,7 @@ const UserProfile = () => {
                                             id="department"
                                             value={profileData.department}
                                             onChange={handleInputChange}
-                                            placeholder="Write here"
+                                            placeholder="Write here ...."
                                             className="col-span-2"
                                         />
                                         <FormField label="Allowances" id="allowances" value={profileData.allowances} onChange={handleInputChange}>
@@ -255,7 +303,7 @@ const UserProfile = () => {
                                                     id="allowances"
                                                     value={profileData.allowances}
                                                     onChange={handleInputChange}
-                                                    placeholder="Write here"
+                                                    placeholder="Write here ...."
                                                     className="flex-1 p-[0.521vw] border border-gray-200 rounded-[0.417vw] focus:outline-none focus:border-indigo-500"
                                                 />
                                                 <button className="px-[0.833vw] py-[0.417vw] bg-gray-100 text-gray-600 rounded-[0.417vw]">
@@ -389,8 +437,8 @@ const UserProfile = () => {
                             {/* Save Button */}
                             <div className="flex justify-end mt-[1.667vw]">
                                 <button
-                                onClick={handleSave}
-                                className="px-[1.25vw] py-[0.625vw] bg-indigo-600 text-white rounded-[0.417vw] hover:bg-indigo-700 transition-colors"
+                                    onClick={handleSave}
+                                    className="px-[1.25vw] py-[0.625vw] bg-indigo-600 text-white rounded-[0.417vw] hover:bg-indigo-700 transition-colors"
                                 >
                                     Save
                                 </button>

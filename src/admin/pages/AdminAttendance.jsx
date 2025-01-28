@@ -17,9 +17,9 @@ const AdminAttendance = () => {
       try {
         setLoading(true);
         const response = await getAllAttendance();
-        console.log("response", response);
+        // console.log("response", response);
         setAttendanceData(response);
-        console.log("setattendance ", attendanceData)
+        // console.log("setattendance ", attendanceData)
       } catch (error) {
         console.error("Error fetching attendance data:", error);
       } finally {
@@ -30,7 +30,7 @@ const AdminAttendance = () => {
     fetchAttendanceData();
   }, []);
   useEffect(() => {
-    console.log("Attendance state updated:", attendanceData);
+    // console.log("Attendance state updated:", attendanceData);
   }, [attendanceData]);
 
   const formatStatus = (status) => {

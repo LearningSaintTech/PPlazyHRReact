@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBell, FaDoorOpen } from 'react-icons/fa';
 import { GoChevronDown } from 'react-icons/go';
+import { getImageData } from '../../commonComponent/Api';
 
 const Header = ({ title, avatarSrc, showNotification = true, showChevron = true }) => {
     const [showLogout, setShowLogout] = useState(false);
-
+    const [imageData,setImageData] = useState(null);
+    const fetchImageData = async () => {
+            
+            try {
+                const data = await getImageData();
+                setImageData(data);
+                // console.log(data);
+                // console.log("profile", profileData)
+            } catch (error) {
+                console.error('Error fetching reimbursements:', error);
+            }
+        };
+    
+        useEffect(() => {
+            fetchImageData();
+        }, []);
+    
     const handleLogout = () => {
         // Implement your logout logic here
-        console.log('Logging out...');
+        // console.log('Logging out...');
     };
 
     return (
@@ -22,7 +39,7 @@ const Header = ({ title, avatarSrc, showNotification = true, showChevron = true 
                 )}
                 {avatarSrc && (
                     <img
-                        src={avatarSrc}
+                        src={imageData}
                         alt="User Avatar"
                         className="w-10 h-10 rounded-full"
                     />

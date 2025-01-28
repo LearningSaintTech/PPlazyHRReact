@@ -27,7 +27,7 @@ const AddTenant = () => {
         body: JSON.stringify(formData),
       });
 
-      console.log('Form submitted successfully:', response);
+      // console.log('Form submitted successfully:', response);
       alert('Tenant added successfully!');
     } catch (error) {
       console.error('Error submitting the form:', error);

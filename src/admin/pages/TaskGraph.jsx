@@ -24,7 +24,7 @@ const TaskGraph = (employeeId) => {
     const [barData, setBarData] = useState(null);
     const [doughnutData, setDoughnutData] = useState(null);
     const [error, setError] = useState(null);
-console.log("employeeId",employeeId)
+// console.log("employeeId",employeeId)
     useEffect(() => {
         // Fetch data for the Bar Chart
 

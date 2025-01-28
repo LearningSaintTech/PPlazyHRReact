@@ -163,7 +163,58 @@ export function getReimbursements() {
     method: "GET",
   });
 }
+// export async function uploadImage(employeeId, file) {
+//   const formData = new FormData();
+//   formData.append("employeeId", employeeId);
+//   formData.append("image", file);
 
+//   const headers = new Headers();
+//   const token = localStorage.getItem(ACCESS_TOKEN);
+//   if (token) {
+//     headers.append("Authorization", "Bearer " + token);
+//   }
+
+//   const options = {
+//     method: "POST",
+//     body: formData,
+//     headers: headers,
+//   };
+
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/upload-image`, options);
+//     if (!response.ok) {
+//       throw new Error(`Error uploading image: ${response.statusText}`);
+//     }
+//     return await response.json();
+//   } catch (error) {
+//     console.error("Error uploading image:", error);
+//     throw error;
+//   }
+// }
+// export const getImage = async () => {
+//   try {
+//     const response = await request({
+//       url: `${API_BASE_URL}/employee/image/12`,
+//       method: "GET",
+//       headers: {
+//         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwibmFtZSI6IjUiLCJlbWFpbCI6ImF5dXNoQGNvbXBhbnkyLmNvbSIsInJvbGVzIjpbIlVTRVIiXSwidGVuYW50SWQiOjMsImlhdCI6MTczNzk4Mzc1MiwiZXhwIjoxNzM4ODQ3NzUyfQ.dzCxM2rYspl1cSma5ewwqeaDaubxmyyJ8-jVyV6SreWf76gWxXB_ETrKs1ptPJRKOLijjkJhUDC6zlfFdfOUYw`,
+//       },
+//     });
+
+//     // Handle the success response
+//     if (response) {
+//       // If the response is a Blob (image)
+//       return await response;
+//      // Return Blob directly
+//     } else {
+//       throw new Error("Failed to fetch image");
+//     }
+//   } catch (error) {
+//     // Handle error response
+//     console.error("Error fetching image:", error);
+//     throw error;
+//   }
+// };
 export async function getAllTicket() {
   return request({
     url: `${API_BASE_URL}/api/tickets/all`,
@@ -519,7 +570,7 @@ export const fetchPieData = async () => {
 };
 
 export const fetchBarData = async (employeeId) => {
-  console.log("inside fetchBarData",employeeId);
+  // console.log("inside fetchBarData", employeeId);
 
   try {
     const response = await request({
@@ -539,7 +590,7 @@ export const fetchBarData = async (employeeId) => {
 
 export const fetchDoughnutData = async (employeeId) => {
   // console.log("inside fetchDoughnutData",employeeId);
- 
+
   try {
     const response = await request({
       url: `${API_BASE_URL}/user/tasks/statusCounts/${employeeId.employeeId}`,
@@ -817,14 +868,14 @@ export function getEmployeeProfile() {
 }
 
 export function getAllTaskEmployee() {
-  console.log("getAllTaskwith Employee");
+  // console.log("getAllTaskwith Employee");
   return request({
     url: `${API_BASE_URL}/user/tasks/all-with-employee`,
     method: "GET",
   });
 }
 export function getImageData() {
-  console.log("getAllTaskwith Employee");
+  // console.log("getAllTaskwith Employee");
   const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
   const parsedUserData = JSON.parse(userData); // Parse the string into an object
 
@@ -837,4 +888,61 @@ export function getImageData() {
     url: `${API_BASE_URL}/employee/${parsedUserData.id}/image`,
     method: "GET",
   });
+}
+export function uploadImageData() {
+  // console.log("getAllTaskwith Employee");
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
+
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
+
+  return request({
+    url: `${API_BASE_URL}/employee/${parsedUserData.id}/image`,
+    method: "POST",
+  });
+}
+
+
+export async function addImageData(imageData) {
+  // console.log("imageData",imageData);
+  const formData = new FormData();
+  formData.append("image", imageData);
+ 
+  
+  const headers = new Headers();
+
+  if (localStorage.getItem(ACCESS_TOKEN)) {
+    headers.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem(ACCESS_TOKEN)
+    );
+  }
+  const userData = localStorage.getItem("userData"); // Retrieve the userData string from localStorage
+  const parsedUserData = JSON.parse(userData); // Parse the string into an object
+
+  if (!parsedUserData || !parsedUserData.id) {
+    console.error("User ID is missing in localStorage");
+    return; // Optionally handle the error
+  }
+
+  const options = {
+    method: "POST",
+    body: formData,
+    headers: headers,
+  };
+
+  try {
+    const response = await request({
+      url: `${API_BASE_URL}/employee/${parsedUserData.id}/image`,
+      ...options,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error creating reimbursement:", error);
+    throw error;
+  }
 }

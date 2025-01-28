@@ -125,9 +125,9 @@ const ApplyLeave = () => {
         const matchesStatus =
             statusFilter === "" ||
             ticket.status.toLowerCase() === statusFilter.toLowerCase();
-                console.log("selectedDate",selectedDate);
-                console.log("formatDate(ticket.createdAt)",formatDate(ticket.fromDate));
-                console.log("dateMatch",dateMatch);
+                // console.log("selectedDate",selectedDate);
+                // console.log("formatDate(ticket.createdAt)",formatDate(ticket.fromDate));
+                // console.log("dateMatch",dateMatch);
 
 
         return matchesSearch && matchesStatus && dateMatch;
@@ -159,7 +159,7 @@ const ApplyLeave = () => {
                             <input
                                 type="text"
                                 placeholder="Search by Username ..."
-                                className="w-full pl-[2.083vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
+                                className="w-full pl-[2.483vw] pr-[0.833vw] py-[0.417vw] border rounded-[0.417vw] focus:outline-none focus:border-blue-500"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />

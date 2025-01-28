@@ -261,11 +261,12 @@ const Dashboard = () => {
                         </div>
 
                         {/* Working Hours Card */}
-                        <div className="bg-gray-100 rounded-[0.833vw] flex flex-col items-center justify-center h-[5vw]">
-                            <div className="bg-white shadow-sm border rounded-[0.417vw] px-[0.833vw] py-[0.417vw] mb-[0.417vw]">
+                        <div className="bg-gray-200 rounded-[0.833vw] flex p-[1.25vw]  items-center justify-between h-[5vw]">
+                            <div>
                                 <h3 className="text-gray-600 text-[0.938vw] font-medium">Working Hours</h3>
+                                <p className="text-black text-[1.875vw] font-medium">{formatTime(timer)}</p>
                             </div>
-                            <p className="text-black text-[1.875vw] font-medium">{formatTime(timer)}</p>
+                          
                         </div>
 
                         {/* Absence Card */}
