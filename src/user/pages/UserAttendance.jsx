@@ -257,12 +257,19 @@ const UserAttendance = () => {
                                         minute: "2-digit",
                                         hour12: true,
                                     });
-                                    const formattedClockOut = new Date(item.clockOutDate).toLocaleTimeString([], {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                        hour12: true,
-                                    });
+                                  //  const formattedClockOut = new Date(item.clockOutDate).toLocaleTimeString([], {
+                                    //    hour: "2-digit",
+                                      //  minute: "2-digit",
+                                      //  hour12: true,
+                                  //  });
 
+const formattedClockOut = item.clockOutDate
+    ? new Date(item.clockOutDate).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    })
+    : "N/A"; // Show "N/A" or any other fallback text when null
                                     return (
                                         <tr key={index} className="border-t hover:bg-gray-50 transition">
                                             <td className="p-[0.625vw] border-r">{formattedDate}</td>
